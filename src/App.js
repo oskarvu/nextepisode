@@ -4,12 +4,6 @@ import 'tailwindcss/dist/base.min.css'
 
 const Input = tw.input`w-4/6 h-12 px-8 pb-1 my-4 rounded-full bg-gray-200 text-gray-600 text-center leading-6 text-xl font-bold uppercase tracking-wider outline-none placeholder-gray-300`
 
-function apiQueryString(apiKey, apiBaseURL, queryText) {
-  return `${apiBaseURL}/3/search/tv?api_key=${apiKey}&language=en-US&query=${encodeURI(
-    queryText
-  )}`
-}
-
 async function fetchMovies(apiQuery) {
   const response = await fetch(apiQuery)
   return await response.json()
@@ -25,9 +19,10 @@ function SearchBar({ setMovies }) {
 
   const handleChange = (event) => {
     setInputText(event.target.value)
+    const uriEncodedInput = encodeURI(event.target.value)
     const timeBetweenInputs = event.timeStamp - lastKeypressTime
     setLastKeypressTime(event.timeStamp)
-    const apiQuery = apiQueryString(apiKey, apiBaseURL, event.target.value)
+    const apiQuery = `${apiBaseURL}/3/search/tv?api_key=${apiKey}&language=en-US&query=${uriEncodedInput}`
 
     if (timeBetweenInputs < timeout && typeof timeoutID !== 'undefined') {
       window.clearTimeout(timeoutID)
