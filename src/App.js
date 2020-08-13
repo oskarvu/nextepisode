@@ -1,8 +1,15 @@
 import React, { useState } from 'react'
-import tw from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 import 'tailwindcss/dist/base.min.css'
 
-const Input = tw.input`w-4/6 h-12 px-8 pb-1 my-4 rounded-full bg-gray-200 text-gray-600 text-center leading-6 text-xl font-bold uppercase tracking-wider outline-none placeholder-gray-300`
+const Input = styled.input(() => [
+  tw`w-4/6 h-12`,
+  tw`px-8 pb-1 my-4`,
+  tw`rounded-full outline-none bg-gray-200`,
+  tw`text-gray-600 placeholder-gray-300 text-center leading-6 text-xl font-bold uppercase tracking-wider`,
+])
+
+// const Input = tw.input`w-4/6 h-12 px-8 pb-1 my-4 rounded-full bg-gray-200 text-gray-600 text-center leading-6 text-xl font-bold uppercase tracking-wider outline-none placeholder-gray-300`
 
 async function fetchMovies(apiQuery) {
   const response = await fetch(apiQuery)
