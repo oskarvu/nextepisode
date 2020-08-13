@@ -16,10 +16,9 @@ async function fetchMovies(apiQuery) {
   return await response.json()
 }
 
-function SearchBar({ setMovies }) {
+function SearchBar({ setMovies, timeout }) {
   const apiKey = process.env.REACT_APP_API_KEY
   const apiBaseURL = 'https://api.themoviedb.org'
-  const timeout = 200
   const [timeoutID, setTimeoutID] = useState(0)
   const [inputText, setInputText] = useState('')
   const [lastKeypressTime, setLastKeypressTime] = useState(0)
@@ -55,12 +54,12 @@ function App() {
     <div tw="bg-gray-200 h-screen">
       <div tw="flex items-baseline bg-white">
         <span tw="w-1/6">logo</span>
-        <SearchBar setMovies={setMovies} />
+        <SearchBar setMovies={setMovies} timeout={200} />
         <span tw="w-1/6">theme</span>
       </div>
       <div>
         {/*{movies.results.length}*/}
-        <ul>
+        <ul tw="list-disc">
           {movies.results.map((movie) => (
             <li key={movie.id}>{movie.original_name}</li>
           ))}
