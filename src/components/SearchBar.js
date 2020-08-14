@@ -9,36 +9,42 @@ const StyledInput = tw.input`
   text-gray-600 placeholder-gray-400 text-center leading-6 text-xl font-bold uppercase tracking-wider
 `
 
+function getQueryText(inputText) {
+  const apiKey = process.env.REACT_APP_API_KEY
+  const apiBaseURL = process.env.REACT_APP_API_BASE_SEARCH_URL
+  const uriEncodedInput = encodeURI(inputText)
+  return `${apiBaseURL}tv?api_key=${apiKey}&language=en-US&query=${uriEncodedInput}`
+}
+
 async function fetchMovies(apiQuery) {
   const response = await fetch(apiQuery)
-  return await response.json()
+  const data = await response.json()
+  return data.results
 }
 
 function SearchBar({ setResults, timeout }) {
-  const apiKey = process.env.REACT_APP_API_KEY
-  const apiBaseURL = 'https://api.themoviedb.org'
-  const [timeoutID, setTimeoutID] = useState(0)
   const [inputText, setInputText] = useState('')
+  const [timeoutID, setTimeoutID] = useState(0)
   const [lastKeypressTime, setLastKeypressTime] = useState(0)
 
   const handleChange = (event) => {
     setInputText(event.target.value)
-    const uriEncodedInput = encodeURI(event.target.value)
+
     const timeBetweenInputs = event.timeStamp - lastKeypressTime
     setLastKeypressTime(event.timeStamp)
-    const apiQuery = `${apiBaseURL}/3/search/tv?api_key=${apiKey}&language=en-US&query=${uriEncodedInput}`
-
-    if (timeBetweenInputs < timeout && typeof timeoutID !== 'undefined') {
+    if (timeBetweenInputs < timeout && timeoutID) {
       window.clearTimeout(timeoutID)
     }
-
+    // set results to empty array if no text in input, because of return
+    // should be after clearing timeout, if for example fast backspace
     if (!event.target.value) {
-      setResults({ results: [] })
+      setResults([])
       return
     }
-
+    //set timeout at the end of handler, so after every input new one starts
     const nextTimeoutID = window.setTimeout(async () => {
-      setResults(await fetchMovies(apiQuery))
+      const queryText = getQueryText(event.target.value)
+      setResults(await fetchMovies(queryText))
     }, timeout)
     setTimeoutID(nextTimeoutID)
   }

@@ -10,7 +10,7 @@ const StyledHeader = tw.header`
 `
 
 function Header() {
-  const [results, setResults] = useState({ results: [] })
+  const [results, setResults] = useState([])
 
   return (
     <StyledHeader>
