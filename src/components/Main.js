@@ -13,8 +13,8 @@ function Main() {
   const [movies, setMovies] = useState([])
   return (
     <MainContainer>
-      <Header setMovies={setMovies} />
-      <MoviesList movies={movies} />
+      <Header movies={movies} setMovies={setMovies} />
+      <MoviesList movies={movies} setMovies={setMovies} />
       <Footer />
     </MainContainer>
   )

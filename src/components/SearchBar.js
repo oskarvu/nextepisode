@@ -18,9 +18,10 @@ const Input = tw.input`
   leading-6 text-lg font-bold uppercase tracking-wide
 `
 
-function SearchBar({ setMovies }) {
+function SearchBar({ movies, setMovies }) {
   const [results, setResults] = useState([])
   const [inputText, setInputText] = useState('')
+  const [modalVisible, setModalVisible] = useState(true)
 
   useEffect(() => {
     const timeoutID = window.setTimeout(() => {
@@ -43,9 +44,16 @@ function SearchBar({ setMovies }) {
     <Container>
       <Input
         value={inputText}
+        onFocus={() => setModalVisible(true)}
         onChange={(event) => setInputText(event.target.value)}
       />
-      <ResultsModal results={results} setMovies={setMovies} />
+      <ResultsModal
+        visible={modalVisible}
+        setVisible={setModalVisible}
+        results={results}
+        movies={movies}
+        setMovies={setMovies}
+      />
     </Container>
   )
 }
