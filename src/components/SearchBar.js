@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import tw, { theme } from 'twin.macro'
+import tw from 'twin.macro'
 
 import ResultsModal from './ResultsModal'
 import apiConfig from '../api/config'
+import { getQueryText, fetchMovies } from '../utils/api'
 
 const Container = tw.div`
   w-4/6
@@ -11,29 +12,13 @@ const Container = tw.div`
 
 const Input = tw.input`
   w-95 h-12
-  px-8 pb-1 my-4
+  px-6 pb-1 my-4
   rounded-full outline-none bg-gray-200
   text-gray-600 placeholder-gray-200
-  leading-6 text-xl font-bold uppercase tracking-wider
+  leading-6 text-lg font-bold uppercase tracking-wide
 `
 
-function getQueryText(inputText) {
-  const uriEncodedInput = encodeURI(inputText)
-  return `${apiConfig.searchURL}tv?api_key=${apiConfig.key}&language=en-US&query=${uriEncodedInput}`
-}
-
-async function fetchMovies(apiQuery) {
-  try {
-    const response = await fetch(apiQuery)
-    const data = await response.json()
-    return data.results
-  } catch (e) {
-    console.error(e)
-    return []
-  }
-}
-
-function SearchBar() {
+function SearchBar({ setMovies }) {
   const [results, setResults] = useState([])
   const [inputText, setInputText] = useState('')
 
@@ -60,7 +45,7 @@ function SearchBar() {
         value={inputText}
         onChange={(event) => setInputText(event.target.value)}
       />
-      <ResultsModal results={results} />
+      <ResultsModal results={results} setMovies={setMovies} />
     </Container>
   )
 }

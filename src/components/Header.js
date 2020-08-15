@@ -8,11 +8,11 @@ const StyledHeader = tw.header`
   bg-white
 `
 
-function Header() {
+function Header({ setMovies }) {
   return (
     <StyledHeader>
       <span tw="w-1/6">logo</span>
-      <SearchBar />
+      <SearchBar setMovies={setMovies} />
       <span tw="w-1/6">theme</span>
     </StyledHeader>
   )
