@@ -1,11 +1,5 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import tw, { styled } from 'twin.macro'
-
-// const Modal = tw.div`
-//   absolute w-4/6
-//   bg-white
-//   rounded-b-4xl
-// `
 
 const Modal = styled.div(({ visible }) => [
   tw`
@@ -34,24 +28,8 @@ const StyledSpan = tw.span`
 `
 
 function ResultsModal({ results, movies, setMovies, visible, setVisible }) {
-  const modalRef = useRef(null)
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setVisible(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [modalRef, setVisible])
-
   return (
-    <Modal ref={modalRef} visible={visible}>
+    <Modal visible={visible}>
       <ul>
         {results.slice(0, 10).map((movie) => (
           <Result key={movie.id}>
