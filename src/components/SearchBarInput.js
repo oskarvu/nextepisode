@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import tw from 'twin.macro'
 import Search from '../assets/icons/Search'
 import X from '../assets/icons/X'
-import { fetchMovies, getQueryText } from '../utils/api'
+import { fetchFromTMDB, getApiURL } from '../utils/api'
 import apiConfig from '../api/config'
 
 const InputContainer = tw.div`
@@ -39,9 +39,9 @@ function SearchBarInput({ setResults, setModalVisible }) {
         setResults([])
         return
       }
-      const queryText = getQueryText(inputText)
-      fetchMovies(queryText).then((movies) => {
-        setResults(movies)
+      const queryText = getApiURL(inputText, apiConfig.queryType.search)
+      fetchFromTMDB(queryText).then((data) => {
+        setResults(data.results)
       })
     }, apiConfig.fetchDelay)
 
@@ -69,7 +69,6 @@ function SearchBarInput({ setResults, setModalVisible }) {
         onClick={() => setModalVisible(true)}
         onFocus={() => {
           setModalVisible(true)
-          console.log('on focus input set visible')
         }}
         onChange={(event) => setInputText(event.target.value)}
       />

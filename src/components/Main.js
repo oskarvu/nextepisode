@@ -12,7 +12,6 @@ const MainContainer = tw.div`
 const MoviesContext = createContext([])
 
 function Main() {
-  //TODO: use context for movies
   const [movies, setMovies] = useState([])
   return (
     <MainContainer>

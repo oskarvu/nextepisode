@@ -31,18 +31,21 @@ const StyledSpan = tw.span`
 function ResultsModal({ results, visible }) {
   const [movies, setMovies] = useContext(MoviesContext)
 
+  // TODO: fetch new data after getting movie id
   return (
     <Modal visible={visible}>
       <ul>
         {results.slice(0, 10).map((movie) => (
           <Result key={movie.id}>
             <ResultButton
-              onClick={() =>
-                setMovies(
-                  movies.some((m) => m.id === movie.id)
-                    ? [...movies]
-                    : [...movies, movie]
-                )
+              onClick={
+                () => {}
+                // () =>
+                // setMovies(
+                //   movies.some((m) => m.id === movie.id)
+                //     ? [...movies]
+                //     : [...movies, movie]
+                // )
               }
             >
               <StyledSpan>+</StyledSpan> {movie.original_name}
