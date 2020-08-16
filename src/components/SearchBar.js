@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import tw from 'twin.macro'
 
 import ResultsModal from './ResultsModal'
-import apiConfig from '../api/config'
-import { getQueryText, fetchMovies } from '../utils/api'
+import SearchBarInput from './SearchBarInput'
 import useHideWhenClickedOutside from '../hooks/useHideWhenClickedOutside'
 
 const Container = tw.div`
@@ -11,49 +10,19 @@ const Container = tw.div`
   text-center
 `
 
-const Input = tw.input`
-  w-95 h-12
-  px-6 pb-1 my-4
-  rounded-full outline-none bg-gray-200
-  text-gray-600 placeholder-gray-200
-  leading-6 text-lg font-bold uppercase tracking-wide
-`
-
 function SearchBar() {
   const [results, setResults] = useState([])
-  const [inputText, setInputText] = useState('')
   const [modalVisible, setModalVisible] = useState(true)
   const searchBarRef = useRef(null)
 
   useHideWhenClickedOutside(searchBarRef, setModalVisible)
 
-  useEffect(() => {
-    const timeoutID = window.setTimeout(() => {
-      if (!inputText) {
-        setResults([])
-        return
-      }
-      const queryText = getQueryText(inputText)
-      fetchMovies(queryText).then((movies) => {
-        setResults(movies)
-      })
-    }, apiConfig.fetchDelay)
-
-    return () => {
-      clearTimeout(timeoutID)
-    }
-  }, [inputText])
-
   return (
     <Container ref={searchBarRef}>
-      <Input
-        value={inputText}
-        onKeyDown={(e) =>
-          e.keyCode === 27 ? setModalVisible(false) : setModalVisible(true)
-        }
-        onClick={() => setModalVisible(true)}
-        onFocus={() => setModalVisible(true)}
-        onChange={(event) => setInputText(event.target.value)}
+      <SearchBarInput
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        setResults={setResults}
       />
       <ResultsModal
         visible={modalVisible}
