@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import tw from 'twin.macro'
 
 import SearchBar from './SearchBar'
@@ -8,11 +8,11 @@ const StyledHeader = tw.header`
   bg-white
 `
 
-function Header({ movies, setMovies }) {
+function Header() {
   return (
     <StyledHeader>
       <span tw="w-1/6">logo</span>
-      <SearchBar movies={movies} setMovies={setMovies} />
+      <SearchBar />
       <span tw="w-1/6">theme</span>
     </StyledHeader>
   )

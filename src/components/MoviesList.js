@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import 'twin.macro'
+import { MoviesContext } from './Main'
 
-function MoviesList({ movies, setMovies }) {
+function MoviesList() {
+  const [movies, setMovies] = useContext(MoviesContext)
+
   return (
     <ul tw="list-disc">
       {movies.map((movie) => (

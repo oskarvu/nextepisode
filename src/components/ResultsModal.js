@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import tw, { styled } from 'twin.macro'
+import { MoviesContext } from './Main'
 
 const Modal = styled.div(({ visible }) => [
   tw`
@@ -27,7 +28,9 @@ const StyledSpan = tw.span`
   font-black
 `
 
-function ResultsModal({ results, movies, setMovies, visible, setVisible }) {
+function ResultsModal({ results, visible }) {
+  const [movies, setMovies] = useContext(MoviesContext)
+
   return (
     <Modal visible={visible}>
       <ul>

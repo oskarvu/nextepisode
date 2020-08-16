@@ -4,6 +4,7 @@ import tw from 'twin.macro'
 import ResultsModal from './ResultsModal'
 import apiConfig from '../api/config'
 import { getQueryText, fetchMovies } from '../utils/api'
+import useHideWhenClickedOutside from '../hooks/useHideWhenClickedOutside'
 
 const Container = tw.div`
   w-4/6
@@ -18,11 +19,13 @@ const Input = tw.input`
   leading-6 text-lg font-bold uppercase tracking-wide
 `
 
-function SearchBar({ movies, setMovies }) {
+function SearchBar() {
   const [results, setResults] = useState([])
   const [inputText, setInputText] = useState('')
   const [modalVisible, setModalVisible] = useState(true)
   const searchBarRef = useRef(null)
+
+  useHideWhenClickedOutside(searchBarRef, setModalVisible)
 
   useEffect(() => {
     const timeoutID = window.setTimeout(() => {
@@ -41,23 +44,6 @@ function SearchBar({ movies, setMovies }) {
     }
   }, [inputText])
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (
-        searchBarRef.current &&
-        !searchBarRef.current.contains(event.target)
-      ) {
-        setModalVisible(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [searchBarRef, setModalVisible])
-
   return (
     <Container ref={searchBarRef}>
       <Input
@@ -65,6 +51,7 @@ function SearchBar({ movies, setMovies }) {
         onKeyDown={(e) =>
           e.keyCode === 27 ? setModalVisible(false) : setModalVisible(true)
         }
+        onClick={() => setModalVisible(true)}
         onFocus={() => setModalVisible(true)}
         onChange={(event) => setInputText(event.target.value)}
       />
@@ -72,8 +59,6 @@ function SearchBar({ movies, setMovies }) {
         visible={modalVisible}
         setVisible={setModalVisible}
         results={results}
-        movies={movies}
-        setMovies={setMovies}
       />
     </Container>
   )
