@@ -6,7 +6,7 @@ import MoviesList from './MoviesList'
 import Footer from './Footer'
 
 const MainContainer = tw.div`
-  bg-gray-200 h-screen
+  bg-gray-200 min-h-screen
 `
 
 const MoviesContext = createContext([])

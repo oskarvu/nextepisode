@@ -12,6 +12,7 @@ const Container = tw.div`
 
 function SearchBar() {
   const [results, setResults] = useState([])
+  const [inputText, setInputText] = useState('')
   const [modalVisible, setModalVisible] = useState(true)
   const searchBarRef = useRef(null)
 
@@ -20,6 +21,8 @@ function SearchBar() {
   return (
     <Container ref={searchBarRef}>
       <SearchBarInput
+        inputText={inputText}
+        setInputText={setInputText}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         setResults={setResults}
@@ -27,6 +30,7 @@ function SearchBar() {
       <ResultsModal
         visible={modalVisible}
         setVisible={setModalVisible}
+        setInputText={setInputText}
         results={results}
       />
     </Container>

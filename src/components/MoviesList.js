@@ -16,12 +16,9 @@ function MoviesList() {
 
   return (
     <List>
-      {/*{movies.map((m) => (*/}
-      {/*  <MovieTile key={m.key} title={m.name} />*/}
-      {/*))}*/}
-      <MovieTile key={1} title="Doom Patrol" />
-      <MovieTile key={2} title="Legion" />
-      <MovieTile key={3} title="Legendary" />
+      {movies.map((m) => (
+        <MovieTile key={m.id} title={m.name} backdrop={m.backdrop_path} />
+      ))}
     </List>
   )
 }

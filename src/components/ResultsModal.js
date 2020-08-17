@@ -1,6 +1,8 @@
 import React, { useContext } from 'react'
 import tw, { styled } from 'twin.macro'
 import { MoviesContext } from './Main'
+import { fetchFromTMDB, getApiURL } from '../utils/api'
+import apiConfig from '../api/config'
 
 const Modal = styled.div(({ visible }) => [
   tw`
@@ -27,28 +29,27 @@ const StyledSpan = tw.span`
   bg-gray-300 rounded-full
   font-black
 `
-
-function ResultsModal({ results, visible }) {
+//TODO: rename setInputText to more reasonable
+function ResultsModal({ results, visible, setVisible, setInputText }) {
   const [movies, setMovies] = useContext(MoviesContext)
 
   // TODO: fetch new data after getting movie id
   return (
     <Modal visible={visible}>
       <ul>
-        {results.slice(0, 10).map((movie) => (
-          <Result key={movie.id}>
+        {results.slice(0, 10).map((result) => (
+          <Result key={result.id}>
             <ResultButton
-              onClick={
-                () => {}
-                // () =>
-                // setMovies(
-                //   movies.some((m) => m.id === movie.id)
-                //     ? [...movies]
-                //     : [...movies, movie]
-                // )
-              }
+              onClick={() => {
+                setVisible(false)
+                setInputText('')
+                const queryText = getApiURL(result.id, apiConfig.queryType.TV)
+                fetchFromTMDB(queryText).then((data) => {
+                  setMovies([...movies, data])
+                })
+              }}
             >
-              <StyledSpan>+</StyledSpan> {movie.original_name}
+              <StyledSpan>+</StyledSpan> {result.name}
             </ResultButton>
           </Result>
         ))}

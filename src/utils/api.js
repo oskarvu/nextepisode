@@ -9,11 +9,12 @@ const {
   queryType,
 } = apiConfig
 
+//TODO: cover edge cases
 export function getApiURL(query, type) {
   switch (type) {
-    case queryType.search:
+    case queryType.SEARCH:
       return `${searchURL}${keyField}${searchFields}&query=${encodeURI(query)}`
-    case queryType.tv:
+    case queryType.TV:
       return `${tvDataURL}${query}?${keyField}${tvFields}`
     default:
       return ''

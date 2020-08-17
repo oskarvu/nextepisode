@@ -2,11 +2,11 @@ const apiBaseURL = 'https://api.themoviedb.org/3/'
 
 export default {
   queryType: {
-    search: 'search',
-    tv: 'tv',
+    SEARCH: 'search',
+    TV: 'tv',
   },
   keyField: `api_key=${process.env.REACT_APP_API_KEY}`,
-  searchURL: `${apiBaseURL}search/tv`,
+  searchURL: `${apiBaseURL}search/tv?`,
   tvDataURL: `${apiBaseURL}tv/`,
   fetchDelay: 250,
   searchFields: '&language=en-US&include-adult=false',

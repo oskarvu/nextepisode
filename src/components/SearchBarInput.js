@@ -30,16 +30,19 @@ const CloseIcon = tw(X)`
   hover:text-gray-800
 `
 
-function SearchBarInput({ setResults, setModalVisible }) {
-  const [inputText, setInputText] = useState('')
-
+function SearchBarInput({
+  setResults,
+  setModalVisible,
+  inputText,
+  setInputText,
+}) {
   useEffect(() => {
     const timeoutID = window.setTimeout(() => {
       if (!inputText) {
         setResults([])
         return
       }
-      const queryText = getApiURL(inputText, apiConfig.queryType.search)
+      const queryText = getApiURL(inputText, apiConfig.queryType.SEARCH)
       fetchFromTMDB(queryText).then((data) => {
         setResults(data.results)
       })

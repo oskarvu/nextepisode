@@ -1,14 +1,17 @@
 import React from 'react'
-import tw from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 
-const Tile = tw.div`
-  w-95 h-56
-  mt-6
-  bg-white rounded-xl
-`
+const Tile = styled.div(({ backdrop }) => [
+  tw`
+    w-95 h-56
+    mt-6
+    bg-white rounded-xl bg-cover
+  `,
+  `background-image: url("https://image.tmdb.org/t/p/w1280/${backdrop}")`,
+])
 
-function MovieTile({ title }) {
-  return <Tile>{title}</Tile>
+function MovieTile(props) {
+  return <Tile {...props}>{props.title}</Tile>
 }
 
 export default MovieTile
