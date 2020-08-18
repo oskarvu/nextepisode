@@ -56,12 +56,14 @@ function SearchBarInput({
   return (
     <InputContainer>
       <SearchIcon />
-      <CloseIcon
-        onClick={() => {
-          setModalVisible(false)
-          setInputText('')
-        }}
-      />
+      {inputText && (
+        <CloseIcon
+          onClick={() => {
+            setModalVisible(false)
+            setInputText('')
+          }}
+        />
+      )}
       <Input
         type="text"
         value={inputText}

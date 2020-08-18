@@ -24,7 +24,11 @@ export function getApiURL(query, type) {
 export async function fetchFromTMDB(apiQuery) {
   try {
     const response = await fetch(apiQuery)
-    return await response.json()
+    if (!response.ok) {
+      throw new Error(`${response.status}`)
+    } else {
+      return await response.json()
+    }
   } catch (e) {
     console.error(e)
     return []
