@@ -30,7 +30,7 @@ function SearchBar() {
       <ResultsModal
         visible={modalVisible}
         setVisible={setModalVisible}
-        setInputText={setInputText}
+        setSearchBarInputText={setInputText}
         results={results}
       />
     </Container>

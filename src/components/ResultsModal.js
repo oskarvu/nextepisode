@@ -3,6 +3,7 @@ import tw from 'twin.macro'
 import { MoviesContext } from './Main'
 import { fetchFromTMDB, getApiURL } from '../utils/api'
 import apiConfig from '../api/config'
+import PlusCircle from '../assets/icons/PlusCircle'
 
 const Modal = tw.div`
   absolute w-4/6
@@ -15,22 +16,23 @@ const Result = tw.li`
 `
 
 const ResultButton = tw.button`
-  w-full p-3 pb-4
+  w-full p-3
   rounded-full focus:outline-none
   text-gray-600 text-xl font-medium text-left
   hover:bg-gray-100 hover:text-gray-800 hover:font-bold
 `
 
-const StyledSpan = tw.span`
-  px-2 pb-1 mr-2
-  bg-gray-300 rounded-full
-  font-black
+const PlusCircleIcon = tw(PlusCircle)`
+  inline
+  w-8 h-8 mr-2 pb-1
+  text-gray-400
+  hover:text-gray-600
 `
-//TODO: rename setInputText to more reasonable
-function ResultsModal({ results, visible, setVisible, setInputText }) {
+
+function ResultsModal({ results, visible, setVisible, setSearchBarInputText }) {
   const [movies, setMovies] = useContext(MoviesContext)
 
-  // TODO: fetch new data after getting movie id
+  // todo: implement sorting with the smallest time to air
   return (
     visible && (
       <Modal visible={visible}>
@@ -40,14 +42,16 @@ function ResultsModal({ results, visible, setVisible, setInputText }) {
               <ResultButton
                 onClick={() => {
                   setVisible(false)
-                  setInputText('')
+                  setSearchBarInputText('')
                   const queryText = getApiURL(result.id, apiConfig.queryType.TV)
-                  fetchFromTMDB(queryText).then((data) => {
-                    setMovies([...movies, data])
+                  fetchFromTMDB(queryText).then((movie) => {
+                    !movies.find((m) => m.id === movie.id) &&
+                      setMovies([...movies, movie])
                   })
                 }}
               >
-                <StyledSpan>+</StyledSpan> {result.name}
+                <PlusCircleIcon />
+                {result.name}
               </ResultButton>
             </Result>
           ))}

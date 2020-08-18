@@ -67,7 +67,7 @@ function SearchBarInput({
       <Input
         type="text"
         value={inputText}
-        placeholder="Search for a movie or tv show..."
+        placeholder="Search for a movie or a tv show..."
         onKeyDown={(e) =>
           e.keyCode === 27 ? setModalVisible(false) : setModalVisible(true)
         }

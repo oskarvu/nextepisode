@@ -9,7 +9,6 @@ const {
   queryType,
 } = apiConfig
 
-//TODO: cover edge cases
 export function getApiURL(query, type) {
   switch (type) {
     case queryType.SEARCH:
