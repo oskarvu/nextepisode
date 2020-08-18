@@ -24,26 +24,18 @@ const ResultButton = tw.button`
   hover:bg-gray-100 hover:text-gray-800 hover:font-bold
 `
 
-const PlusCircleIcon = tw(PlusCircle)`
+const CircleIconBase = `
   inline
   w-8 h-8 mr-2 pb-1
   text-gray-400
   hover:text-gray-600
 `
 
-const XCircleIcon = tw(XCircle)`
-  inline
-  w-8 h-8 mr-2 pb-1
-  text-gray-400
-  hover:text-gray-600
-`
+const PlusCircleIcon = tw(PlusCircle)`${CircleIconBase}`
 
-const CheckCircleIcon = tw(CheckCircle)`
-  inline
-  w-8 h-8 mr-2 pb-1
-  text-gray-400
-  hover:text-gray-600
-`
+const XCircleIcon = tw(XCircle)`${CircleIconBase}`
+
+const CheckCircleIcon = tw(CheckCircle)`${CircleIconBase}`
 
 const SpanButton = tw.span`
   float-right
