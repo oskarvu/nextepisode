@@ -1,9 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import tw from 'twin.macro'
 import { MoviesContext } from './Main'
 import { fetchFromTMDB, getApiURL } from '../utils/api'
 import apiConfig from '../api/config'
 import PlusCircle from '../assets/icons/PlusCircle'
+import CheckCircle from '../assets/icons/CheckCircle'
+import XCircle from '../assets/icons/XCircle'
 
 const Modal = tw.div`
   absolute w-4/6
@@ -29,6 +31,50 @@ const PlusCircleIcon = tw(PlusCircle)`
   hover:text-gray-600
 `
 
+const XCircleIcon = tw(XCircle)`
+  inline
+  w-8 h-8 mr-2 pb-1
+  text-gray-400
+  hover:text-gray-600
+`
+
+const CheckCircleIcon = tw(CheckCircle)`
+  inline
+  w-8 h-8 mr-2 pb-1
+  text-gray-400
+  hover:text-gray-600
+`
+
+const SpanButton = tw.span`
+  float-right
+  py-1 px-2 rounded-full
+  text-sm
+  bg-gray-300
+`
+
+function CircleIcon({ movieId }) {
+  const [isHovered, setIsHovered] = useState(false)
+  const [movies, setMovies] = useContext(MoviesContext)
+
+  const movieOnList = movies.find((m) => m.id === movieId)
+  if (movieOnList) {
+    if (isHovered) {
+      return (
+        <XCircleIcon
+          onClick={() => {
+            setMovies(movies.filter((m) => m.id !== movieId))
+          }}
+          onMouseLeave={() => setIsHovered(false)}
+        />
+      )
+    } else {
+      return <CheckCircleIcon onMouseEnter={() => setIsHovered(true)} />
+    }
+  } else {
+    return <PlusCircleIcon />
+  }
+}
+
 function ResultsModal({ results, visible, setVisible, setSearchBarInputText }) {
   const [movies, setMovies] = useContext(MoviesContext)
 
@@ -50,8 +96,11 @@ function ResultsModal({ results, visible, setVisible, setSearchBarInputText }) {
                   })
                 }}
               >
-                <PlusCircleIcon />
+                <CircleIcon movieId={result.id} />
                 {result.name}
+                {result.first_air_date && (
+                  <SpanButton>{result.first_air_date.substr(0, 4)}</SpanButton>
+                )}
               </ResultButton>
             </Result>
           ))}
