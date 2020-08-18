@@ -14,19 +14,26 @@ const Modal = tw.div`
 `
 
 const Result = tw.li`
-  mx-6 my-1 first:mt-3 last:mb-5
+  mx-6 my-2 first:mt-3 last:mb-5
 `
 
 const ResultButton = tw.button`
-  w-full p-3
+  w-full p-3 pl-16
   rounded-full focus:outline-none
   text-gray-600 text-xl font-medium text-left
-  hover:bg-gray-100 hover:text-gray-800 hover:font-bold
+  hover:bg-gray-100 hover:text-gray-800
+`
+
+const SpannedYear = tw.span`
+  float-right
+  py-1 px-2 mr-1 rounded-full
+  text-sm
+  bg-gray-300
 `
 
 const CircleIconBase = `
-  inline
-  w-8 h-8 mr-2 pb-1
+  absolute cursor-pointer
+  w-12 h-12 ml-1 mt-1
   text-gray-400
   hover:text-gray-600
 `
@@ -36,13 +43,6 @@ const PlusCircleIcon = tw(PlusCircle)`${CircleIconBase}`
 const XCircleIcon = tw(XCircle)`${CircleIconBase}`
 
 const CheckCircleIcon = tw(CheckCircle)`${CircleIconBase}`
-
-const SpanButton = tw.span`
-  float-right
-  py-1 px-2 rounded-full
-  text-sm
-  bg-gray-300
-`
 
 function CircleIcon({ movieId }) {
   const [isHovered, setIsHovered] = useState(false)
@@ -63,7 +63,17 @@ function CircleIcon({ movieId }) {
       return <CheckCircleIcon onMouseEnter={() => setIsHovered(true)} />
     }
   } else {
-    return <PlusCircleIcon />
+    return (
+      <PlusCircleIcon
+        onClick={() => {
+          const queryText = getApiURL(movieId, apiConfig.queryType.TV)
+          fetchFromTMDB(queryText).then((movie) => {
+            !movies.find((m) => m.id === movie.id) &&
+              setMovies([...movies, movie])
+          })
+        }}
+      />
+    )
   }
 }
 
@@ -77,8 +87,10 @@ function ResultsModal({ results, visible, setVisible, setSearchBarInputText }) {
         <ul>
           {results.slice(0, 10).map((result) => (
             <Result key={result.id}>
+              <CircleIcon movieId={result.id} />
               <ResultButton
                 onClick={() => {
+                  console.log('results button clicked')
                   setVisible(false)
                   setSearchBarInputText('')
                   const queryText = getApiURL(result.id, apiConfig.queryType.TV)
@@ -88,10 +100,11 @@ function ResultsModal({ results, visible, setVisible, setSearchBarInputText }) {
                   })
                 }}
               >
-                <CircleIcon movieId={result.id} />
                 {result.name}
                 {result.first_air_date && (
-                  <SpanButton>{result.first_air_date.substr(0, 4)}</SpanButton>
+                  <SpannedYear>
+                    {result.first_air_date.substr(0, 4)}
+                  </SpannedYear>
                 )}
               </ResultButton>
             </Result>
