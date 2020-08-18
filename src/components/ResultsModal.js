@@ -1,17 +1,14 @@
 import React, { useContext } from 'react'
-import tw, { styled } from 'twin.macro'
+import tw from 'twin.macro'
 import { MoviesContext } from './Main'
 import { fetchFromTMDB, getApiURL } from '../utils/api'
 import apiConfig from '../api/config'
 
-const Modal = styled.div(({ visible }) => [
-  tw`
-    absolute w-4/6
-    bg-white
-    rounded-b-4xl
-  `,
-  visible ? tw`visible` : tw`invisible`,
-])
+const Modal = tw.div`
+  absolute w-4/6
+  bg-white
+  rounded-b-4xl
+`
 
 const Result = tw.li`
   mx-6 my-1 first:mt-3 last:mb-5
@@ -35,26 +32,28 @@ function ResultsModal({ results, visible, setVisible, setInputText }) {
 
   // TODO: fetch new data after getting movie id
   return (
-    <Modal visible={visible}>
-      <ul>
-        {results.slice(0, 10).map((result) => (
-          <Result key={result.id}>
-            <ResultButton
-              onClick={() => {
-                setVisible(false)
-                setInputText('')
-                const queryText = getApiURL(result.id, apiConfig.queryType.TV)
-                fetchFromTMDB(queryText).then((data) => {
-                  setMovies([...movies, data])
-                })
-              }}
-            >
-              <StyledSpan>+</StyledSpan> {result.name}
-            </ResultButton>
-          </Result>
-        ))}
-      </ul>
-    </Modal>
+    visible && (
+      <Modal visible={visible}>
+        <ul>
+          {results.slice(0, 10).map((result) => (
+            <Result key={result.id}>
+              <ResultButton
+                onClick={() => {
+                  setVisible(false)
+                  setInputText('')
+                  const queryText = getApiURL(result.id, apiConfig.queryType.TV)
+                  fetchFromTMDB(queryText).then((data) => {
+                    setMovies([...movies, data])
+                  })
+                }}
+              >
+                <StyledSpan>+</StyledSpan> {result.name}
+              </ResultButton>
+            </Result>
+          ))}
+        </ul>
+      </Modal>
+    )
   )
 }
 
