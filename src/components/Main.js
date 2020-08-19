@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react'
+import React, { useState, createContext, useEffect } from 'react'
 import tw from 'twin.macro'
 
 import Header from './Header'
@@ -8,11 +8,16 @@ import Footer from './Footer'
 const MainContainer = tw.div`
   bg-gray-200 min-h-screen
 `
-
 const MoviesContext = createContext([])
 
 function Main() {
-  const [movies, setMovies] = useState([])
+  const initialMovies = () => JSON.parse(localStorage.getItem('movies')) || []
+  const [movies, setMovies] = useState(initialMovies)
+
+  useEffect(() => {
+    localStorage.setItem('movies', JSON.stringify(movies))
+  }, [movies])
+
   return (
     <MainContainer>
       <MoviesContext.Provider value={[movies, setMovies]}>

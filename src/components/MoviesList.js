@@ -7,7 +7,7 @@ import tw from 'twin.macro'
 
 const List = tw.ul`
   flex flex-col
-  m-auto w-4/6
+  m-auto w-7/12
   items-center
 `
 
@@ -19,7 +19,7 @@ function MoviesList() {
   return (
     <List>
       {movies.map((m) => (
-        <MovieTile key={m.id} title={m.name} backdrop={m.backdrop_path} />
+        <MovieTile key={m.id} movie={m} />
       ))}
     </List>
   )

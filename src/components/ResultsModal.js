@@ -11,6 +11,7 @@ const Modal = tw.div`
   absolute w-4/6
   bg-white
   rounded-b-4xl
+  z-10
 `
 
 const Result = tw.li`
