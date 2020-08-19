@@ -17,14 +17,21 @@ const Tile = styled.div(({ backdrop }) => [
 ])
 
 const LeftContainer = tw.div`
-    w-1/2 h-full pb-8 pt-5 px-5 flex justify-center items-center
+    w-1/2 h-full pb-8 pt-5 px-5 relative flex flex-col justify-center items-center
   `
 
 const Countdown = tw.div`
   flex justify-center items-center
   w-28 h-28 rounded-full
-  bg-gray-700 bg-opacity-75 shadow-2xl
+  bg-gray-800 bg-opacity-80 shadow-md
   text-white font-thin text-6xl pb-2
+`
+
+const Unit = tw.div`
+  absolute bottom-0 flex justify-center items-center
+  px-2 mb-8
+  bg-gray-400 bg-opacity-75 rounded-full shadow-md
+  text-gray-800 font-bold text-sm tracking-wider uppercase
 `
 
 const RightContainer = tw.div`
@@ -36,7 +43,7 @@ const RightContainer = tw.div`
 const Details = tw.div`
   relative inline-flex justify-between flex-col
   h-full p-3 pt-1
-  bg-white shadow-2xl
+  bg-white shadow-lg
 `
 
 const MovieName = tw.h1`
@@ -91,6 +98,7 @@ function MovieTile({ movie }) {
     <Tile backdrop={backdrop}>
       <LeftContainer>
         <Countdown>12</Countdown>
+        <Unit>days left</Unit>
       </LeftContainer>
       <RightContainer>
         <Details>
