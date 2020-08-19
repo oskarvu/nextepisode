@@ -14,6 +14,8 @@ const List = tw.ul`
 function MoviesList() {
   const [movies, setMovies] = useContext(MoviesContext)
 
+  //todo: if there is no background, use default one
+
   return (
     <List>
       {movies.map((m) => (

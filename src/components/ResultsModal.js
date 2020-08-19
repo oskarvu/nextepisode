@@ -71,6 +71,7 @@ function CircleIcon({ movieId }) {
             !movies.find((m) => m.id === movie.id) &&
               setMovies([...movies, movie])
           })
+          setIsHovered(true)
         }}
       />
     )
@@ -90,7 +91,6 @@ function ResultsModal({ results, visible, setVisible, setSearchBarInputText }) {
               <CircleIcon movieId={result.id} />
               <ResultButton
                 onClick={() => {
-                  console.log('results button clicked')
                   setVisible(false)
                   setSearchBarInputText('')
                   const queryText = getApiURL(result.id, apiConfig.queryType.TV)
