@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import tw, { styled } from 'twin.macro'
 
 import Trash from '../assets/icons/Trash'
+import { MoviesContext } from './Main'
 
 const Tile = styled.div(({ backdrop }) => [
   tw`
@@ -17,12 +18,13 @@ const Tile = styled.div(({ backdrop }) => [
 
 const LeftContainer = tw.div`
     w-1/2 h-full pb-8 pt-5 px-5 flex justify-center items-center
-    text-white text-center text-4xl font-semibold leading-tight
   `
 
-const InfoRibbon = tw.div`
-  flex justify-between
-  w-full h-16 text-white
+const Countdown = tw.div`
+  flex justify-center items-center
+  w-28 h-28 rounded-full
+  bg-gray-700 bg-opacity-75 shadow-2xl
+  text-white font-thin text-6xl pb-2
 `
 
 const RightContainer = tw.div`
@@ -63,6 +65,8 @@ const TrashIcon = tw(Trash)`
 
 //todo: dynamically change font size depending on number of words
 function MovieTile({ movie }) {
+  const [movies, setMovies] = useContext(MoviesContext)
+
   const movieInfo = {
     backdrop: movie.backdrop_path,
     name: movie.name,
@@ -70,6 +74,7 @@ function MovieTile({ movie }) {
     nextEpisode: movie.next_episode_to_air,
     inProduction: movie.in_production,
     status: movie.status,
+    movieId: movie.id,
   }
 
   const {
@@ -79,16 +84,13 @@ function MovieTile({ movie }) {
     nextEpisode,
     inProduction,
     status,
+    movieId,
   } = movieInfo
 
   return (
     <Tile backdrop={backdrop}>
       <LeftContainer>
-        <InfoRibbon>
-          <div>next</div>
-          <div>5</div>
-          <div>s01e02</div>
-        </InfoRibbon>
+        <Countdown>12</Countdown>
       </LeftContainer>
       <RightContainer>
         <Details>
@@ -104,13 +106,18 @@ function MovieTile({ movie }) {
               <tr>
                 <Td>last aired</Td>
                 <Td>
-                  s{lastEpisode.season_number}e{lastEpisode.episode_number}
+                  s{lastEpisode.season_number.toString().padStart(2, '0')}e
+                  {lastEpisode.episode_number.toString().padStart(2, '0')}
                 </Td>
                 <Td>{lastEpisode.air_date}</Td>
               </tr>
             </tbody>
           </table>
-          <TrashIcon />
+          <TrashIcon
+            onClick={() => {
+              setMovies(movies.filter((m) => m.id !== movieId))
+            }}
+          />
         </Details>
       </RightContainer>
     </Tile>
