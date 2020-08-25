@@ -5,7 +5,7 @@ import { MoviesContext, MoviesContextShape } from "./Main";
 
 import { getApiURL, fetchFromTMDB, parseToMovie } from "../utils/api";
 import apiConfig from "../api/config";
-import { SearchResult } from "../api/interfaces";
+import { SearchResult } from "../api/types";
 
 import PlusCircle from "../assets/icons/PlusCircle";
 import CheckCircle from "../assets/icons/CheckCircle";
@@ -94,6 +94,7 @@ interface ResultsModalProps {
   setSearchBarInputText: React.Dispatch<React.SetStateAction<string>>;
 }
 
+// todo: make something with event handlers
 export default function ResultsModal({
   results,
   visible,
@@ -116,7 +117,7 @@ export default function ResultsModal({
                 const queryText = getApiURL(result.id, apiConfig.queryType.TV);
                 fetchFromTMDB(queryText).then((movie) => {
                   !movies.find((m) => m.id === movie.id) &&
-                    setMovies([...movies, movie]);
+                    setMovies([...movies, parseToMovie(movie)]);
                 });
               }}
             >

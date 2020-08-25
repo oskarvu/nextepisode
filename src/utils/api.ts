@@ -1,22 +1,15 @@
 import apiConfig from "../api/config";
-import { Movie, SearchResult } from "../api/interfaces";
+import { ApiQueryType, Movie, SearchResult } from "../api/types";
 
-const {
-  keyField,
-  searchURL,
-  tvDataURL,
-  searchFields,
-  tvFields,
-  queryType,
-} = apiConfig;
+const { keyField, searchURL, tvDataURL, searchFields, tvFields } = apiConfig;
 
-export function getApiURL(query: string | number, type: string): any {
+export function getApiURL(query: string | number, type: ApiQueryType): any {
   switch (type) {
-    case queryType.SEARCH:
+    case ApiQueryType.Search:
       return `${searchURL}${keyField}${searchFields}&query=${encodeURI(
         query as string
       )}`;
-    case queryType.TV:
+    case ApiQueryType.TV:
       return `${tvDataURL}${query}?${keyField}${tvFields}`;
     default:
       return "";

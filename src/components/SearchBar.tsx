@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import tw from "twin.macro";
 
-import { SearchResult } from "../api/interfaces";
+import { SearchResult } from "../api/types";
 
 import ResultsModal from "./ResultsModal";
 import SearchBarInput from "./SearchBarInput";

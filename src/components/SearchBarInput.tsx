@@ -3,7 +3,7 @@ import tw from "twin.macro";
 
 import { fetchFromTMDB, getApiURL, parseSearchResult } from "../utils/api";
 import apiConfig from "../api/config";
-import { SearchResult } from "../api/interfaces";
+import { SearchResult } from "../api/types";
 
 import Search from "../assets/icons/Search";
 import X from "../assets/icons/X";

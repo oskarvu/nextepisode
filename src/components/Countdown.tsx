@@ -1,7 +1,7 @@
 import React from "react";
 import tw from "twin.macro";
 
-import { Episode } from "../api/interfaces";
+import { Episode } from "../api/types";
 
 import Check from "../assets/icons/Check";
 

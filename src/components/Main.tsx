@@ -1,7 +1,7 @@
 import React, { useState, createContext, useEffect } from "react";
 import tw from "twin.macro";
 
-import { Movie } from "../api/interfaces";
+import { Movie } from "../api/types";
 
 import Header from "./Header";
 import MoviesList from "./MoviesList";

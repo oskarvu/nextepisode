@@ -21,3 +21,17 @@ export interface SearchResult {
   firstAirDate: string;
   id: number;
 }
+
+export enum Status {
+  Rumored = "RUMORED",
+  Planned = "PLANNED",
+  InProduction = "IN_PRODUCTION",
+  PostProduction = "POST_PRODUCTION",
+  Released = "RELEASED",
+  Cancelled = "CANCELLED",
+}
+
+export enum ApiQueryType {
+  Search = "SEARCH",
+  TV = "TV",
+}

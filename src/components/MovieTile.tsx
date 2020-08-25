@@ -4,8 +4,9 @@ import tw, { styled } from "twin.macro";
 import Trash from "../assets/icons/Trash";
 import Countdown from "./Countdown";
 import { MoviesContext, MoviesContextShape } from "./Main";
-import { Movie } from "../api/interfaces";
+import { Movie } from "../api/types";
 
+// todo: default backdrop if backdrop is null
 const Tile = styled.div(({ backdrop }: { backdrop: string | null }) => [
   tw`
     flex justify-between
@@ -59,6 +60,7 @@ const TrashIcon = tw(Trash)`
 `;
 
 //todo: dynamically change font size depending on number of words
+//todo: check all statuses of series
 
 interface Props {
   movie: Movie;
