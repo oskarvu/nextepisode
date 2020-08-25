@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import tw from 'twin.macro'
-import Search from '../assets/icons/Search'
-import X from '../assets/icons/X'
-import { fetchFromTMDB, getApiURL } from '../utils/api'
-import apiConfig from '../api/config'
+import React, { useEffect, useState } from "react";
+import tw from "twin.macro";
+
+import { fetchFromTMDB, getApiURL, parseSearchResult } from "../utils/api";
+import apiConfig from "../api/config";
+import { SearchResult } from "../api/interfaces";
+
+import Search from "../assets/icons/Search";
+import X from "../assets/icons/X";
 
 const InputContainer = tw.div`
   relative
-`
+`;
 
 const Input = tw.input`
   w-95 h-12
@@ -15,43 +18,51 @@ const Input = tw.input`
   rounded-full outline-none bg-gray-200
   text-gray-700 placeholder-gray-400
   leading-6 text-lg font-medium tracking-wide
-`
+`;
 
 const SearchIcon = tw(Search)`
   absolute
   w-8 h-8 ml-8 mt-6
   text-gray-500
-`
+`;
 
 const CloseIcon = tw(X)`
   absolute
   right-0 mr-8 mt-6 w-8 h-8
   text-gray-500 cursor-pointer
   hover:text-gray-800
-`
+`;
+
+interface Props {
+  setResults: React.Dispatch<React.SetStateAction<SearchResult[]>>;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  inputText: string;
+  setInputText: React.Dispatch<React.SetStateAction<string>>;
+}
 
 function SearchBarInput({
   setResults,
   setModalVisible,
   inputText,
   setInputText,
-}) {
+}: Props) {
   useEffect(() => {
     const timeoutID = window.setTimeout(() => {
       if (!inputText) {
-        setResults([])
-        return
+        setResults([]);
+        return;
       }
-      const queryText = getApiURL(inputText, apiConfig.queryType.SEARCH)
+      const queryText = getApiURL(inputText, apiConfig.queryType.SEARCH);
       fetchFromTMDB(queryText).then((data) => {
-        setResults(data.results)
-      })
-    }, apiConfig.fetchDelay)
+        const translated = parseSearchResult(data.results);
+        setResults(translated);
+      });
+    }, apiConfig.fetchDelay);
 
     return () => {
-      clearTimeout(timeoutID)
-    }
-  }, [inputText, setResults])
+      clearTimeout(timeoutID);
+    };
+  }, [inputText, setResults]);
 
   return (
     <InputContainer>
@@ -59,8 +70,8 @@ function SearchBarInput({
       {inputText && (
         <CloseIcon
           onClick={() => {
-            setModalVisible(false)
-            setInputText('')
+            setModalVisible(false);
+            setInputText("");
           }}
         />
       )}
@@ -73,12 +84,12 @@ function SearchBarInput({
         }
         onClick={() => setModalVisible(true)}
         onFocus={() => {
-          setModalVisible(true)
+          setModalVisible(true);
         }}
         onChange={(event) => setInputText(event.target.value)}
       />
     </InputContainer>
-  )
+  );
 }
 
-export default SearchBarInput
+export default SearchBarInput;

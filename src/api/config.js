@@ -8,7 +8,7 @@ export default {
   keyField: `api_key=${process.env.REACT_APP_API_KEY}`,
   searchURL: `${apiBaseURL}search/tv?`,
   tvDataURL: `${apiBaseURL}tv/`,
-  fetchDelay: 250,
+  fetchDelay: 200,
   searchFields: '&language=en-US&include-adult=false',
   tvFields: '&language=en-US',
 }
