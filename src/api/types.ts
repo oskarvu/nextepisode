@@ -23,15 +23,16 @@ export interface SearchResult {
 }
 
 export enum Status {
-  Rumored = "RUMORED",
-  Planned = "PLANNED",
-  InProduction = "IN_PRODUCTION",
-  PostProduction = "POST_PRODUCTION",
-  Released = "RELEASED",
-  Cancelled = "CANCELLED",
+  Rumored = "rumored",
+  Planned = "planned",
+  InProduction = "in production",
+  PostProduction = "post production",
+  Released = "released",
+  Cancelled = "cancelled",
+  ReturningSeries = "returning series",
 }
 
 export enum ApiQueryType {
-  Search = "SEARCH",
-  TV = "TV",
+  Search = "search",
+  TV = "tv",
 }

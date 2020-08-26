@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import tw from "twin.macro";
 
 import { fetchFromTMDB, getApiURL, parseSearchResult } from "../utils/api";
 import apiConfig from "../api/config";
-import { SearchResult } from "../api/types";
+import { ApiQueryType, SearchResult } from "../api/types";
 
 import Search from "../assets/icons/Search";
 import X from "../assets/icons/X";
@@ -52,7 +52,7 @@ function SearchBarInput({
         setResults([]);
         return;
       }
-      const queryText = getApiURL(inputText, apiConfig.queryType.SEARCH);
+      const queryText = getApiURL(inputText, ApiQueryType.Search);
       fetchFromTMDB(queryText).then((data) => {
         const translated = parseSearchResult(data.results);
         setResults(translated);
@@ -80,7 +80,9 @@ function SearchBarInput({
         value={inputText}
         placeholder="Search for a movie or a tv show..."
         onKeyDown={(e) =>
-          e.keyCode === 27 ? setModalVisible(false) : setModalVisible(true)
+          e.key === "Escape" || e.key === "Esc"
+            ? setModalVisible(false)
+            : setModalVisible(true)
         }
         onClick={() => setModalVisible(true)}
         onFocus={() => {

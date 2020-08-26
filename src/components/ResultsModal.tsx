@@ -3,9 +3,8 @@ import tw from "twin.macro";
 
 import { MoviesContext, MoviesContextShape } from "./Main";
 
-import { getApiURL, fetchFromTMDB, parseToMovie } from "../utils/api";
-import apiConfig from "../api/config";
-import { SearchResult } from "../api/types";
+import { fetchFromTMDB, getApiURL, parseToMovie } from "../utils/api";
+import { ApiQueryType, SearchResult } from "../api/types";
 
 import PlusCircle from "../assets/icons/PlusCircle";
 import CheckCircle from "../assets/icons/CheckCircle";
@@ -75,7 +74,7 @@ function CircleIcon({ movieId }: CircleIconProps) {
     return (
       <PlusCircleIcon
         onClick={() => {
-          const queryText = getApiURL(movieId, apiConfig.queryType.TV);
+          const queryText = getApiURL(movieId, ApiQueryType.TV);
           fetchFromTMDB(queryText).then((movie) => {
             !movies.find((m) => m.id === movie.id) &&
               setMovies([...movies, parseToMovie(movie)]);
@@ -114,7 +113,7 @@ export default function ResultsModal({
               onClick={() => {
                 setVisible(false);
                 setSearchBarInputText("");
-                const queryText = getApiURL(result.id, apiConfig.queryType.TV);
+                const queryText = getApiURL(result.id, ApiQueryType.TV);
                 fetchFromTMDB(queryText).then((movie) => {
                   !movies.find((m) => m.id === movie.id) &&
                     setMovies([...movies, parseToMovie(movie)]);
