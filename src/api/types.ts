@@ -11,7 +11,7 @@ export interface Movie {
   id: number;
   backdrop: string | null;
   inProduction: boolean;
-  lastAirDate: string;
+  lastAirDate: string | null;
   lastEpisode: Episode | null;
   nextEpisode: Episode | null;
 }

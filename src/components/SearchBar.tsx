@@ -8,7 +8,7 @@ import SearchBarInput from "./SearchBarInput";
 import useHideWhenClickedOutside from "../hooks/useHideWhenClickedOutside";
 
 const Container = tw.div`
-  w-4/6
+  w-full md:w-10/12 lg:w-9/12 xl:w-7/12
   text-center
 `;
 

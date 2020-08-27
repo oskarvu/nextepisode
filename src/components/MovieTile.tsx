@@ -1,23 +1,25 @@
 import React, { useContext } from "react";
 import tw, { styled } from "twin.macro";
 
-import Trash from "../assets/icons/Trash";
-import Countdown from "./Countdown";
 import { MoviesContext, MoviesContextShape } from "./Main";
 import { Movie } from "../api/types";
+
+import Countdown from "./Countdown";
 import MovieDetailsCard from "./MovieDetailsCard";
 
 // todo: default backdrop if backdrop is null
 const Tile = styled.div(({ backdrop }: { backdrop: string | null }) => [
   tw`
     flex justify-between
-    w-95 h-56 mt-6
+    w-full h-56 first:mt-5 mt-4
     rounded-4xl
     overflow-hidden
     bg-cover bg-center
   `,
   `box-shadow: inset 0 0 20px 0 rgba(0,0,0,0.5);`,
-  `background-image: url("https://image.tmdb.org/t/p/w1280/${backdrop}");`,
+  backdrop
+    ? `background-image: url("https://image.tmdb.org/t/p/w1280/${backdrop}");`
+    : tw`bg-gray-600`,
 ]);
 
 const LeftContainer = tw.div`
@@ -32,12 +34,7 @@ const RightContainer = tw.div`
 
 //todo: dynamically change font size depending on number of words
 //todo: check all statuses of series
-
-interface Props {
-  movie: Movie;
-}
-
-function MovieTile({ movie }: Props) {
+function MovieTile({ movie }: { movie: Movie }) {
   const { movies, setMovies } = useContext<MoviesContextShape>(MoviesContext);
 
   return (

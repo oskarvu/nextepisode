@@ -13,7 +13,7 @@ const InputContainer = tw.div`
 `;
 
 const Input = tw.input`
-  w-95 h-12
+  h-12 w-full
   px-6 pb-1 pl-12 my-4
   rounded-full outline-none bg-gray-200
   text-gray-700 placeholder-gray-400
@@ -22,7 +22,8 @@ const Input = tw.input`
 
 const SearchIcon = tw(Search)`
   absolute
-  w-8 h-8 ml-8 mt-6
+  w-8 h-8
+  ml-3 mt-6
   text-gray-500
 `;
 

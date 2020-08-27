@@ -21,7 +21,7 @@ const InfoBadge = tw.div`
   text-xs uppercase font-bold text-gray-600 tracking-wider
 `;
 
-const Td = tw.td`
+const Cell = tw.td`
   px-3 py-2
   border border-gray-300 border-4 
   uppercase text-sm font-bold text-gray-600 tracking-wider
@@ -50,12 +50,12 @@ export default function MovieDetailsCard({ movie, movies, setMovies }: Props) {
       <table>
         <tbody>
           <tr>
-            <Td>last aired</Td>
-            <Td>
+            <Cell>last aired</Cell>
+            <Cell>
               s{movie.lastEpisode?.season.toString().padStart(2, "0")}e
               {movie.lastEpisode?.episode.toString().padStart(2, "0")}
-            </Td>
-            <Td>{movie.lastEpisode?.airDate}</Td>
+            </Cell>
+            <Cell>{movie.lastEpisode?.airDate}</Cell>
           </tr>
         </tbody>
       </table>
