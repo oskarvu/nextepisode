@@ -27,7 +27,6 @@ function SearchBar() {
   useEffect(() => {
     if (searchBarRef.current) {
       setModalMaxHeight(windowInnerHeight - searchBarRef.current.offsetHeight);
-      console.log("renders");
     }
   }, [searchBarRef, windowInnerHeight]);
 

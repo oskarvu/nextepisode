@@ -15,8 +15,7 @@ const Modal = styled.div(({ maxHeight }: { maxHeight: number }) => [
     absolute z-10 overflow-y-auto
     w-full md:w-10/12 lg:w-9/12 xl:w-7/12
     ml-auto
-    bg-white
-    rounded-b-4xl
+    bg-white rounded-b-4xl shadow-lg
   `,
   `max-height: ${maxHeight}px`,
 ]);
