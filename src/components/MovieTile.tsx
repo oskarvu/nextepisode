@@ -11,7 +11,7 @@ import MovieDetailsCard from "./MovieDetailsCard";
 const Tile = styled.div(({ backdrop }: { backdrop: string | null }) => [
   tw`
     flex justify-between
-    w-full h-56 first:mt-5 mt-4
+    w-full h-56 mt-2 first:mt-4 sm:first:mt-5
     rounded-4xl
     overflow-hidden
     bg-cover bg-center

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import tw from "twin.macro";
+import tw, { styled } from "twin.macro";
 
 import { MoviesContext, MoviesContextShape } from "./Main";
 
@@ -10,15 +10,21 @@ import PlusCircle from "../assets/icons/PlusCircle";
 import CheckCircle from "../assets/icons/CheckCircle";
 import XCircle from "../assets/icons/XCircle";
 
-const Modal = tw.div`
-  absolute w-4/6
+const Modal = styled.div(({ maxHeight }: { maxHeight: number }) => [
+  tw`
+    absolute z-10 overflow-y-scroll
+  w-full md:w-10/12 lg:w-9/12 xl:w-7/12
+  ml-auto
   bg-white
   rounded-b-4xl
-  z-10
-`;
+  `,
+  `max-height: ${maxHeight}px`,
+]);
+
+//max-h-screen overflow-y-scroll
 
 const Result = tw.li`
-  mx-6 my-2 first:mt-3 last:mb-5
+  mx-4 my-2 first:mt-3 last:mb-5
 `;
 
 const ResultButton = tw.button`
@@ -89,6 +95,7 @@ function CircleIcon({ movieId }: CircleIconProps) {
 interface ResultsModalProps {
   results: SearchResult[];
   visible: boolean;
+  maxHeight: number;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setSearchBarInputText: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -98,13 +105,14 @@ export default function ResultsModal({
   results,
   visible,
   setVisible,
+  maxHeight,
   setSearchBarInputText,
 }: ResultsModalProps) {
   const { movies, setMovies } = useContext<MoviesContextShape>(MoviesContext);
 
   // todo: implement sorting with the smallest time to air
   return visible ? (
-    <Modal>
+    <Modal maxHeight={maxHeight}>
       <ul>
         {results.slice(0, 10).map((result) => (
           <Result key={result.id}>

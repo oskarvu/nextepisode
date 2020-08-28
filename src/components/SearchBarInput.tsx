@@ -9,7 +9,7 @@ import Search from "../assets/icons/Search";
 import X from "../assets/icons/X";
 
 const InputContainer = tw.div`
-  relative
+  relative px-4
 `;
 
 const Input = tw.input`
@@ -29,7 +29,7 @@ const SearchIcon = tw(Search)`
 
 const CloseIcon = tw(X)`
   absolute
-  right-0 mr-8 mt-6 w-8 h-8
+  right-0 mr-6 mt-6 w-8 h-8
   text-gray-500 cursor-pointer
   hover:text-gray-800
 `;

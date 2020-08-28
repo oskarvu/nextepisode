@@ -8,7 +8,8 @@ import MoviesList from "./MoviesList";
 import Footer from "./Footer";
 
 const MainContainer = tw.div`
-  bg-gray-200 min-h-screen
+  min-h-screen
+  bg-gray-200
 `;
 
 export interface MoviesContextShape {

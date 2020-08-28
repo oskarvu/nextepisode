@@ -3,18 +3,20 @@ import tw from "twin.macro";
 
 import SearchBar from "./SearchBar";
 
-const StyledHeader = tw.header`
+const Container = tw.header`
+  sticky top-0 z-10
+  w-full
   flex items-baseline justify-center
   bg-white
 `;
 
 function Header() {
   return (
-    <StyledHeader>
+    <Container>
       {/*<span tw="w-0">logo</span>*/}
       <SearchBar />
       {/*<span tw="w-0">theme</span>*/}
-    </StyledHeader>
+    </Container>
   );
 }
 
