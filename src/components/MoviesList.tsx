@@ -6,10 +6,8 @@ import MovieTile from "./MovieTile";
 import tw from "twin.macro";
 
 const List = tw.ul`
-  flex flex-col
   w-full md:w-10/12 lg:w-9/12 xl:w-7/12
   m-auto px-4
-  items-center
 `;
 
 function MoviesList() {

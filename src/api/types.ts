@@ -30,6 +30,7 @@ export enum Status {
   Released = "released",
   Cancelled = "cancelled",
   ReturningSeries = "returning series",
+  Ended = "ended",
 }
 
 export enum ApiQueryType {

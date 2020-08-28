@@ -10,11 +10,10 @@ import MovieDetailsCard from "./MovieDetailsCard";
 // todo: default backdrop if backdrop is null
 const Tile = styled.div(({ backdrop }: { backdrop: string | null }) => [
   tw`
-    flex justify-between
-    w-full h-56 mt-2 first:mt-4 sm:first:mt-5
-    rounded-4xl
-    overflow-hidden
-    bg-cover bg-center
+    flex flex-col sm:flex-row
+    w-full h-auto sm:h-56 mt-2
+    first:mt-4
+    rounded-4xl overflow-hidden bg-cover bg-center
   `,
   `box-shadow: inset 0 0 20px 0 rgba(0,0,0,0.5);`,
   backdrop
@@ -22,14 +21,16 @@ const Tile = styled.div(({ backdrop }: { backdrop: string | null }) => [
     : tw`bg-gray-600`,
 ]);
 
-const LeftContainer = tw.div`
-    w-1/2 h-full pb-8 pt-5 px-5 relative flex flex-col justify-center items-center
+const StartContainer = tw.div`
+    flex justify-center
+    w-full sm:w-1/2 sm:h-full
+    px-4 pt-4 pb-3 sm:p-5
   `;
 
-const RightContainer = tw.div`
+const EndContainer = tw.div`
   flex justify-end
-  w-1/2 h-full
-  py-5 pr-6
+  w-full sm:w-1/2 sm:h-full
+  p-4 pt-0 sm:p-5
 `;
 
 //todo: dynamically change font size depending on number of words
@@ -39,12 +40,12 @@ function MovieTile({ movie }: { movie: Movie }) {
 
   return (
     <Tile backdrop={movie.backdrop}>
-      <LeftContainer>
+      <StartContainer>
         <Countdown nextEpisode={movie.nextEpisode} status={movie.status} />
-      </LeftContainer>
-      <RightContainer>
+      </StartContainer>
+      <EndContainer>
         <MovieDetailsCard movie={movie} movies={movies} setMovies={setMovies} />
-      </RightContainer>
+      </EndContainer>
     </Tile>
   );
 }

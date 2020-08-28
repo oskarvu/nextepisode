@@ -12,11 +12,11 @@ import XCircle from "../assets/icons/XCircle";
 
 const Modal = styled.div(({ maxHeight }: { maxHeight: number }) => [
   tw`
-    absolute z-10 overflow-y-scroll
-  w-full md:w-10/12 lg:w-9/12 xl:w-7/12
-  ml-auto
-  bg-white
-  rounded-b-4xl
+    absolute z-10 overflow-y-auto
+    w-full md:w-10/12 lg:w-9/12 xl:w-7/12
+    ml-auto
+    bg-white
+    rounded-b-4xl
   `,
   `max-height: ${maxHeight}px`,
 ]);

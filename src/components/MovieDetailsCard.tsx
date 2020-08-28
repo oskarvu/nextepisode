@@ -5,13 +5,13 @@ import { Movie } from "../api/types";
 
 const Details = tw.div`
   relative inline-flex justify-between flex-col
-  h-full p-3 pt-1
+  w-full sm:w-auto h-full p-3 pt-1
   bg-white shadow-lg
 `;
 
 const MovieName = tw.h1`
   ml-1 my-1
-  text-3xl font-bold text-gray-700 leading-tight
+  text-2xl sm:text-3xl font-bold text-gray-700 leading-tight
 `;
 
 const InfoBadge = tw.div`
@@ -47,7 +47,7 @@ export default function MovieDetailsCard({ movie, movies, setMovies }: Props) {
         <InfoBadge>{movie.status}</InfoBadge>
         {movie.inProduction && <InfoBadge>in production</InfoBadge>}
       </div>
-      <table>
+      <table tw="hidden sm:block">
         <tbody>
           <tr>
             <Cell>last aired</Cell>
