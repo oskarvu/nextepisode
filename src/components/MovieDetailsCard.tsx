@@ -10,8 +10,9 @@ const Details = tw.div`
 `;
 
 const MovieName = tw.h1`
-  ml-1 my-1
-  text-2xl sm:text-3xl font-bold text-gray-700 leading-tight
+  w-92
+  ml-1 my-1 mb-2
+  text-2xl sm:text-3xl font-bold text-gray-700 leading-none
 `;
 
 const InfoBadge = tw.div`
@@ -33,13 +34,23 @@ const TrashIcon = tw(Trash)`
   cursor-pointer text-gray-500 hover:text-gray-700
 `;
 
+const Table = tw.table`
+  hidden sm:block
+`;
+
 interface Props {
   movie: Movie;
   movies: Movie[];
   setMovies: React.Dispatch<React.SetStateAction<Movie[]>>;
 }
 
+// todo: take into account series that are not yet aired
+// todo: tidy up component data distribution
 export default function MovieDetailsCard({ movie, movies, setMovies }: Props) {
+  function handleTrashIconClick() {
+    setMovies(movies.filter((m) => m.id !== movie.id));
+  }
+
   return (
     <Details>
       <div>
@@ -47,7 +58,7 @@ export default function MovieDetailsCard({ movie, movies, setMovies }: Props) {
         <InfoBadge>{movie.status}</InfoBadge>
         {movie.inProduction && <InfoBadge>in production</InfoBadge>}
       </div>
-      <table tw="hidden sm:block">
+      <Table>
         <tbody>
           <tr>
             <Cell>last aired</Cell>
@@ -58,12 +69,8 @@ export default function MovieDetailsCard({ movie, movies, setMovies }: Props) {
             <Cell>{movie.lastEpisode?.airDate}</Cell>
           </tr>
         </tbody>
-      </table>
-      <TrashIcon
-        onClick={() => {
-          setMovies(movies.filter((m) => m.id !== movie.id));
-        }}
-      />
+      </Table>
+      <TrashIcon onClick={handleTrashIconClick} />
     </Details>
   );
 }

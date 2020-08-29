@@ -33,6 +33,14 @@ export enum Status {
   Ended = "ended",
 }
 
+export enum CounterFollow {
+  dayLeft = "day left",
+  daysLeft = "days left",
+  monthLeft = "month left",
+  monthsLeft = "months left",
+  noInfo = "no info yet",
+}
+
 export enum ApiQueryType {
   Search = "search",
   TV = "tv",
