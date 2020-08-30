@@ -100,6 +100,7 @@ interface ResultsModalProps {
 }
 
 // todo: make something with event handlers
+// todo: focus on already existing element on list if clicked
 export default function ResultsModal({
   results,
   visible,
@@ -109,7 +110,7 @@ export default function ResultsModal({
 }: ResultsModalProps) {
   const { movies, setMovies } = useContext<MoviesContextShape>(MoviesContext)
 
-  // todo: implement sorting with the smallest time to air
+  // todo: implement sorting
   return visible ? (
     <Modal maxHeight={maxHeight}>
       <ul>
@@ -123,7 +124,7 @@ export default function ResultsModal({
                 const queryText = getApiURL(result.id, ApiQueryType.TV)
                 fetchFromTMDB(queryText).then((movie) => {
                   !movies.find((m) => m.id === movie.id) &&
-                    setMovies([...movies, parseToMovie(movie)])
+                    setMovies([parseToMovie(movie), ...movies])
                 })
               }}
             >

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import tw, { styled } from 'twin.macro'
 
 import { MoviesContext, MoviesContextShape } from './Main'
@@ -16,9 +16,7 @@ const Tile = styled.div(({ backdrop }: { backdrop: string | null }) => [
     rounded-4xl overflow-hidden bg-cover bg-center
   `,
   `box-shadow: inset 0 0 10px 0 rgba(0,0,0,0.3);`,
-  backdrop
-    ? `background-image: url("https://image.tmdb.org/t/p/w1280/${backdrop}");`
-    : tw`bg-gray-600`,
+  `background-image: url("https://image.tmdb.org/t/p/w1280/${backdrop}");`,
 ])
 
 const StartContainer = tw.div`
@@ -33,11 +31,40 @@ const EndContainer = tw.div`
   p-4 pt-0 sm:p-5 sm:pl-0
 `
 
-function MovieTile({ movie }: { movie: Movie }) {
-  const { movies, setMovies } = useContext<MoviesContextShape>(MoviesContext)
+export const SuspenseTile = tw.div`
+  flex flex-col sm:flex-row
+  w-full xxl:w-49/100 xxxl:w-32/100 h-auto sm:h-56
+  mt-2 xxl:mr-2
+  bg-gray-400 rounded-4xl overflow-hidden
+`
 
-  return (
-    <Tile backdrop={movie.backdrop}>
+export default function MovieTile({ movie }: { movie: Movie }) {
+  const { movies, setMovies } = useContext<MoviesContextShape>(MoviesContext)
+  const [backdrop, setBackdrop] = useState<string | null>(
+    'rqHL4HsLCix9H6vhCwAuSOge0NS.jpg'
+  )
+  const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false)
+
+  useEffect(() => {
+    if (!movie.backdrop) {
+      setIsBackgroundLoaded(true)
+      return
+    }
+    const imageUrl = `https://image.tmdb.org/t/p/w1280/${movie.backdrop}`
+    const preloadedImg: HTMLImageElement = document.createElement('img')
+    preloadedImg.src = imageUrl
+
+    preloadedImg.addEventListener('load', () => {
+      window.setTimeout(() => {
+        setBackdrop(movie.backdrop)
+        setIsBackgroundLoaded(true)
+      }, 1000)
+      // setBackdrop(movie.backdrop)
+    })
+  }, [movie])
+
+  return isBackgroundLoaded ? (
+    <Tile backdrop={backdrop}>
       <StartContainer>
         <Countdown nextEpisode={movie.nextEpisode} status={movie.status} />
       </StartContainer>
@@ -45,7 +72,7 @@ function MovieTile({ movie }: { movie: Movie }) {
         <MovieDetailsCard movie={movie} movies={movies} setMovies={setMovies} />
       </EndContainer>
     </Tile>
+  ) : (
+    <SuspenseTile>test</SuspenseTile>
   )
 }
-
-export default MovieTile

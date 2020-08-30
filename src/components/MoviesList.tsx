@@ -1,9 +1,8 @@
 import React, { useContext } from 'react'
+import tw from 'twin.macro'
 
-import 'twin.macro'
 import { MoviesContext, MoviesContextShape } from './Main'
 import MovieTile from './MovieTile'
-import tw from 'twin.macro'
 
 const List = tw.ul`
   flex flex-wrap justify-start
