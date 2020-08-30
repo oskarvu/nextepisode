@@ -12,7 +12,7 @@ const Details = tw.div`
 
 const MovieName = styled.h1(({ letters }: { letters: number }) => [
   tw`
-    w-92
+    w-92/100
     ml-1 my-1 mb-2
     text-2xl sm:text-3xl font-bold text-gray-700 leading-tight
   `,
@@ -28,20 +28,10 @@ const InfoBadge = tw.div`
   text-xs uppercase font-bold text-gray-600 tracking-wider
 `
 
-const Cell = tw.td`
-  px-3 py-2
-  border border-gray-300 border-4 
-  uppercase text-sm font-bold text-gray-600 tracking-wider
-`
-
 const TrashIcon = tw(Trash)`
   absolute right-0
   w-8 h-8 p-1
   cursor-pointer text-gray-500 hover:text-gray-700
-`
-
-const Table = tw.table`
-  hidden sm:block w-full
 `
 
 interface Props {
@@ -50,8 +40,6 @@ interface Props {
   setMovies: React.Dispatch<React.SetStateAction<Movie[]>>
 }
 
-// todo: take into account series that are not yet aired
-// todo: tidy up component data distribution
 export default function MovieDetailsCard({ movie, movies, setMovies }: Props) {
   function handleTrashIconClick() {
     setMovies(movies.filter((m) => m.id !== movie.id))

@@ -6,8 +6,9 @@ import MovieTile from './MovieTile'
 import tw from 'twin.macro'
 
 const List = tw.ul`
-  w-full md:w-10/12 lg:w-9/12 xl:w-8/12
-  m-auto px-4
+  flex flex-wrap justify-start
+  w-full md:w-10/12 lg:w-8/12 xl:w-7/12 xxl:w-8/12
+  m-auto mt-2 px-4
 `
 
 function MoviesList() {
