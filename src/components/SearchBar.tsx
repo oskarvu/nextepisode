@@ -10,7 +10,7 @@ import useWindowInnerHeight from "../hooks/useWindowInnerHeight";
 
 const Container = tw.div`
   mx-auto
-  w-full md:w-10/12 lg:w-9/12 xl:w-7/12
+  w-full md:w-10/12 lg:w-9/12 xl:w-8/12
   text-center
 `;
 

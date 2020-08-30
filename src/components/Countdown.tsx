@@ -6,6 +6,8 @@ import { calculateDaysLeft, calculateMonthsLeft } from "../utils/utils";
 
 import Check from "../assets/icons/Check";
 import X from "../assets/icons/X";
+import Pencil from "../assets/icons/Pencil";
+import Reply from "../assets/icons/Reply";
 
 const Container = tw.div`
   flex flex-row sm:flex-col items-center justify-center
@@ -25,13 +27,17 @@ const FollowUp = tw.div`
   text-gray-800 font-bold text-sm tracking-wider uppercase
 `;
 
-const CheckIcon = tw(Check)`
+const IconBase = `
   w-10 h-10 sm:w-14 sm:h-14
 `;
 
-const XIcon = tw(X)`
-  w-10 h-10 sm:w-14 sm:h-14
-`;
+const CheckIcon = tw(Check)`${IconBase}`;
+
+const XIcon = tw(X)`${IconBase}`;
+
+const PencilIcon = tw(Pencil)`${IconBase}`;
+
+const ReplyIcon = tw(Reply)`${IconBase}`;
 
 interface Props {
   nextEpisode: Episode | null;
@@ -43,17 +49,13 @@ interface CountdownData {
   follow: string;
 }
 
-// todo: make this render less idiotic
 function Countdown({ nextEpisode, status }: Props) {
   function initDaysState(): number | null {
-    if (nextEpisode?.airDate) {
-      return calculateDaysLeft(nextEpisode.airDate);
-    }
-    return null;
+    return nextEpisode?.airDate ? calculateDaysLeft(nextEpisode.airDate) : null;
   }
 
   function initCountdownData(daysLeft: number | null): CountdownData {
-    if (daysLeft) {
+    if (daysLeft !== null) {
       if (daysLeft <= 60) {
         return {
           counter: daysLeft,
@@ -68,18 +70,25 @@ function Countdown({ nextEpisode, status }: Props) {
           monthsLeft === 1 ? CounterFollow.monthLeft : CounterFollow.monthsLeft,
       };
     }
-    if (nextEpisode) {
-      return { counter: "?", follow: "no info yet" };
+
+    switch (status.toLowerCase()) {
+      case Status.Ended:
+        return { counter: <CheckIcon />, follow: Status.Ended };
+      case Status.Canceled:
+        return { counter: <XIcon />, follow: Status.Canceled };
+      case Status.ReturningSeries:
+        return { counter: <ReplyIcon />, follow: Status.ReturningSeries };
+      case Status.Planed:
+        return { counter: <PencilIcon />, follow: Status.Planed };
+      default:
+        return { counter: "?", follow: "no info yet" };
     }
-    if (status.toLowerCase() === Status.Ended) {
-      return { counter: <CheckIcon />, follow: Status.Ended };
-    }
-    // status.toLowerCase() === Status.Cancelled
-    return { counter: <XIcon />, follow: Status.Cancelled };
   }
 
-  const [daysLeft] = useState(initDaysState());
-  const [countdownData] = useState<CountdownData>(initCountdownData(daysLeft));
+  const [daysLeft] = useState(() => initDaysState());
+  const [countdownData] = useState<CountdownData>(() =>
+    initCountdownData(daysLeft)
+  );
 
   return (
     <Container>

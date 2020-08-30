@@ -28,9 +28,10 @@ export enum Status {
   InProduction = "in production",
   PostProduction = "post production",
   Released = "released",
-  Cancelled = "cancelled",
+  Canceled = "canceled",
   ReturningSeries = "returning series",
   Ended = "ended",
+  Planed = "planned",
 }
 
 export enum CounterFollow {

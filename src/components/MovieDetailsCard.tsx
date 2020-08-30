@@ -1,19 +1,24 @@
 import React from "react";
-import tw from "twin.macro";
+import tw, { styled } from "twin.macro";
 import Trash from "../assets/icons/Trash";
 import { Movie } from "../api/types";
 
 const Details = tw.div`
   relative inline-flex justify-between flex-col
-  w-full sm:w-auto h-full p-3 pt-1
+  w-full sm:w-auto sm:max-w-xs h-full p-3 pt-1
   bg-white shadow-lg
 `;
 
-const MovieName = tw.h1`
-  w-92
-  ml-1 my-1 mb-2
-  text-2xl sm:text-3xl font-bold text-gray-700 leading-none
-`;
+const MovieName = styled.h1(({ letters }: { letters: number }) => [
+  tw`
+    w-92
+    ml-1 my-1 mb-2
+    text-2xl sm:text-3xl font-bold text-gray-700 leading-tight
+  `,
+  letters > 14 && tw`text-xl sm:text-2xl`,
+  letters > 28 && tw`text-lg sm:text-xl`,
+  letters > 40 && tw`text-base sm:text-lg`,
+]);
 
 const InfoBadge = tw.div`
   inline-block
@@ -35,7 +40,7 @@ const TrashIcon = tw(Trash)`
 `;
 
 const Table = tw.table`
-  hidden sm:block
+  hidden sm:block w-full
 `;
 
 interface Props {
@@ -54,20 +59,31 @@ export default function MovieDetailsCard({ movie, movies, setMovies }: Props) {
   return (
     <Details>
       <div>
-        <MovieName>{movie.name}</MovieName>
+        <MovieName letters={movie.name.length}>{movie.name}</MovieName>
         <InfoBadge>{movie.status}</InfoBadge>
         {movie.inProduction && <InfoBadge>in production</InfoBadge>}
       </div>
       <Table>
         <tbody>
-          <tr>
-            <Cell>last aired</Cell>
-            <Cell>
-              s{movie.lastEpisode?.season.toString().padStart(2, "0")}e
-              {movie.lastEpisode?.episode.toString().padStart(2, "0")}
-            </Cell>
-            <Cell>{movie.lastEpisode?.airDate}</Cell>
-          </tr>
+          {movie?.nextEpisode ? (
+            <tr>
+              <Cell>next</Cell>
+              <Cell>
+                s{movie.nextEpisode.season.toString().padStart(2, "0")}e
+                {movie.nextEpisode.episode.toString().padStart(2, "0")}
+              </Cell>
+              <Cell>{movie.nextEpisode.airDate}</Cell>
+            </tr>
+          ) : (
+            <tr>
+              <Cell>last</Cell>
+              <Cell>
+                s{movie.lastEpisode?.season.toString().padStart(2, "0")}e
+                {movie.lastEpisode?.episode.toString().padStart(2, "0")}
+              </Cell>
+              <Cell>{movie.lastEpisode?.airDate}</Cell>
+            </tr>
+          )}
         </tbody>
       </Table>
       <TrashIcon onClick={handleTrashIconClick} />
