@@ -1,32 +1,36 @@
-import apiConfig from "../api/config";
-import { ApiQueryType, Movie, SearchResult } from "../api/types";
-
-const { keyField, searchURL, tvDataURL, searchFields, tvFields } = apiConfig;
+import {
+  keyField,
+  searchURL,
+  tvDataURL,
+  searchFields,
+  tvFields,
+} from '../api/config'
+import { ApiQueryType, Movie, SearchResult } from '../api/types'
 
 export function getApiURL(query: string | number, type: ApiQueryType): any {
   switch (type) {
     case ApiQueryType.Search:
       return `${searchURL}${keyField}${searchFields}&query=${encodeURI(
         query as string
-      )}`;
+      )}`
     case ApiQueryType.TV:
-      return `${tvDataURL}${query}?${keyField}${tvFields}`;
+      return `${tvDataURL}${query}?${keyField}${tvFields}`
     default:
-      return "";
+      return ''
   }
 }
 
 export async function fetchFromTMDB(apiQuery: string): Promise<any> {
   try {
-    const response = await fetch(apiQuery);
+    const response = await fetch(apiQuery)
     if (!response.ok) {
-      throw new Error(`${response.status}`);
+      throw new Error(`${response.status}`)
     } else {
-      return await response.json();
+      return await response.json()
     }
   } catch (e) {
-    console.error(e);
-    return [];
+    console.error(e)
+    return []
   }
 }
 
@@ -35,7 +39,7 @@ export function parseSearchResult(apiResult: any[]): SearchResult[] {
     name: movieResult.name,
     firstAirDate: movieResult.first_air_date,
     id: movieResult.id,
-  }));
+  }))
 }
 
 export function parseToMovie(apiMovie: any): Movie {
@@ -46,7 +50,7 @@ export function parseToMovie(apiMovie: any): Movie {
         name: apiMovie.last_episode_to_air.name,
         season: apiMovie.last_episode_to_air.season_number,
       }
-    : null;
+    : null
 
   const nextEpisodeToAir = apiMovie?.next_episode_to_air
     ? {
@@ -55,7 +59,7 @@ export function parseToMovie(apiMovie: any): Movie {
         name: apiMovie.next_episode_to_air.name,
         season: apiMovie.next_episode_to_air.season_number,
       }
-    : null;
+    : null
 
   return {
     name: apiMovie.name,
@@ -66,5 +70,5 @@ export function parseToMovie(apiMovie: any): Movie {
     lastAirDate: apiMovie.last_air_date,
     lastEpisode: lastEpisodeToAir,
     nextEpisode: nextEpisodeToAir,
-  };
+  }
 }

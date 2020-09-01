@@ -1,23 +1,32 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import tw, { styled } from 'twin.macro'
+import { AnimatePresence, motion } from 'framer-motion'
 
 import { MoviesContext, MoviesContextShape } from './Main'
 import { Movie } from '../api/types'
 
+import DefaultBGImage from '../assets/images/placeholder.jpg'
 import Countdown from './Countdown'
 import MovieDetailsCard from './MovieDetailsCard'
 
 // todo: default backdrop if backdrop is null
-const Tile = styled.div(({ backdrop }: { backdrop: string | null }) => [
+const tileBaseStyle = `
+  w-full xxl:w-49/100 xxxl:w-32/100 h-auto sm:h-56
+  mt-2 xxl:mr-2
+  rounded-4xl overflow-hidden bg-white bg-cover bg-center
+`
+
+// todo: load different image background on different devices
+const Tile = styled(motion.div)(({ backdrop }: { backdrop: string | null }) => [
+  tw`${tileBaseStyle}`,
   tw`
     flex flex-col sm:flex-row
-    w-full xxl:w-49/100 xxxl:w-32/100 h-auto sm:h-56
-    mt-2 xxl:mr-2
-    rounded-4xl overflow-hidden bg-cover bg-center
   `,
   `box-shadow: inset 0 0 10px 0 rgba(0,0,0,0.3);`,
-  `background-image: url("https://image.tmdb.org/t/p/w1280/${backdrop}");`,
+  backdrop && `background-image: url("${backdrop}");`,
 ])
+
+const FakeTile = tw(motion.div)`${tileBaseStyle}`
 
 const StartContainer = tw.div`
     flex justify-center
@@ -30,24 +39,14 @@ const EndContainer = tw.div`
   w-full sm:w-7/12 lg:w-1/2 xl:w-1/2 xxl:w-7/12 sm:h-full
   p-4 pt-0 sm:p-5 sm:pl-0
 `
-
-export const SuspenseTile = tw.div`
-  flex flex-col sm:flex-row
-  w-full xxl:w-49/100 xxxl:w-32/100 h-auto sm:h-56
-  mt-2 xxl:mr-2
-  bg-gray-400 rounded-4xl overflow-hidden
-`
-
+// todo: cleanup this component
 export default function MovieTile({ movie }: { movie: Movie }) {
   const { movies, setMovies } = useContext<MoviesContextShape>(MoviesContext)
-  const [backdrop, setBackdrop] = useState<string | null>(
-    'rqHL4HsLCix9H6vhCwAuSOge0NS.jpg'
-  )
-  const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false)
+  const [backdrop, setBackdrop] = useState<string | null>(null)
 
   useEffect(() => {
     if (!movie.backdrop) {
-      setIsBackgroundLoaded(true)
+      setBackdrop(DefaultBGImage)
       return
     }
     const imageUrl = `https://image.tmdb.org/t/p/w1280/${movie.backdrop}`
@@ -55,16 +54,17 @@ export default function MovieTile({ movie }: { movie: Movie }) {
     preloadedImg.src = imageUrl
 
     preloadedImg.addEventListener('load', () => {
-      window.setTimeout(() => {
-        setBackdrop(movie.backdrop)
-        setIsBackgroundLoaded(true)
-      }, 1000)
-      // setBackdrop(movie.backdrop)
+      window.setTimeout(() => setBackdrop(imageUrl), 2000)
     })
   }, [movie])
 
-  return isBackgroundLoaded ? (
-    <Tile backdrop={backdrop}>
+  return backdrop ? (
+    <Tile
+      backdrop={backdrop}
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      layout
+    >
       <StartContainer>
         <Countdown nextEpisode={movie.nextEpisode} status={movie.status} />
       </StartContainer>
@@ -73,6 +73,12 @@ export default function MovieTile({ movie }: { movie: Movie }) {
       </EndContainer>
     </Tile>
   ) : (
-    <SuspenseTile>test</SuspenseTile>
+    <FakeTile
+      initial={{ opacity: 0 }}
+      animate={{ opacity: [1, 0.5, 1] }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1.3, loop: Infinity }}
+      layout
+    />
   )
 }

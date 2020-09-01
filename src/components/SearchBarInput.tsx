@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import tw from 'twin.macro'
 
 import { fetchFromTMDB, getApiURL, parseSearchResult } from '../utils/api'
-import apiConfig from '../api/config'
+import { fetchDelay } from '../api/config'
 import { ApiQueryType, SearchResult } from '../api/types'
 
 import Search from '../assets/icons/Search'
@@ -59,7 +59,7 @@ function SearchBarInput({
         const translated = parseSearchResult(data.results)
         setResults(translated)
       })
-    }, apiConfig.fetchDelay)
+    }, fetchDelay)
 
     return () => {
       clearTimeout(timeoutID)
