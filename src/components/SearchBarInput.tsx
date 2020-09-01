@@ -42,12 +42,31 @@ interface Props {
 }
 
 // todo: some timeout on promise
-function SearchBarInput({
+// todo: make spinner when looking in api
+export default function SearchBarInput({
   setResults,
   setModalVisible,
   inputText,
   setInputText,
 }: Props) {
+  function handleClick() {
+    inputText && setModalVisible(true)
+  }
+
+  function handleOnKeyUp(event: React.KeyboardEvent) {
+    event.key === 'Escape' || event.key === 'Esc'
+      ? setModalVisible(false)
+      : !inputText && setModalVisible(false)
+  }
+
+  function handleOnFocus() {
+    inputText && setModalVisible(true)
+  }
+
+  function handleOnChange(event: React.FormEvent<HTMLInputElement>) {
+    setInputText((event.target as HTMLInputElement).value)
+  }
+
   useEffect(() => {
     const timeoutID = window.setTimeout(() => {
       if (!inputText) {
@@ -58,13 +77,14 @@ function SearchBarInput({
       fetchFromTMDB(queryText).then((data) => {
         const translated = parseSearchResult(data.results)
         setResults(translated)
+        setModalVisible(true)
       })
     }, fetchDelay)
 
     return () => {
       clearTimeout(timeoutID)
     }
-  }, [inputText, setResults])
+  }, [inputText, setResults, setModalVisible])
 
   return (
     <InputContainer>
@@ -80,20 +100,12 @@ function SearchBarInput({
       <Input
         type="text"
         value={inputText}
-        placeholder="Search for a movie or a tv show..."
-        onKeyDown={(e) =>
-          e.key === 'Escape' || e.key === 'Esc'
-            ? setModalVisible(false)
-            : setModalVisible(true)
-        }
-        onClick={() => setModalVisible(true)}
-        onFocus={() => {
-          setModalVisible(true)
-        }}
-        onChange={(event) => setInputText(event.target.value)}
+        placeholder="Search for a tv show..."
+        onKeyUp={handleOnKeyUp}
+        onClick={handleClick}
+        onFocus={handleOnFocus}
+        onChange={handleOnChange}
       />
     </InputContainer>
   )
 }
-
-export default SearchBarInput

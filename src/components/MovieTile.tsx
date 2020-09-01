@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import tw, { styled } from 'twin.macro'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 import { MoviesContext, MoviesContextShape } from './Main'
 import { Movie } from '../api/types'
@@ -11,17 +11,14 @@ import MovieDetailsCard from './MovieDetailsCard'
 
 // todo: default backdrop if backdrop is null
 const tileBaseStyle = `
-  w-full xxl:w-49/100 xxxl:w-32/100 h-auto sm:h-56
+  flex flex-col sm:flex-row
+  w-full xxl:w-49/100 xxxl:w-32/100 h-52 sm:h-56
   mt-2 xxl:mr-2
-  rounded-4xl overflow-hidden bg-white bg-cover bg-center
+  rounded-4xl overflow-hidden bg-gray-400 bg-cover bg-center
 `
 
-// todo: load different image background on different devices
 const Tile = styled(motion.div)(({ backdrop }: { backdrop: string | null }) => [
   tw`${tileBaseStyle}`,
-  tw`
-    flex flex-col sm:flex-row
-  `,
   `box-shadow: inset 0 0 10px 0 rgba(0,0,0,0.3);`,
   backdrop && `background-image: url("${backdrop}");`,
 ])
@@ -31,19 +28,20 @@ const FakeTile = tw(motion.div)`${tileBaseStyle}`
 const StartContainer = tw.div`
     flex justify-center
     w-full sm:w-5/12 lg:w-1/2 xl:w-1/2 xxl:w-5/12 sm:h-full
-    px-4 pt-4 pb-3 sm:p-5 sm:pr-0
+    px-3 pt-4 pb-0 sm:p-5 sm:pr-0
   `
 
 const EndContainer = tw.div`
   flex justify-end
   w-full sm:w-7/12 lg:w-1/2 xl:w-1/2 xxl:w-7/12 sm:h-full
-  p-4 pt-0 sm:p-5 sm:pl-0
+  p-3 pt-0 sm:p-5 sm:pl-0 mt-auto
 `
-// todo: cleanup this component
+
 export default function MovieTile({ movie }: { movie: Movie }) {
   const { movies, setMovies } = useContext<MoviesContextShape>(MoviesContext)
   const [backdrop, setBackdrop] = useState<string | null>(null)
 
+  // todo: load different image background on different devices
   useEffect(() => {
     if (!movie.backdrop) {
       setBackdrop(DefaultBGImage)
@@ -53,15 +51,14 @@ export default function MovieTile({ movie }: { movie: Movie }) {
     const preloadedImg: HTMLImageElement = document.createElement('img')
     preloadedImg.src = imageUrl
 
-    preloadedImg.addEventListener('load', () => {
-      window.setTimeout(() => setBackdrop(imageUrl), 2000)
-    })
+    preloadedImg.addEventListener('load', () => setBackdrop(imageUrl))
   }, [movie])
 
   return backdrop ? (
     <Tile
       backdrop={backdrop}
-      initial={{ opacity: 1 }}
+      initial={{ opacity: 0.5 }}
+      animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       layout
     >
@@ -75,9 +72,9 @@ export default function MovieTile({ movie }: { movie: Movie }) {
   ) : (
     <FakeTile
       initial={{ opacity: 0 }}
-      animate={{ opacity: [1, 0.5, 1] }}
+      animate={{ opacity: [1, 0.3, 1] }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 1.3, loop: Infinity }}
+      transition={{ duration: 1.2, loop: Infinity }}
       layout
     />
   )

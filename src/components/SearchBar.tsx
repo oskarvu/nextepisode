@@ -7,6 +7,7 @@ import ResultsModal from './ResultsModal'
 import SearchBarInput from './SearchBarInput'
 import useHideWhenClickedOutside from '../hooks/useHideWhenClickedOutside'
 import useWindowInnerHeight from '../hooks/useWindowInnerHeight'
+import { AnimatePresence } from 'framer-motion'
 
 const Container = tw.div`
   mx-auto
@@ -17,7 +18,7 @@ const Container = tw.div`
 function SearchBar() {
   const [results, setResults] = useState([] as SearchResult[])
   const [inputText, setInputText] = useState('')
-  const [modalVisible, setModalVisible] = useState(true)
+  const [modalVisible, setModalVisible] = useState(false)
   const [modalMaxHeight, setModalMaxHeight] = useState(1000)
   const windowInnerHeight = useWindowInnerHeight()
   const searchBarRef = useRef<HTMLDivElement>(null)
@@ -38,13 +39,16 @@ function SearchBar() {
         setModalVisible={setModalVisible}
         setResults={setResults}
       />
-      <ResultsModal
-        maxHeight={modalMaxHeight}
-        visible={modalVisible}
-        setVisible={setModalVisible}
-        setSearchBarInputText={setInputText}
-        results={results}
-      />
+      <AnimatePresence>
+        {modalVisible && (
+          <ResultsModal
+            maxHeight={modalMaxHeight}
+            setVisible={setModalVisible}
+            setSearchBarInputText={setInputText}
+            results={results}
+          />
+        )}
+      </AnimatePresence>
     </Container>
   )
 }

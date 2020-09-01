@@ -5,7 +5,7 @@ import { Movie } from '../api/types'
 import DetailsCardTable from './DetailsCardTable'
 
 const Details = tw.div`
-  relative inline-flex justify-between flex-col
+  relative flex justify-between flex-col
   w-full sm:w-auto sm:max-w-xs h-full p-3 pt-1
   bg-white shadow-lg
 `
@@ -16,16 +16,17 @@ const MovieName = styled.h1(({ letters }: { letters: number }) => [
     ml-1 my-1 mb-2
     text-2xl sm:text-3xl font-bold text-gray-700 leading-tight
   `,
-  letters > 14 && tw`text-xl sm:text-2xl`,
-  letters > 28 && tw`text-lg sm:text-xl`,
-  letters > 40 && tw`text-base sm:text-lg`,
+  letters > 14 && tw`text-lg sm:text-2xl`,
+  letters > 24 && tw`text-base sm:text-xl`,
+  letters > 40 && tw`text-sm sm:text-lg`,
+  letters > 60 && tw`text-xs sm:text-base`,
 ])
 
 const InfoBadge = tw.div`
   inline-block
   px-2 py-1 mr-1
   bg-gray-300 rounded-full
-  text-xs uppercase font-bold text-gray-600 tracking-wider
+  text-xs sm:uppercase font-bold text-gray-600 tracking-wider
 `
 
 const TrashIcon = tw(Trash)`
@@ -50,7 +51,7 @@ export default function MovieDetailsCard({ movie, movies, setMovies }: Props) {
       <div>
         <MovieName letters={movie.name.length}>{movie.name}</MovieName>
         <InfoBadge>{movie.status}</InfoBadge>
-        {movie.inProduction && <InfoBadge>in production</InfoBadge>}
+        {movie.inProduction && <InfoBadge>In Production</InfoBadge>}
       </div>
       <DetailsCardTable movie={movie} />
       <TrashIcon onClick={handleTrashIconClick} />
