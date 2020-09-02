@@ -108,8 +108,15 @@ module.exports = {
       screens: {
         xxl: '1920px',
         xxxl: '2560px',
+        xxxxl: '3840px',
       },
       width: {
+        '1/2-4': 'calc((100% - 1rem)/2)',
+        '1/2-8': 'calc((100% - 2rem)/2)',
+        '1/3-6': 'calc((100% - 1.5rem)/3)',
+        '1/3-12': 'calc((100% - 3rem)/3)',
+        '1/4-8': 'calc((100% - 2rem)/4)',
+        '1/4-16': 'calc((100% - 4rem)/4)',
         '28': '7rem',
         ...percentageScale,
       },

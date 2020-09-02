@@ -11,7 +11,7 @@ import { AnimatePresence } from 'framer-motion'
 
 const Container = tw.div`
   mx-auto
-  w-full md:w-10/12 lg:w-8/12 xl:w-7/12 xxl:w-5/12
+  w-full md:w-10/12 lg:w-8/12 xl:w-7/12 xxl:w-5/12 xxxl:w-4/12 xxxxl:w-3/12
   text-center
 `
 

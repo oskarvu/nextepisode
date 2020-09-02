@@ -23,7 +23,7 @@ const Modal = styled(motion.div)(({ maxHeight }: { maxHeight: number }) => [
 
 const Result = tw.li`
   flex flex-row items-center
-  mx-4 my-2 first:mt-3 last:mb-5
+  mx-3 last:mb-1
 `
 
 const ResultButton = tw.button`
@@ -31,12 +31,12 @@ const ResultButton = tw.button`
   w-full py-3 pr-2 pl-3 ml-1
   rounded-full border-white border-2
   focus:outline-none focus:bg-white focus:border-gray-300
-  text-gray-600 text-base sm:text-xl font-medium text-left
+  text-gray-700 text-base sm:text-xl font-medium text-left
   hover:bg-gray-100 hover:text-gray-800
 `
 
 const ResultText = tw.div`
-  pr-2
+  pr-2 pb-1
 `
 
 const ResultYear = tw.div`
@@ -105,9 +105,6 @@ interface ResultsModalProps {
 
 // todo: handle errors from api
 // todo: focus on already existing element on list if clicked
-// todo: add keyboard navigation through results modal
-// todo: rewrite results button
-// todo: scale or elipsis font on small devices
 export default function ResultsModal({
   results,
   setVisible,

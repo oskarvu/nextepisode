@@ -6,8 +6,8 @@ import { MoviesContext, MoviesContextShape } from './Main'
 import MovieTile from './MovieTile'
 
 const List = tw(motion.ul)`
-  flex flex-wrap justify-start
-  w-full md:w-10/12 lg:w-8/12 xl:w-7/12 xxl:w-8/12
+  flex flex-wrap
+  w-full md:w-10/12 lg:w-8/12 xl:w-10/12 xxl:w-8/12 xxxxl:w-7/12
   m-auto mt-2 px-4
 `
 

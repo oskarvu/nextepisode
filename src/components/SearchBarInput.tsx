@@ -16,7 +16,7 @@ const Input = tw.input`
   h-12 w-full
   px-12 pb-1 my-4
   rounded-full outline-none bg-gray-200
-  text-gray-700 placeholder-gray-400
+  text-gray-800 placeholder-gray-600
   leading-6 text-lg font-medium tracking-wide
 `
 
@@ -24,7 +24,7 @@ const SearchIcon = tw(Search)`
   absolute
   w-8 h-8
   ml-3 mt-6
-  text-gray-500
+  text-gray-400
 `
 
 const CloseIcon = tw(X)`

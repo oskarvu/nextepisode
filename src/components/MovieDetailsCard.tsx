@@ -6,7 +6,7 @@ import DetailsCardTable from './DetailsCardTable'
 
 const Details = tw.div`
   relative flex justify-between flex-col
-  w-full sm:w-auto sm:min-w-75/100 h-full p-3 pt-1
+  w-full sm:w-auto sm:min-w-80/100 h-full p-3 pt-1
   bg-white shadow-lg
 `
 

@@ -12,8 +12,8 @@ import MovieDetailsCard from './MovieDetailsCard'
 // todo: default backdrop if backdrop is null
 const tileBaseStyle = `
   flex flex-col sm:flex-row
-  w-full xxl:w-49/100 xxxl:w-32/100 h-48 sm:h-56
-  mt-2 xxl:mr-2
+  w-full xl:w-1/2-8 xxxl:w-1/3-12 xxxxl:w-1/4-16 h-48 sm:h-56
+  m-2
   rounded-4xl overflow-hidden bg-gray-400 bg-cover bg-center
 `
 
@@ -27,13 +27,13 @@ const FakeTile = tw(motion.div)`${tileBaseStyle}`
 
 const StartContainer = tw.div`
     flex justify-center
-    w-full sm:w-5/12 lg:w-1/2 xl:w-1/2 xxl:w-5/12 sm:h-full
+    w-full sm:w-6/12 xl:w-5/12 sm:h-full
     px-3 pt-5 pb-0 sm:p-5 sm:pr-0
   `
 
 const EndContainer = tw.div`
   flex justify-end
-  w-full sm:w-7/12 lg:w-1/2 xl:w-1/2 xxl:w-7/12 sm:h-full
+  w-full sm:w-6/12 xl:w-7/12 sm:h-full
   p-3 pt-0 sm:p-5 sm:pl-0 mt-auto
 `
 
@@ -60,7 +60,7 @@ export default function MovieTile({ movie }: { movie: Movie }) {
       backdrop={backdrop}
       initial={{ opacity: 0.5 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      exit={{ opacity: 0, transition: { duration: 0.3 } }}
       layout
     >
       <StartContainer>

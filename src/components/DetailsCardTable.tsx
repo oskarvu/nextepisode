@@ -32,7 +32,7 @@ function SeasonEpisode({
 }
 
 function formatDate(isoDateString: string): string {
-  return new Date(isoDateString).toLocaleDateString()
+  return new Date(isoDateString).toLocaleDateString('en-US')
 }
 
 export default function DetailsCardTable({ movie }: { movie: Movie }) {
