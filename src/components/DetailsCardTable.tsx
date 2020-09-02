@@ -4,13 +4,13 @@ import tw from 'twin.macro'
 
 const Cell = tw.div`
   flex flex-grow justify-center
-  px-3 py-2
+  px-3 py-1 sm:py-2
   border border-gray-300 border-4 first:border-r-0 last:border-l-0
   uppercase text-sm font-bold text-gray-600 tracking-wider
 `
 
 const Row = tw.div`
-  hidden sm:flex flex-row
+  flex flex-row
   w-full
 `
 
@@ -32,7 +32,7 @@ function SeasonEpisode({
 }
 
 function formatDate(isoDateString: string): string {
-  return new Date(isoDateString).toLocaleDateString('en-US')
+  return new Date(isoDateString).toLocaleDateString()
 }
 
 export default function DetailsCardTable({ movie }: { movie: Movie }) {

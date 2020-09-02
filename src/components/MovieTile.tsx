@@ -12,7 +12,7 @@ import MovieDetailsCard from './MovieDetailsCard'
 // todo: default backdrop if backdrop is null
 const tileBaseStyle = `
   flex flex-col sm:flex-row
-  w-full xl:w-1/2-8 xxxl:w-1/3-12 xxxxl:w-1/4-16 h-48 sm:h-56
+  w-full xl:w-1/2-8 xxxl:w-1/3-12 xxxxl:w-1/4-16 h-56 sm:h-56
   my-2 xl:mx-2
   rounded-4xl overflow-hidden bg-gray-400 bg-cover bg-center
 `
@@ -26,9 +26,9 @@ const Tile = styled(motion.div)(({ backdrop }: { backdrop: string | null }) => [
 const FakeTile = tw(motion.div)`${tileBaseStyle}`
 
 const StartContainer = tw.div`
-    flex justify-center
+    flex flex-grow justify-center
     w-full sm:w-6/12 xl:w-5/12 sm:h-full
-    px-3 pt-5 pb-0 sm:p-5 sm:pr-0
+    px-3 pt-2 pb-0 sm:p-5 sm:pr-0
   `
 
 const EndContainer = tw.div`

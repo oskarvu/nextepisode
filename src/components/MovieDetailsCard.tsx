@@ -13,7 +13,7 @@ const Details = tw.div`
 const MovieName = styled.h1(({ letters }: { letters: number }) => [
   tw`
     w-92/100
-    ml-1 my-1 mb-2
+    ml-1 my-1 mb-1
     text-2xl sm:text-3xl font-bold text-gray-700 leading-tight
   `,
   letters > 14 && tw`text-lg sm:text-2xl`,
@@ -24,7 +24,7 @@ const MovieName = styled.h1(({ letters }: { letters: number }) => [
 
 const InfoBadge = tw.div`
   inline-block
-  px-2 py-1 mr-1
+  px-2 py-1 mr-1 mb-2
   bg-gray-300 rounded-full
   text-xs uppercase font-bold text-gray-600 tracking-wider
 `
