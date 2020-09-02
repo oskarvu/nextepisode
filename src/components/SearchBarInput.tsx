@@ -14,7 +14,7 @@ const InputContainer = tw.div`
 
 const Input = tw.input`
   h-12 w-full
-  px-12 pb-1 my-4
+  px-12 my-4
   rounded-full outline-none bg-gray-200
   text-gray-800 placeholder-gray-600
   leading-6 text-lg font-medium tracking-wide
