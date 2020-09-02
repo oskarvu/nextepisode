@@ -21,14 +21,13 @@ const Modal = styled(motion.div)(({ maxHeight }: { maxHeight: number }) => [
   `max-height: ${maxHeight}px`,
 ])
 
-//max-h-screen overflow-y-scroll
-
 const Result = tw.li`
   flex flex-row items-center
   mx-4 my-2 first:mt-3 last:mb-5
 `
 
 const ResultButton = tw.button`
+  flex flex-row justify-between items-center
   w-full py-3 pr-2 pl-3 ml-1
   rounded-full border-white border-2
   focus:outline-none focus:bg-white focus:border-gray-300
@@ -36,8 +35,11 @@ const ResultButton = tw.button`
   hover:bg-gray-100 hover:text-gray-800
 `
 
-const SpannedYear = tw.span`
-  float-right
+const ResultText = tw.div`
+  pr-2
+`
+
+const ResultYear = tw.div`
   py-1 px-2 mr-1 rounded-full
   text-sm
   bg-gray-300
@@ -101,7 +103,7 @@ interface ResultsModalProps {
   setSearchBarInputText: React.Dispatch<React.SetStateAction<string>>
 }
 
-// todo: make something with event handlers
+// todo: handle errors from api
 // todo: focus on already existing element on list if clicked
 // todo: add keyboard navigation through results modal
 // todo: rewrite results button
@@ -113,6 +115,16 @@ export default function ResultsModal({
   setSearchBarInputText,
 }: ResultsModalProps) {
   const { movies, setMovies } = useContext<MoviesContextShape>(MoviesContext)
+
+  function handleOnClick(result: SearchResult) {
+    setVisible(false)
+    setSearchBarInputText('')
+    const queryText = getApiURL(result.id, ApiQueryType.TV)
+    fetchFromTMDB(queryText).then((movie) => {
+      !movies.find((m) => m.id === movie.id) &&
+        setMovies([parseToMovie(movie), ...movies])
+    })
+  }
 
   return (
     <Modal
@@ -127,20 +139,10 @@ export default function ResultsModal({
         {results.slice(0, 10).map((result) => (
           <Result key={result.id}>
             <CircleIcon movieId={result.id} />
-            <ResultButton
-              onClick={() => {
-                setVisible(false)
-                setSearchBarInputText('')
-                const queryText = getApiURL(result.id, ApiQueryType.TV)
-                fetchFromTMDB(queryText).then((movie) => {
-                  !movies.find((m) => m.id === movie.id) &&
-                    setMovies([parseToMovie(movie), ...movies])
-                })
-              }}
-            >
-              {result.name}
+            <ResultButton onClick={() => handleOnClick(result)}>
+              <ResultText>{result.name}</ResultText>
               {result.firstAirDate && (
-                <SpannedYear>{result.firstAirDate.substr(0, 4)}</SpannedYear>
+                <ResultYear>{result.firstAirDate.substr(0, 4)}</ResultYear>
               )}
             </ResultButton>
           </Result>

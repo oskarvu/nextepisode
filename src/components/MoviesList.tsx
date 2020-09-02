@@ -15,14 +15,14 @@ export default function MoviesList() {
   const { movies } = useContext<MoviesContextShape>(MoviesContext)
 
   return (
-    <AnimateSharedLayout>
-      <List layout>
+    <List>
+      <AnimateSharedLayout>
         <AnimatePresence>
           {movies.map((m) => (
             <MovieTile key={m.id} movie={m} />
           ))}
         </AnimatePresence>
-      </List>
-    </AnimateSharedLayout>
+      </AnimateSharedLayout>
+    </List>
   )
 }

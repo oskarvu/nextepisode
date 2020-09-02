@@ -12,7 +12,7 @@ import MovieDetailsCard from './MovieDetailsCard'
 // todo: default backdrop if backdrop is null
 const tileBaseStyle = `
   flex flex-col sm:flex-row
-  w-full xxl:w-49/100 xxxl:w-32/100 h-52 sm:h-56
+  w-full xxl:w-49/100 xxxl:w-32/100 h-48 sm:h-56
   mt-2 xxl:mr-2
   rounded-4xl overflow-hidden bg-gray-400 bg-cover bg-center
 `
@@ -28,7 +28,7 @@ const FakeTile = tw(motion.div)`${tileBaseStyle}`
 const StartContainer = tw.div`
     flex justify-center
     w-full sm:w-5/12 lg:w-1/2 xl:w-1/2 xxl:w-5/12 sm:h-full
-    px-3 pt-4 pb-0 sm:p-5 sm:pr-0
+    px-3 pt-5 pb-0 sm:p-5 sm:pr-0
   `
 
 const EndContainer = tw.div`
@@ -37,6 +37,7 @@ const EndContainer = tw.div`
   p-3 pt-0 sm:p-5 sm:pl-0 mt-auto
 `
 
+// todo: check if something can be done with animation jumps
 export default function MovieTile({ movie }: { movie: Movie }) {
   const { movies, setMovies } = useContext<MoviesContextShape>(MoviesContext)
   const [backdrop, setBackdrop] = useState<string | null>(null)

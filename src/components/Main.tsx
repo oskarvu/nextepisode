@@ -22,6 +22,7 @@ export const MoviesContext = createContext<MoviesContextShape>(
   defaultMoviesContext
 )
 
+// todo: add error handling (api)
 export default function Main() {
   const localData = localStorage.getItem('movies')
   const initialMovies = () =>

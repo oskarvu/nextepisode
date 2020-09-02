@@ -14,7 +14,7 @@ const InputContainer = tw.div`
 
 const Input = tw.input`
   h-12 w-full
-  px-6 pb-1 pl-12 my-4
+  px-12 pb-1 my-4
   rounded-full outline-none bg-gray-200
   text-gray-700 placeholder-gray-400
   leading-6 text-lg font-medium tracking-wide
@@ -41,6 +41,7 @@ interface Props {
   setInputText: React.Dispatch<React.SetStateAction<string>>
 }
 
+// todo: handle errors from api
 // todo: some timeout on promise
 // todo: make spinner when looking in api
 export default function SearchBarInput({

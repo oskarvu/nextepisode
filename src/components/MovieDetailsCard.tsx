@@ -6,7 +6,7 @@ import DetailsCardTable from './DetailsCardTable'
 
 const Details = tw.div`
   relative flex justify-between flex-col
-  w-full sm:w-auto sm:max-w-xs h-full p-3 pt-1
+  w-full sm:w-auto sm:min-w-75/100 sm:max-w-85/100 h-full p-3 pt-1
   bg-white shadow-lg
 `
 
@@ -26,7 +26,7 @@ const InfoBadge = tw.div`
   inline-block
   px-2 py-1 mr-1
   bg-gray-300 rounded-full
-  text-xs sm:uppercase font-bold text-gray-600 tracking-wider
+  text-xs uppercase font-bold text-gray-600 tracking-wider
 `
 
 const TrashIcon = tw(Trash)`
@@ -51,7 +51,6 @@ export default function MovieDetailsCard({ movie, movies, setMovies }: Props) {
       <div>
         <MovieName letters={movie.name.length}>{movie.name}</MovieName>
         <InfoBadge>{movie.status}</InfoBadge>
-        {movie.inProduction && <InfoBadge>In Production</InfoBadge>}
       </div>
       <DetailsCardTable movie={movie} />
       <TrashIcon onClick={handleTrashIconClick} />
