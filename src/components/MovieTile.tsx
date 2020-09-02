@@ -13,7 +13,7 @@ import MovieDetailsCard from './MovieDetailsCard'
 const tileBaseStyle = `
   flex flex-col sm:flex-row
   w-full xl:w-1/2-8 xxxl:w-1/3-12 xxxxl:w-1/4-16 h-48 sm:h-56
-  m-2
+  my-2 xl:mx-2
   rounded-4xl overflow-hidden bg-gray-400 bg-cover bg-center
 `
 
