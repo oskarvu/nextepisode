@@ -16,7 +16,6 @@ const Container = tw.div`
 const Counter = tw.div`
   flex justify-center items-center
   w-14 h-14 sm:w-28 sm:h-28
-  pb-1
   bg-gray-800 bg-opacity-85 shadow-md rounded-full
   text-gray-200 font-normal text-4xl sm:text-6xl
 `
