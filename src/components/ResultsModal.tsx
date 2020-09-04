@@ -124,7 +124,8 @@ export default function ResultsModal({
   function handleOnClick(result: SearchResult) {
     setVisible(false)
     setSearchBarInputText('')
-    setMoviesIds([result.id, ...moviesIds])
+    !moviesIds.find((mId) => mId === result.id) &&
+      setMoviesIds([result.id, ...moviesIds])
   }
 
   return (
