@@ -1,10 +1,8 @@
 import React, { useContext, useState } from 'react'
 import tw, { styled } from 'twin.macro'
 
-import { MoviesContext, MoviesContextShape } from './Main'
-
-import { fetchFromTMDB, getApiURL, parseToMovie } from '../utils/api'
-import { ApiQueryType, SearchResult } from '../api/types'
+import { MoviesIdsContext, MoviesIdsContextShape } from './Main'
+import { SearchResult } from '../api/types'
 
 import PlusCircle from '../assets/icons/PlusCircle'
 import CheckCircle from '../assets/icons/CheckCircle'
@@ -64,15 +62,17 @@ interface CircleIconProps {
 
 function CircleIcon({ movieId }: CircleIconProps) {
   const [isHovered, setIsHovered] = useState(false)
-  const { movies, setMovies } = useContext<MoviesContextShape>(MoviesContext)
+  const { moviesIds, setMoviesIds } = useContext<MoviesIdsContextShape>(
+    MoviesIdsContext
+  )
 
-  const movieOnList = movies.find((m) => m.id === movieId)
+  const movieOnList = moviesIds.find((mId) => mId === movieId)
   if (movieOnList) {
     if (isHovered) {
       return (
         <XCircleIcon
           onClick={() => {
-            setMovies(movies.filter((m) => m.id !== movieId))
+            setMoviesIds(moviesIds.filter((mId) => mId !== movieId))
           }}
           onMouseLeave={() => setIsHovered(false)}
         />
@@ -84,11 +84,7 @@ function CircleIcon({ movieId }: CircleIconProps) {
     return (
       <PlusCircleIcon
         onClick={() => {
-          const queryText = getApiURL(movieId, ApiQueryType.TV)
-          fetchFromTMDB(queryText).then((movie) => {
-            !movies.find((m) => m.id === movie.id) &&
-              setMovies([...movies, parseToMovie(movie)])
-          })
+          setMoviesIds([movieId, ...moviesIds])
           setIsHovered(true)
         }}
       />
@@ -111,16 +107,24 @@ export default function ResultsModal({
   maxHeight,
   setSearchBarInputText,
 }: ResultsModalProps) {
-  const { movies, setMovies } = useContext<MoviesContextShape>(MoviesContext)
+  const { moviesIds, setMoviesIds } = useContext<MoviesIdsContextShape>(
+    MoviesIdsContext
+  )
+
+  // function handleOnClick(result: SearchResult) {
+  //   setVisible(false)
+  //   setSearchBarInputText('')
+  //   const queryText = getApiURL(result.id, ApiQueryType.TV)
+  //   fetchFromTMDB(queryText).then((movie) => {
+  //     !movies.find((m) => m.id === movie.id) &&
+  //       setMovies([parseToMovie(movie), ...movies])
+  //   })
+  // }
 
   function handleOnClick(result: SearchResult) {
     setVisible(false)
     setSearchBarInputText('')
-    const queryText = getApiURL(result.id, ApiQueryType.TV)
-    fetchFromTMDB(queryText).then((movie) => {
-      !movies.find((m) => m.id === movie.id) &&
-        setMovies([parseToMovie(movie), ...movies])
-    })
+    setMoviesIds([result.id, ...moviesIds])
   }
 
   return (

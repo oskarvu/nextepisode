@@ -2,17 +2,18 @@ import React, { useContext, useEffect, useState } from 'react'
 import tw, { styled } from 'twin.macro'
 import { motion } from 'framer-motion'
 
-import { MoviesContext, MoviesContextShape } from './Main'
-import { Movie } from '../api/types'
+import { MoviesIdsContext, MoviesIdsContextShape } from './Main'
+import { ApiQueryType, Movie } from '../api/types'
 
 import DefaultBGImage from '../assets/images/placeholder.jpg'
 import Countdown from './Countdown'
 import MovieDetailsCard from './MovieDetailsCard'
+import { fetchFromTMDB, getApiURL, parseToMovie } from '../utils/api'
 
 // todo: default backdrop if backdrop is null
 const tileBaseStyle = `
   flex flex-col sm:flex-row
-  w-full xl:w-1/2-8 xxxl:w-1/3-12 xxxxl:w-1/4-16 h-56 sm:h-56
+  w-full xl:w-1/2-8 xxxl:w-1/3-12 xxxxl:w-1/4-16 h-56
   my-2 xl:mx-2
   rounded-4xl overflow-hidden bg-gray-400 bg-cover bg-center
 `
@@ -20,7 +21,7 @@ const tileBaseStyle = `
 const Tile = styled(motion.div)(({ backdrop }: { backdrop: string | null }) => [
   tw`${tileBaseStyle}`,
   `box-shadow: inset 0 0 10px 0 rgba(0,0,0,0.3);`,
-  backdrop && `background-image: url("${backdrop}");`,
+  `background-image: url("${backdrop}");`,
 ])
 
 const FakeTile = tw(motion.div)`${tileBaseStyle}`
@@ -38,24 +39,34 @@ const EndContainer = tw.div`
 `
 
 // todo: check if something can be done with animation jumps
-export default function MovieTile({ movie }: { movie: Movie }) {
-  const { movies, setMovies } = useContext<MoviesContextShape>(MoviesContext)
+export default function MovieTile({ movieId }: { movieId: number }) {
+  const { moviesIds, setMoviesIds } = useContext<MoviesIdsContextShape>(
+    MoviesIdsContext
+  )
+  const [movie, setMovie] = useState<Movie | null>(null)
   const [backdrop, setBackdrop] = useState<string | null>(null)
 
   // todo: load different image background on different devices
   useEffect(() => {
-    if (!movie.backdrop) {
-      setBackdrop(DefaultBGImage)
-      return
-    }
-    const imageUrl = `https://image.tmdb.org/t/p/w1280/${movie.backdrop}`
-    const preloadedImg: HTMLImageElement = document.createElement('img')
-    preloadedImg.src = imageUrl
+    console.log('render')
+    const queryText = getApiURL(movieId, ApiQueryType.TV)
+    fetchFromTMDB(queryText).then((rawMovie) => {
+      console.log('getting fresh data')
+      const parsedMovie = parseToMovie(rawMovie)
+      setMovie(parsedMovie)
+      if (!parsedMovie.backdrop) {
+        setBackdrop(DefaultBGImage)
+        return
+      }
+      const imageUrl = `https://image.tmdb.org/t/p/w1280/${parsedMovie.backdrop}`
+      const preloadedImg: HTMLImageElement = document.createElement('img')
+      preloadedImg.src = imageUrl
 
-    preloadedImg.addEventListener('load', () => setBackdrop(imageUrl))
-  }, [movie])
+      preloadedImg.addEventListener('load', () => setBackdrop(imageUrl))
+    })
+  }, [movieId])
 
-  return backdrop ? (
+  return backdrop && movie ? (
     <Tile
       backdrop={backdrop}
       initial={{ opacity: 0.5 }}
@@ -67,7 +78,11 @@ export default function MovieTile({ movie }: { movie: Movie }) {
         <Countdown nextEpisode={movie.nextEpisode} status={movie.status} />
       </StartContainer>
       <EndContainer>
-        <MovieDetailsCard movie={movie} movies={movies} setMovies={setMovies} />
+        <MovieDetailsCard
+          movie={movie}
+          moviesIds={moviesIds}
+          setMoviesIds={setMoviesIds}
+        />
       </EndContainer>
     </Tile>
   ) : (

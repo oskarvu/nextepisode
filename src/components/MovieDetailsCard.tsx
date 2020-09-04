@@ -37,13 +37,17 @@ const TrashIcon = tw(Trash)`
 
 interface Props {
   movie: Movie
-  movies: Movie[]
-  setMovies: React.Dispatch<React.SetStateAction<Movie[]>>
+  moviesIds: number[]
+  setMoviesIds: React.Dispatch<React.SetStateAction<number[]>>
 }
 
-export default function MovieDetailsCard({ movie, movies, setMovies }: Props) {
+export default function MovieDetailsCard({
+  movie,
+  moviesIds,
+  setMoviesIds,
+}: Props) {
   function handleTrashIconClick() {
-    setMovies(movies.filter((m) => m.id !== movie.id))
+    setMoviesIds(moviesIds.filter((mId) => mId !== movie.id))
   }
 
   return (

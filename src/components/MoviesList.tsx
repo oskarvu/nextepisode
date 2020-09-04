@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import tw from 'twin.macro'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 
-import { MoviesContext, MoviesContextShape } from './Main'
+import { MoviesIdsContextShape, MoviesIdsContext } from './Main'
 import MovieTile from './MovieTile'
 
 const List = tw(motion.ul)`
@@ -12,14 +12,14 @@ const List = tw(motion.ul)`
 `
 
 export default function MoviesList() {
-  const { movies } = useContext<MoviesContextShape>(MoviesContext)
+  const { moviesIds } = useContext<MoviesIdsContextShape>(MoviesIdsContext)
 
   return (
     <List>
       <AnimateSharedLayout>
         <AnimatePresence>
-          {movies.map((m) => (
-            <MovieTile key={m.id} movie={m} />
+          {moviesIds.map((mId) => (
+            <MovieTile key={mId} movieId={mId} />
           ))}
         </AnimatePresence>
       </AnimateSharedLayout>

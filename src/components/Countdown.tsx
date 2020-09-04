@@ -8,6 +8,7 @@ import Check from '../assets/icons/Check'
 import X from '../assets/icons/X'
 import Pencil from '../assets/icons/Pencil'
 import Reply from '../assets/icons/Reply'
+import Heart from '../assets/icons/Heart'
 
 const Container = tw.div`
   flex flex-row sm:flex-col items-center justify-center
@@ -38,6 +39,8 @@ const PencilIcon = tw(Pencil)`${IconBase}`
 
 const ReplyIcon = tw(Reply)`${IconBase}`
 
+const HeartIcon = tw(Heart)`${IconBase}`
+
 interface Props {
   nextEpisode: Episode | null
   status: string
@@ -55,6 +58,12 @@ function Countdown({ nextEpisode, status }: Props) {
 
   function initCountdownData(daysLeft: number | null): CountdownData {
     if (daysLeft !== null) {
+      if (daysLeft === 0) {
+        return {
+          counter: <HeartIcon />,
+          follow: CounterFollow.today,
+        }
+      }
       if (daysLeft <= 60) {
         return {
           counter: daysLeft,
