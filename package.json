@@ -14,6 +14,8 @@
     "framer-motion": "^2.6.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-query": "^2.15.1",
+    "react-query-devtools": "^2.4.5",
     "react-scripts": "3.4.3",
     "styled-components": "^5.1.1",
     "twin.macro": "^1.7.0",

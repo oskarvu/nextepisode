@@ -65,6 +65,7 @@ export function parseToMovie(apiMovie: any): Movie {
     name: apiMovie.name,
     status: apiMovie.status,
     id: apiMovie.id,
+    numberOfSeasons: apiMovie.number_of_seasons,
     backdrop: apiMovie.backdrop_path,
     inProduction: apiMovie.in_production,
     lastAirDate: apiMovie.last_air_date,

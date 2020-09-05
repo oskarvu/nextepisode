@@ -54,7 +54,11 @@ export default function MovieDetailsCard({
     <Details>
       <div>
         <MovieName letters={movie.name.length}>{movie.name}</MovieName>
-        <InfoBadge>{movie.status}</InfoBadge>
+        <InfoBadge>
+          {movie.numberOfSeasons === 1
+            ? movie.numberOfSeasons + ' season'
+            : movie.numberOfSeasons + ' seasons'}
+        </InfoBadge>
       </div>
       <DetailsCardTable movie={movie} />
       <TrashIcon onClick={handleTrashIconClick} />

@@ -48,10 +48,8 @@ export default function MovieTile({ movieId }: { movieId: number }) {
 
   // todo: load different image background on different devices
   useEffect(() => {
-    console.log('render')
     const queryText = getApiURL(movieId, ApiQueryType.TV)
     fetchFromTMDB(queryText).then((rawMovie) => {
-      console.log('getting fresh data')
       const parsedMovie = parseToMovie(rawMovie)
       setMovie(parsedMovie)
       if (!parsedMovie.backdrop) {

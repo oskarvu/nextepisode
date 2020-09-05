@@ -9,6 +9,7 @@ export interface Movie {
   name: string
   status: string
   id: number
+  numberOfSeasons: number
   backdrop: string | null
   inProduction: boolean
   lastAirDate: string | null

@@ -12,7 +12,7 @@ import { motion } from 'framer-motion'
 const Modal = styled(motion.div)(({ maxHeight }: { maxHeight: number }) => [
   tw`
     absolute z-10 overflow-y-auto
-    w-full md:w-10/12 lg:w-8/12 xl:w-7/12 xxl:w-5/12
+    w-full md:w-10/12 lg:w-8/12 xl:w-7/12 xxl:w-5/12 xxxl:w-4/12 xxxxl:w-3/12
     ml-auto
     bg-white rounded-b-4xl shadow-lg
   `,
@@ -111,16 +111,6 @@ export default function ResultsModal({
     MoviesIdsContext
   )
 
-  // function handleOnClick(result: SearchResult) {
-  //   setVisible(false)
-  //   setSearchBarInputText('')
-  //   const queryText = getApiURL(result.id, ApiQueryType.TV)
-  //   fetchFromTMDB(queryText).then((movie) => {
-  //     !movies.find((m) => m.id === movie.id) &&
-  //       setMovies([parseToMovie(movie), ...movies])
-  //   })
-  // }
-
   function handleOnClick(result: SearchResult) {
     setVisible(false)
     setSearchBarInputText('')
@@ -131,9 +121,9 @@ export default function ResultsModal({
   return (
     <Modal
       maxHeight={maxHeight}
-      initial={{ scaleY: 0, opacity: 0 }}
-      animate={{ scaleY: 1, translateY: 0, opacity: 1 }}
-      exit={{ scaleY: 0, opacity: 0 }}
+      initial={{ scaleY: 0.5, opacity: 0 }}
+      animate={{ scaleY: 1, opacity: 1 }}
+      exit={{ scaleY: 0.5, opacity: 0 }}
       style={{ originY: 0 }}
       transition={{ duration: 0.3, type: 'tween' }}
     >
