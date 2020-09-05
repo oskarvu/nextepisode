@@ -10,6 +10,7 @@ export interface Movie {
   status: string
   id: number
   numberOfSeasons: number
+  network: string | null
   backdrop: string | null
   inProduction: boolean
   lastAirDate: string | null

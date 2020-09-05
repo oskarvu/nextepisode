@@ -59,6 +59,7 @@ export default function MovieDetailsCard({
             ? movie.numberOfSeasons + ' season'
             : movie.numberOfSeasons + ' seasons'}
         </InfoBadge>
+        {movie.network && <InfoBadge>{movie.network}</InfoBadge>}
       </div>
       <DetailsCardTable movie={movie} />
       <TrashIcon onClick={handleTrashIconClick} />

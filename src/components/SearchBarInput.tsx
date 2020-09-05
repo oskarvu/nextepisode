@@ -148,7 +148,7 @@ export default function SearchBarInput({
       )}
       <Input
         type="text"
-        value={inputText}
+        value={isError ? inputText : 'error text'}
         placeholder="Search for a tv show..."
         onKeyUp={handleOnKeyUp}
         onClick={handleClick}
