@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import tw from 'twin.macro'
 
 import { fetchFromTMDB, getApiURL, parseSearchResult } from '../utils/api'
@@ -7,6 +7,8 @@ import { ApiQueryType, SearchResult } from '../api/types'
 
 import Search from '../assets/icons/Search'
 import X from '../assets/icons/X'
+import Spinner from '../assets/icons/Spinner'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const InputContainer = tw.div`
   relative px-4
@@ -20,10 +22,15 @@ const Input = tw.input`
   leading-6 text-lg font-medium tracking-wide
 `
 
-const SearchIcon = tw(Search)`
+const wrapperBase = `
   absolute
   w-8 h-8
   ml-3 mt-6
+`
+
+const SearchWrapper = tw(motion.div)`${wrapperBase}`
+
+const SearchIcon = tw(Search)`
   text-gray-400
 `
 
@@ -32,6 +39,12 @@ const CloseIcon = tw(X)`
   right-0 mr-6 mt-6 w-8 h-8
   text-gray-500 cursor-pointer
   hover:text-gray-800
+`
+
+const SpinnerWrapper = tw(motion.div)`${wrapperBase}`
+
+const SpinnerIcon = tw(Spinner)`
+  text-gray-400
 `
 
 interface Props {
@@ -50,6 +63,9 @@ export default function SearchBarInput({
   inputText,
   setInputText,
 }: Props) {
+  const [isLoading, setLoading] = useState(false)
+  const [isError, setError] = useState(false)
+
   function handleClick() {
     inputText && setModalVisible(true)
   }
@@ -74,12 +90,18 @@ export default function SearchBarInput({
         setResults([])
         return
       }
-      const queryText = getApiURL(inputText, ApiQueryType.Search)
-      fetchFromTMDB(queryText).then((data) => {
-        const translated = parseSearchResult(data.results)
-        setResults(translated)
-        setModalVisible(true)
-      })
+      try {
+        setLoading(true)
+        const queryText = getApiURL(inputText, ApiQueryType.Search)
+        fetchFromTMDB(queryText).then((data) => {
+          const translated = parseSearchResult(data.results)
+          setResults(translated)
+          setLoading(false)
+          setModalVisible(true)
+        })
+      } catch (e) {
+        setError(true)
+      }
     }, fetchDelay)
 
     return () => {
@@ -89,7 +111,33 @@ export default function SearchBarInput({
 
   return (
     <InputContainer>
-      <SearchIcon />
+      {isLoading ? (
+        <AnimatePresence>
+          <SpinnerWrapper
+            initial={{ opacity: 0, scale: 0.8 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            animate={{
+              opacity: [0.3, 1, 0.3],
+              rotate: 360,
+            }}
+            transition={{ duration: 1.2, ease: 'linear', loop: Infinity }}
+          >
+            <SpinnerIcon />
+          </SpinnerWrapper>
+        </AnimatePresence>
+      ) : (
+        <AnimatePresence>
+          <SearchWrapper
+            initial={{ opacity: 0 }}
+            exit={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+            }}
+          >
+            <SearchIcon />
+          </SearchWrapper>
+        </AnimatePresence>
+      )}
       {inputText && (
         <CloseIcon
           onClick={() => {

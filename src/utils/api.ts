@@ -21,17 +21,11 @@ export function getApiURL(query: string | number, type: ApiQueryType): any {
 }
 
 export async function fetchFromTMDB(apiQuery: string): Promise<any> {
-  try {
-    const response = await fetch(apiQuery)
-    if (!response.ok) {
-      throw new Error(`${response.status}`)
-    } else {
-      return await response.json()
-    }
-  } catch (e) {
-    console.error(e)
-    return []
+  const response = await fetch(apiQuery)
+  if (!response.ok) {
+    throw new Error(`${response.status}`)
   }
+  return await response.json()
 }
 
 export function parseSearchResult(apiResult: any[]): SearchResult[] {
