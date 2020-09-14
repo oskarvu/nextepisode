@@ -5,7 +5,7 @@ import { CounterFollow, Episode, Status } from '../api/types'
 import { calculateDaysLeft, calculateMonthsLeft } from '../utils/utils'
 
 import Check from '../assets/icons/Check'
-import X from '../assets/icons/X'
+import X from '../assets/icons/motionable/X'
 import Pencil from '../assets/icons/Pencil'
 import Reply from '../assets/icons/Reply'
 import Heart from '../assets/icons/Heart'

@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import tw from 'twin.macro'
+import { AnimatePresence } from 'framer-motion'
 
-import { fetchFromTMDB, getApiURL, parseSearchResult } from '../utils/api'
-import { fetchDelay } from '../api/config'
-import { ApiQueryType, SearchResult } from '../api/types'
-
-import Search from '../assets/icons/Search'
-import X from '../assets/icons/X'
-import Spinner from '../assets/icons/Spinner'
-import { AnimatePresence, motion } from 'framer-motion'
+import Search from '../assets/icons/motionable/Search'
+import X from '../assets/icons/motionable/X'
+import Spinner from '../assets/icons/motionable/Spinner'
 
 const InputContainer = tw.div`
   relative px-4
@@ -22,17 +18,37 @@ const Input = tw.input`
   leading-6 text-lg font-medium tracking-wide
 `
 
-const wrapperBase = `
+const SpinnerIcon = tw(Spinner)`
   absolute
   w-8 h-8
   ml-3 mt-6
-`
-
-const SearchWrapper = tw(motion.div)`${wrapperBase}`
-
-const SearchIcon = tw(Search)`
   text-gray-400
 `
+
+const spinnerMotionProps = {
+  initial: { opacity: 0, scale: 0.8 },
+  exit: { opacity: 0, scale: 0.8 },
+  animate: {
+    opacity: [0.3, 1, 0.3],
+    rotate: 360,
+  },
+  transition: { duration: 1.2, ease: 'linear', loop: Infinity },
+}
+
+const SearchIcon = tw(Search)`
+  absolute
+  w-8 h-8
+  ml-3 mt-6
+  text-gray-400
+`
+
+const opacityMotionProps = {
+  initial: { opacity: 0 },
+  exit: { opacity: 0 },
+  animate: {
+    opacity: 1,
+  },
+}
 
 const CloseIcon = tw(X)`
   absolute
@@ -41,31 +57,20 @@ const CloseIcon = tw(X)`
   hover:text-gray-800
 `
 
-const SpinnerWrapper = tw(motion.div)`${wrapperBase}`
-
-const SpinnerIcon = tw(Spinner)`
-  text-gray-400
-`
-
 interface Props {
-  setResults: React.Dispatch<React.SetStateAction<SearchResult[]>>
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
   inputText: string
   setInputText: React.Dispatch<React.SetStateAction<string>>
+  isLoading: boolean
 }
 
 // todo: handle errors from api
-// todo: some timeout on promise
-// todo: make spinner when looking in api
 export default function SearchBarInput({
-  setResults,
   setModalVisible,
   inputText,
   setInputText,
+  isLoading,
 }: Props) {
-  const [isLoading, setLoading] = useState(false)
-  const [isError, setError] = useState(false)
-
   function handleClick() {
     inputText && setModalVisible(true)
   }
@@ -84,71 +89,29 @@ export default function SearchBarInput({
     setInputText((event.target as HTMLInputElement).value)
   }
 
-  useEffect(() => {
-    const timeoutID = window.setTimeout(() => {
-      if (!inputText) {
-        setResults([])
-        return
-      }
-      try {
-        setLoading(true)
-        const queryText = getApiURL(inputText, ApiQueryType.Search)
-        fetchFromTMDB(queryText).then((data) => {
-          const translated = parseSearchResult(data.results)
-          setResults(translated)
-          setLoading(false)
-          setModalVisible(true)
-        })
-      } catch (e) {
-        setError(true)
-      }
-    }, fetchDelay)
-
-    return () => {
-      clearTimeout(timeoutID)
-    }
-  }, [inputText, setResults, setModalVisible])
-
   return (
     <InputContainer>
-      {isLoading ? (
-        <AnimatePresence>
-          <SpinnerWrapper
-            initial={{ opacity: 0, scale: 0.8 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            animate={{
-              opacity: [0.3, 1, 0.3],
-              rotate: 360,
+      <AnimatePresence>
+        {isLoading ? (
+          <SpinnerIcon {...spinnerMotionProps} />
+        ) : (
+          <SearchIcon {...opacityMotionProps} />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {inputText && (
+          <CloseIcon
+            {...opacityMotionProps}
+            onClick={() => {
+              setModalVisible(false)
+              setInputText('')
             }}
-            transition={{ duration: 1.2, ease: 'linear', loop: Infinity }}
-          >
-            <SpinnerIcon />
-          </SpinnerWrapper>
-        </AnimatePresence>
-      ) : (
-        <AnimatePresence>
-          <SearchWrapper
-            initial={{ opacity: 0 }}
-            exit={{ opacity: 0 }}
-            animate={{
-              opacity: 1,
-            }}
-          >
-            <SearchIcon />
-          </SearchWrapper>
-        </AnimatePresence>
-      )}
-      {inputText && (
-        <CloseIcon
-          onClick={() => {
-            setModalVisible(false)
-            setInputText('')
-          }}
-        />
-      )}
+          />
+        )}
+      </AnimatePresence>
       <Input
         type="text"
-        value={isError ? inputText : 'error text'}
+        value={inputText}
         placeholder="Search for a tv show..."
         onKeyUp={handleOnKeyUp}
         onClick={handleClick}

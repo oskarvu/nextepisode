@@ -28,7 +28,7 @@ export async function fetchFromTMDB(apiQuery: string): Promise<any> {
   return await response.json()
 }
 
-export function parseSearchResult(apiResult: any[]): SearchResult[] {
+export function parseToSearchResult(apiResult: any[]): SearchResult[] {
   return apiResult.map((movieResult) => ({
     name: movieResult.name,
     firstAirDate: movieResult.first_air_date,

@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import tw from 'twin.macro'
 
-import { SearchResult } from '../api/types'
+import { ApiQueryType, SearchResult } from '../api/types'
 
 import ResultsModal from './ResultsModal'
 import SearchBarInput from './SearchBarInput'
 import useHideWhenClickedOutside from '../hooks/useHideWhenClickedOutside'
 import useWindowInnerHeight from '../hooks/useWindowInnerHeight'
 import { AnimatePresence } from 'framer-motion'
+import useTMDBFetch from '../hooks/useTMDBFetch'
+import { fetchDelay } from '../api/config'
 
 const Container = tw.div`
   mx-auto
@@ -16,12 +18,17 @@ const Container = tw.div`
 `
 
 function SearchBar() {
-  const [results, setResults] = useState([] as SearchResult[])
   const [inputText, setInputText] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
   const [modalMaxHeight, setModalMaxHeight] = useState(1000)
   const windowInnerHeight = useWindowInnerHeight()
   const searchBarRef = useRef<HTMLDivElement>(null)
+
+  const { isLoading, isError, data } = useTMDBFetch(
+    inputText,
+    ApiQueryType.Search,
+    fetchDelay
+  )
 
   useHideWhenClickedOutside(searchBarRef, setModalVisible)
 
@@ -31,21 +38,27 @@ function SearchBar() {
     }
   }, [searchBarRef, windowInnerHeight])
 
+  useEffect(() => {
+    if (data) {
+      setModalVisible(true)
+    }
+  }, [data])
+
   return (
     <Container ref={searchBarRef}>
       <SearchBarInput
         inputText={inputText}
         setInputText={setInputText}
         setModalVisible={setModalVisible}
-        setResults={setResults}
+        isLoading={isLoading}
       />
       <AnimatePresence>
-        {modalVisible && (
+        {modalVisible && data && (
           <ResultsModal
             maxHeight={modalMaxHeight}
             setVisible={setModalVisible}
             setSearchBarInputText={setInputText}
-            results={results}
+            results={data as SearchResult[]}
           />
         )}
       </AnimatePresence>
