@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import tw, { styled } from 'twin.macro'
 
-import SearchBar from './search-bar/SearchBar'
+import SearchBar from './SearchBar/SearchBar'
 
-const Container = styled.div(({ isScrolled }: { isScrolled: boolean }) => [
+const TopContainer = styled.div(({ isScrolled }: { isScrolled: boolean }) => [
   tw`
     sticky top-0 z-10
-    flex items-baseline justify-center
+    flex items-center justify-center
     w-full
     bg-white
   `,
@@ -38,9 +38,9 @@ function Header() {
   }, [])
 
   return (
-    <Container isScrolled={isScrolled}>
+    <TopContainer isScrolled={isScrolled}>
       <SearchBar />
-    </Container>
+    </TopContainer>
   )
 }
 

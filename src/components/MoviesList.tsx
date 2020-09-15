@@ -3,7 +3,7 @@ import tw from 'twin.macro'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 
 import { MoviesIdsContextShape, MoviesIdsContext } from './Main'
-import MovieTile from './movie-tile/MovieTile'
+import MovieTile from './MovieTile/MovieTile'
 
 const List = tw(motion.ul)`
   flex flex-wrap

@@ -1,12 +1,14 @@
 import React from 'react'
-import tw from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 import { AnimatePresence } from 'framer-motion'
+
+import { Texts } from '../../translations/en-US'
+import capitalize from '../../utils/capitalize'
 
 import Search from '../../assets/icons/motionable/Search'
 import X from '../../assets/icons/motionable/X'
 import Spinner from '../../assets/icons/motionable/Spinner'
-import { Texts } from '../../translations/en-US'
-import capitalize from '../../utils/capitalize'
+import Logo from '../../assets/icons/motionable/Logo'
 
 const InputContainer = tw.div`
   relative px-4
@@ -54,10 +56,17 @@ const opacityMotionProps = {
 
 const CloseIcon = tw(X)`
   absolute
-  right-0 mr-6 mt-6 w-8 h-8
+  right-0 mr-8 mt-6 w-8 h-8
   text-gray-500 cursor-pointer
   hover:text-gray-800
 `
+
+const StyledLogo = styled(Logo)(() => [
+  tw`absolute
+    right-0 mr-8 w-8 h-8
+    text-red-500`,
+  'margin-top: 1.4rem',
+])
 
 interface Props {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
@@ -101,7 +110,7 @@ export default function SearchBarInput({
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {inputText && (
+        {inputText ? (
           <CloseIcon
             {...opacityMotionProps}
             onClick={() => {
@@ -109,12 +118,14 @@ export default function SearchBarInput({
               setInputText('')
             }}
           />
+        ) : (
+          <StyledLogo {...opacityMotionProps} />
         )}
       </AnimatePresence>
       <Input
         type="text"
         value={inputText}
-        placeholder={capitalize(Texts.searchForTvShow)}
+        placeholder={capitalize(Texts.searchForTvShow) + '...'}
         onKeyUp={handleOnKeyUp}
         onClick={handleClick}
         onFocus={handleOnFocus}

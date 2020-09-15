@@ -8,8 +8,10 @@ import { ApiQueryType, Movie } from '../../api/types'
 import Countdown from './Countdown'
 import MovieDetailsCard from './MovieDetailsCard'
 import { parseToMovie } from '../../utils/api'
+
 import useTMDBFetch from '../../hooks/useTMDBFetch'
 import useBackdropImage from '../../hooks/useBackdropImage'
+import { ReactComponent as FakeContentImage } from '../../assets/images/fake-tile-bg.svg'
 
 const tileBaseStyle = `
   flex flex-col sm:flex-row
@@ -24,7 +26,11 @@ const Tile = styled(motion.div)(({ backdrop }: { backdrop: string | null }) => [
   `background-image: url("${backdrop}");`,
 ])
 
-const FakeTile = tw(motion.div)`${tileBaseStyle}`
+const FakeTile = styled(motion.div)(() => [tw`${tileBaseStyle}`])
+
+const FakeContent = tw(FakeContentImage)`
+  w-full text-gray-300
+`
 
 const StartContainer = tw.div`
     flex flex-grow justify-center
@@ -60,7 +66,9 @@ export default function MovieTile({ movieId }: { movieId: number }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 1.2, loop: Infinity }}
       layout
-    />
+    >
+      <FakeContent />
+    </FakeTile>
   ) : (
     <Tile
       backdrop={backdrop}
