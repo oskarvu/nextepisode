@@ -7,7 +7,7 @@ import {
 } from '../api/config'
 import { ApiQueryType, Movie, SearchResult } from '../api/types'
 
-export function getApiURL(query: string | number, type: ApiQueryType): any {
+export function getApiURL(query: string, type: ApiQueryType): string {
   switch (type) {
     case ApiQueryType.Search:
       return `${searchURL}${keyField}${searchFields}&query=${encodeURI(
@@ -28,8 +28,8 @@ export async function fetchFromTMDB(apiQuery: string): Promise<any> {
   return await response.json()
 }
 
-export function parseToSearchResult(apiResult: any[]): SearchResult[] {
-  return apiResult.map((movieResult) => ({
+export function parseToSearchResult(data: any): SearchResult[] {
+  return data.results.map((movieResult: any) => ({
     name: movieResult.name,
     firstAirDate: movieResult.first_air_date,
     id: movieResult.id,

@@ -24,27 +24,6 @@ export interface SearchResult {
   id: number
 }
 
-export enum Status {
-  Rumored = 'rumored',
-  Planned = 'planned',
-  InProduction = 'in production',
-  PostProduction = 'post production',
-  Released = 'released',
-  Canceled = 'canceled',
-  ReturningSeries = 'returning series',
-  Ended = 'ended',
-  Planed = 'planned',
-}
-
-export enum CounterFollow {
-  dayLeft = 'day left',
-  daysLeft = 'days left',
-  monthLeft = 'month left',
-  monthsLeft = 'months left',
-  noInfo = 'no info yet',
-  today = 'today',
-}
-
 export enum ApiQueryType {
   Search = 'search',
   TV = 'tv',
