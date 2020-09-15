@@ -106,12 +106,15 @@ export default function SearchBarInput({
         {isLoading ? (
           <SpinnerIcon {...spinnerMotionProps} />
         ) : (
-          <SearchIcon {...opacityMotionProps} />
+          <label htmlFor="search-input">
+            <SearchIcon title="search" {...opacityMotionProps} />
+          </label>
         )}
       </AnimatePresence>
       <AnimatePresence>
         {inputText ? (
           <CloseIcon
+            title="close"
             {...opacityMotionProps}
             onClick={() => {
               setModalVisible(false)
@@ -123,6 +126,7 @@ export default function SearchBarInput({
         )}
       </AnimatePresence>
       <Input
+        id="search-input"
         type="text"
         value={inputText}
         placeholder={capitalize(Texts.searchForTvShow) + '...'}

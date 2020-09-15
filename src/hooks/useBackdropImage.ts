@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 import { Movie } from '../api/types'
 
-import DefaultBGImage from '../assets/images/placeholder.jpg'
+import DefaultBGImage from '../assets/images/tile-default-bg.jpg'
 import { backdropBaseUrl, backdropMedium } from '../api/config'
 
 export default function useBackdropImage(movie: Movie | null) {
