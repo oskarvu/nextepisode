@@ -49,7 +49,7 @@ export default function MovieTile({ movieId }: { movieId: number }) {
     MoviesIdsContext
   )
 
-  const { isLoading, data: movie } = useTMDBFetch<Movie>(
+  const { data: movie } = useTMDBFetch<Movie>(
     ApiQueryType.TV,
     movieId.toString(),
     parseToMovie
@@ -57,22 +57,10 @@ export default function MovieTile({ movieId }: { movieId: number }) {
 
   const { isBackdropLoading, backdrop } = useBackdropImage(movie)
 
-  if (!movie) return null
-
-  return isLoading || isBackdropLoading ? (
-    <FakeTile
-      initial={{ opacity: 0 }}
-      animate={{ opacity: [1, 0.3, 1] }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 1.2, loop: Infinity }}
-      layout
-    >
-      <FakeContent />
-    </FakeTile>
-  ) : (
+  return !isBackdropLoading && movie ? (
     <Tile
       backdrop={backdrop}
-      initial={{ opacity: 0.5 }}
+      initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.3 } }}
       layout
@@ -88,5 +76,14 @@ export default function MovieTile({ movieId }: { movieId: number }) {
         />
       </EndContainer>
     </Tile>
+  ) : (
+    <FakeTile
+      initial={{ opacity: 0 }}
+      animate={{ opacity: [1, 0.3, 1] }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1.2, loop: Infinity }}
+    >
+      <FakeContent />
+    </FakeTile>
   )
 }
