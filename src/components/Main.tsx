@@ -1,5 +1,6 @@
 import React, { useState, createContext, useEffect } from 'react'
 import tw from 'twin.macro'
+import { RecoilRoot } from 'recoil'
 
 import Header from './Header'
 import MoviesList from './MoviesList'
