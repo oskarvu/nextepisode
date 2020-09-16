@@ -35,8 +35,10 @@ export default function Main() {
   return (
     <MainContainer>
       <MoviesIdsContext.Provider value={{ moviesIds, setMoviesIds }}>
-        <Header />
-        <MoviesList />
+        <RecoilRoot>
+          <Header />
+          <MoviesList />
+        </RecoilRoot>
       </MoviesIdsContext.Provider>
       <Footer />
     </MainContainer>

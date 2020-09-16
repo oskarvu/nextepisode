@@ -6,7 +6,8 @@ export default function useTMDBFetch<T>(
   type: ApiQueryType,
   query: string,
   parser: (data: any) => T,
-  delay = 0
+  fetchDelay = 0,
+  isLoadingTrigger = 0
 ) {
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
@@ -21,7 +22,7 @@ export default function useTMDBFetch<T>(
       try {
         const longLoadTimeout = setTimeout(() => {
           setIsLoading(true)
-        }, 150)
+        }, isLoadingTrigger)
         const queryText = getApiURL(query, type)
         fetchFromTMDB(queryText)
           .then((data) => {
@@ -36,9 +37,9 @@ export default function useTMDBFetch<T>(
         setIsError(true)
         setError(e)
       }
-    }, delay)
+    }, fetchDelay)
 
     return () => clearTimeout(timeoutID)
-  }, [query, type, delay, parser])
+  }, [query, type, fetchDelay, parser])
   return { isLoading, isError, error, data }
 }

@@ -30,7 +30,8 @@ function SearchBar() {
     ApiQueryType.Search,
     inputText,
     parseToSearchResult,
-    fetchDelay
+    fetchDelay,
+    50
   )
 
   useHideWhenClickedOutside(searchBarRef, setModalVisible)
