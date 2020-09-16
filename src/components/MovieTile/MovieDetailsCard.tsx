@@ -26,7 +26,7 @@ const MovieName = styled.h1(({ letters }: { letters: number }) => [
 
 const InfoBadge = tw.div`
   inline-block
-  px-2 py-1 mr-1 mb-2
+  px-2 py-1 mr-1 last:mb-2
   bg-gray-300 rounded-full
   text-xs uppercase font-bold text-gray-600 tracking-wider
 `
