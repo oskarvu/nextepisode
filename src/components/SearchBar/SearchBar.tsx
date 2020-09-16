@@ -31,7 +31,7 @@ function SearchBar() {
     inputText,
     parseToSearchResult,
     fetchDelay,
-    50
+    60
   )
 
   useHideWhenClickedOutside(searchBarRef, setModalVisible)
