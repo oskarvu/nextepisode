@@ -1,20 +1,18 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import tw, { styled } from 'twin.macro'
 import { motion } from 'framer-motion'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 
 import { ApiQueryType, Movie } from '../../api/types'
 import { parseToMovie } from '../../utils/api'
 import useTMDBFetch from '../../hooks/useTMDBFetch'
 import useBackdropImage from '../../hooks/useBackdropImage'
 
-import { MoviesIdsContext, MoviesIdsContextShape } from '../Main'
 import { selectedMovieIdStateFamily } from '../SearchBar/SingleResult'
 
 import Countdown from './Countdown'
 import MovieDetailsCard from './MovieDetailsCard'
 import { ReactComponent as FakeContentImage } from '../../assets/images/fake-tile-bg.svg'
-import { idMovieFilteringDataFamily, moviesAtoms } from '../MoviesList'
 
 const tileBaseStyle = `
   flex flex-col sm:flex-row
@@ -54,14 +52,9 @@ const EndContainer = tw.div`
 `
 
 export default function MovieTile({ movieId }: { movieId: number }) {
-  const { moviesIds, setMoviesIds } = useContext<MoviesIdsContextShape>(
-    MoviesIdsContext
-  )
   const [isSelected, setIsSelected] = useRecoilState(
     selectedMovieIdStateFamily(movieId)
   )
-  const setAtomsMap = useSetRecoilState(moviesAtoms)
-  const movieAtom = useRecoilValue(idMovieFilteringDataFamily(movieId))
   const { data: movie } = useTMDBFetch<Movie>(
     ApiQueryType.TV,
     movieId.toString(),
@@ -76,10 +69,6 @@ export default function MovieTile({ movieId }: { movieId: number }) {
       setIsSelected(false)
     }
   }, [isSelected, setIsSelected, tileRef, movieId])
-
-  useEffect(() => {
-    setAtomsMap((oldState) => ({ ...oldState, [movieId]: movieAtom }))
-  }, [movieId, movieAtom, setAtomsMap])
 
   return !isBackdropLoading && movie ? (
     <Tile
@@ -99,11 +88,7 @@ export default function MovieTile({ movieId }: { movieId: number }) {
         />
       </StartContainer>
       <EndContainer>
-        <MovieDetailsCard
-          movie={movie}
-          moviesIds={moviesIds}
-          setMoviesIds={setMoviesIds}
-        />
+        <MovieDetailsCard movie={movie} />
       </EndContainer>
     </Tile>
   ) : (

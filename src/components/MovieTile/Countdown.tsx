@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import tw from 'twin.macro'
 
 import { Episode } from '../../api/types'
@@ -10,8 +10,7 @@ import X from '../../assets/icons/motionable/X'
 import Pencil from '../../assets/icons/Pencil'
 import Reply from '../../assets/icons/Reply'
 import Heart from '../../assets/icons/Heart'
-import { useRecoilState, useSetRecoilState } from 'recoil'
-import { idMovieFilteringDataFamily } from '../MoviesList'
+import useSetMoviesShortData from '../../hooks/useSetMoviesShortData'
 
 const Container = tw.div`
   flex flex-row sm:flex-col items-center justify-center
@@ -56,19 +55,24 @@ interface CountdownData {
 }
 
 export default function Countdown({ nextEpisode, status, movieId }: Props) {
-  const setDaysLeft = useSetRecoilState(idMovieFilteringDataFamily(movieId))
+  // const setState = useSetRecoilState(idMovieShortDataMap)
   const [daysLeft] = useState(() => initDaysState())
   const [countdownData] = useState<CountdownData>(() =>
     initCountdownData(daysLeft)
   )
 
-  useEffect(() => {
-    const timeLeft = daysLeft ? daysLeft : Infinity
-    setDaysLeft((oldState) => ({
-      ...oldState,
-      timeLeftToAir: timeLeft,
-    }))
-  }, [daysLeft, setDaysLeft])
+  useSetMoviesShortData(movieId, 'timeLeftToAir', daysLeft)
+
+  // useEffect(() => {
+  //   setState((prev) => {
+  //     const newState = { ...prev }
+  //     newState[movieId] = {
+  //       ...newState[movieId],
+  //       timeLeftToAir: daysLeft ?? null,
+  //     }
+  //     return newState
+  //   })
+  // }, [movieId, daysLeft, setState])
 
   return (
     <Container>

@@ -1,18 +1,10 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import tw from 'twin.macro'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 
-import { MoviesIdsContextShape, MoviesIdsContext } from './Main'
+import { movieIdList, idMovieShortDataMap } from './Main'
 import MovieTile from './MovieTile/MovieTile'
-import {
-  atom,
-  atomFamily,
-  RecoilState,
-  selector,
-  selectorFamily,
-  useRecoilValue,
-  useSetRecoilState,
-} from 'recoil'
+import { useRecoilValue } from 'recoil'
 
 const List = tw(motion.ul)`
   flex flex-wrap
@@ -21,21 +13,15 @@ const List = tw(motion.ul)`
 `
 
 export default function MoviesList() {
-  const { moviesIds } = useContext<MoviesIdsContextShape>(MoviesIdsContext)
-  const moviesAtomsList = useRecoilValue(moviesAtoms)
-
-  useEffect(() => {
-    setTimeout(() => {
-      console.log(moviesAtomsList)
-    }, 1000)
-  })
+  const moviesData = useRecoilValue(idMovieShortDataMap)
+  const moviesIds = useRecoilValue(movieIdList)
 
   return (
     <List>
       <AnimateSharedLayout>
         <AnimatePresence>
-          {moviesIds.map((mId, idx) => (
-            <MovieTile key={mId} movieId={mId} />
+          {moviesIds.map((id) => (
+            <MovieTile key={id} movieId={id} />
           ))}
         </AnimatePresence>
       </AnimateSharedLayout>

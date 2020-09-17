@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import tw, { styled } from 'twin.macro'
 
 import { Movie } from '../../api/types'
@@ -6,7 +6,8 @@ import Trash from '../../assets/icons/Trash'
 import DetailsCardTable from './DetailsCardTable'
 import { Texts } from '../../translations/en-US'
 import { useSetRecoilState } from 'recoil'
-import { idMovieFilteringDataFamily } from '../MoviesList'
+import { IdMovieShortDataMap, idMovieShortDataMap, movieIdList } from '../Main'
+import useSetMoviesShortData from '../../hooks/useSetMoviesShortData'
 
 const Details = tw.div`
   relative flex justify-between flex-col
@@ -39,26 +40,11 @@ const TrashIcon = tw(Trash)`
   cursor-pointer text-gray-500 hover:text-gray-700
 `
 
-interface Props {
-  movie: Movie
-  moviesIds: number[]
-  setMoviesIds: React.Dispatch<React.SetStateAction<number[]>>
-}
+export default function MovieDetailsCard({ movie }: { movie: Movie }) {
+  const setMoviesData = useSetRecoilState(idMovieShortDataMap)
+  const setMoviesIds = useSetRecoilState(movieIdList)
 
-export default function MovieDetailsCard({
-  movie,
-  moviesIds,
-  setMoviesIds,
-}: Props) {
-  const setAddStudio = useSetRecoilState(idMovieFilteringDataFamily(movie.id))
-
-  useEffect(() => {
-    movie.network &&
-      setAddStudio((oldState) => ({
-        ...oldState,
-        studio: movie.network,
-      }))
-  }, [movie.network, setAddStudio])
+  useSetMoviesShortData(movie.id, 'studio', movie.network)
 
   return (
     <Details>
@@ -77,6 +63,13 @@ export default function MovieDetailsCard({
   )
 
   function handleTrashIconClick() {
-    setMoviesIds(moviesIds.filter((mId) => mId !== movie.id))
+    setMoviesIds((prev) => prev.filter((id) => id !== movie.id))
+    setMoviesData((prev) => {
+      const newState: IdMovieShortDataMap = {
+        ...prev,
+      }
+      delete newState[movie.id]
+      return newState
+    })
   }
 }

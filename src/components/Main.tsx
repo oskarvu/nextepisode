@@ -1,6 +1,6 @@
-import React, { useState, createContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import tw from 'twin.macro'
-import { atom, atomFamily, RecoilRoot } from 'recoil'
+import { atom, useRecoilValue } from 'recoil'
 
 import Header from './Header'
 import MoviesList from './MoviesList'
@@ -11,50 +11,53 @@ const MainContainer = tw.div`
   bg-gray-200
 `
 
-enum Filters {
-  Studio,
-  AirTime,
-  AddTime,
-}
+// enum Filters {
+//   Studio,
+//   AirTime,
+//   AddTime,
+// }
 
-interface MovieShortData {
-  id: number | null
-  addTime: number | null
+export interface MovieShortData {
+  id: number
+  addTime: number
   timeLeftToAir: number | null
   studio: string | null
 }
 
-// export interface idAtom {
-//   [id: number]: IdMovieFilteringData
-// }
+export interface IdMovieShortDataMap {
+  [id: number]: MovieShortData
+}
 
-const localData = localStorage.getItem('moviesShortData')
-export const movieList = atom<MovieShortData[]>({
-  key: 'movieAtoms',
-  default: localData
-    ? (JSON.parse(localData) as MovieShortData[])
+const stored = localStorage.getItem('storage')
+
+export const idMovieShortDataMap = atom<IdMovieShortDataMap>({
+  key: 'idMovieShortDataMap',
+  default: stored
+    ? (JSON.parse(stored).moviesData as MovieShortData[])
     : ([] as MovieShortData[]),
+})
+
+export const movieIdList = atom<number[]>({
+  key: 'movieIdList',
+  default: stored
+    ? (JSON.parse(stored).moviesIds as number[])
+    : ([] as number[]),
 })
 
 // todo: add error handling (api)
 export default function Main() {
-  const localData = localStorage.getItem('moviesIds')
-  const initialMoviesIds = () =>
-    localData
-      ? (JSON.parse(localData) as MovieShortData[])
-      : ([] as MovieShortData[])
-  const [moviesIds, setMoviesIds] = useState(initialMoviesIds)
+  const moviesData = useRecoilValue(idMovieShortDataMap)
+  const moviesIds = useRecoilValue(movieIdList)
 
   useEffect(() => {
-    localStorage.setItem('moviesIds', JSON.stringify(moviesIds))
-  }, [moviesIds])
+    const toStore = { moviesData, moviesIds }
+    localStorage.setItem('storage', JSON.stringify(toStore))
+  }, [moviesData, moviesIds])
 
   return (
     <MainContainer>
-      <RecoilRoot>
-        <Header />
-        <MoviesList />
-      </RecoilRoot>
+      <Header />
+      <MoviesList />
       <Footer />
     </MainContainer>
   )

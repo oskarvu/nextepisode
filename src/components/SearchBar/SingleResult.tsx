@@ -1,10 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { SearchResult } from '../../api/types'
 import tw from 'twin.macro'
 import Check from '../../assets/icons/Check'
-import { MoviesIdsContext, MoviesIdsContextShape } from '../Main'
-import { atom, atomFamily, useRecoilState, useSetRecoilState } from 'recoil'
-import { idAtom, idMovieFilteringDataFamily, moviesAtoms } from '../MoviesList'
+import { idMovieShortDataMap, MovieShortData, movieIdList } from '../Main'
+import { atomFamily, useRecoilState, useSetRecoilState } from 'recoil'
 
 const Result = tw.li`
   flex flex-row items-center
@@ -38,26 +37,24 @@ const InfoPill = tw.div`
   bg-gray-300
 `
 
+export const selectedMovieIdStateFamily = atomFamily({
+  key: 'movieId',
+  default: false,
+})
+
 interface SingleResultProps {
   result: SearchResult
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
   setSearchBarInputText: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const selectedMovieIdStateFamily = atomFamily({
-  key: 'movieId',
-  default: false,
-})
-
 export default function SingleResult({
   result,
   setModalVisible,
   setSearchBarInputText,
 }: SingleResultProps) {
-  const { moviesIds, setMoviesIds } = useContext<MoviesIdsContextShape>(
-    MoviesIdsContext
-  )
-  const setAddTime = useSetRecoilState(idMovieFilteringDataFamily(result.id))
+  const [moviesData, setMoviesData] = useRecoilState(idMovieShortDataMap)
+  const setMoviesIds = useSetRecoilState(movieIdList)
   const setMovieAsSelected = useSetRecoilState(
     selectedMovieIdStateFamily(result.id)
   )
@@ -67,7 +64,7 @@ export default function SingleResult({
       <ResultButton onClick={() => handleOnClick(result)}>
         <ResultText>{result.name}</ResultText>
         <PillsContainer>
-          {moviesIds.find((id) => result.id === id) && (
+          {moviesData[result.id] && (
             <InfoPill>
               <ResultCheck />
             </InfoPill>
@@ -81,16 +78,17 @@ export default function SingleResult({
   )
 
   function handleOnClick(result: SearchResult) {
-    console.log()
     setModalVisible(false)
     setSearchBarInputText('')
-    if (!moviesIds.find((mId) => mId === result.id)) {
-      setMoviesIds((oldState) => [result.id, ...oldState])
-      setAddTime((oldState) => ({
-        ...oldState,
+    if (!moviesData[result.id]) {
+      const newMovie: MovieShortData = {
         id: result.id,
         addTime: Date.now(),
-      }))
+        timeLeftToAir: null,
+        studio: null,
+      }
+      setMoviesIds((prev) => [result.id, ...prev])
+      setMoviesData((prev) => ({ [result.id]: newMovie, ...prev }))
     } else {
       setMovieAsSelected(true)
     }

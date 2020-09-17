@@ -40,6 +40,6 @@ export default function useTMDBFetch<T>(
     }, fetchDelay)
 
     return () => clearTimeout(timeoutID)
-  }, [query, type, fetchDelay, parser])
+  }, [query, type, fetchDelay, parser, isLoadingTrigger])
   return { isLoading, isError, error, data }
 }
