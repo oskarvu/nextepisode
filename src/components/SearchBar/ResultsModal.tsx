@@ -34,9 +34,9 @@ export default function ResultsModal({
   return (
     <Modal
       maxHeight={maxHeight}
-      initial={{ scaleY: 0.5, opacity: 0 }}
-      animate={{ scaleY: 1, opacity: 1 }}
-      exit={{ scaleY: 0.5, opacity: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       style={{ originY: 0 }}
       transition={{ duration: 0.3, type: 'tween' }}
     >

@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import tw, { styled } from 'twin.macro'
 
 import { Movie } from '../../api/types'
 import Trash from '../../assets/icons/Trash'
 import DetailsCardTable from './DetailsCardTable'
 import { Texts } from '../../translations/en-US'
+import { useSetRecoilState } from 'recoil'
+import { idMovieFilteringDataFamily } from '../MoviesList'
 
 const Details = tw.div`
   relative flex justify-between flex-col
@@ -48,9 +50,15 @@ export default function MovieDetailsCard({
   moviesIds,
   setMoviesIds,
 }: Props) {
-  function handleTrashIconClick() {
-    setMoviesIds(moviesIds.filter((mId) => mId !== movie.id))
-  }
+  const setAddStudio = useSetRecoilState(idMovieFilteringDataFamily(movie.id))
+
+  useEffect(() => {
+    movie.network &&
+      setAddStudio((oldState) => ({
+        ...oldState,
+        studio: movie.network,
+      }))
+  }, [movie.network, setAddStudio])
 
   return (
     <Details>
@@ -67,4 +75,8 @@ export default function MovieDetailsCard({
       <TrashIcon onClick={handleTrashIconClick} />
     </Details>
   )
+
+  function handleTrashIconClick() {
+    setMoviesIds(moviesIds.filter((mId) => mId !== movie.id))
+  }
 }

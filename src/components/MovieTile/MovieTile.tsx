@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import tw, { styled } from 'twin.macro'
 import { motion } from 'framer-motion'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
 import { ApiQueryType, Movie } from '../../api/types'
 import { parseToMovie } from '../../utils/api'
@@ -9,11 +9,12 @@ import useTMDBFetch from '../../hooks/useTMDBFetch'
 import useBackdropImage from '../../hooks/useBackdropImage'
 
 import { MoviesIdsContext, MoviesIdsContextShape } from '../Main'
-import { selectedMovieIdStateFamily } from '../MoviesList'
+import { selectedMovieIdStateFamily } from '../SearchBar/SingleResult'
 
 import Countdown from './Countdown'
 import MovieDetailsCard from './MovieDetailsCard'
 import { ReactComponent as FakeContentImage } from '../../assets/images/fake-tile-bg.svg'
+import { idMovieFilteringDataFamily, moviesAtoms } from '../MoviesList'
 
 const tileBaseStyle = `
   flex flex-col sm:flex-row
@@ -21,20 +22,6 @@ const tileBaseStyle = `
   my-2 xl:mx-2
   rounded-4xl overflow-hidden bg-gray-400 bg-cover bg-center
 `
-
-interface TileProps {
-  backdrop: string | null
-}
-
-// const Tile = styled(motion.div)(({ backdrop }: TileProps) => [
-//   tw`${tileBaseStyle}`,
-//   tw`focus:outline-none focus:shadow-focus`,
-//   `box-shadow: inset 0 0 10px 0 rgba(0,0,0,0.3);`,
-//   `background-image: url("${backdrop}");`,
-//   :focus {
-//     `transition: box-shadow 0.3s ease-in-out`
-//   },
-// ])
 
 const Tile = styled(motion.div)`
   ${tw`${tileBaseStyle}`}
@@ -44,7 +31,7 @@ const Tile = styled(motion.div)`
   transition: box-shadow 0.3s ease-in-out;
   :focus {
     outline: none;
-    box-shadow: 0 0 0 7px #f56565, 0 0 20px 0 rgba(0, 0, 0, 0.5) inset;
+    box-shadow: 0 0 0 6px #f56565, 0 0 10px 0 rgba(0, 0, 0, 0.3) inset;
   }
 `
 
@@ -67,12 +54,14 @@ const EndContainer = tw.div`
 `
 
 export default function MovieTile({ movieId }: { movieId: number }) {
-  const [isSelected, setIsSelected] = useRecoilState(
-    selectedMovieIdStateFamily(movieId)
-  )
   const { moviesIds, setMoviesIds } = useContext<MoviesIdsContextShape>(
     MoviesIdsContext
   )
+  const [isSelected, setIsSelected] = useRecoilState(
+    selectedMovieIdStateFamily(movieId)
+  )
+  const setAtomsMap = useSetRecoilState(moviesAtoms)
+  const movieAtom = useRecoilValue(idMovieFilteringDataFamily(movieId))
   const { data: movie } = useTMDBFetch<Movie>(
     ApiQueryType.TV,
     movieId.toString(),
@@ -88,6 +77,10 @@ export default function MovieTile({ movieId }: { movieId: number }) {
     }
   }, [isSelected, setIsSelected, tileRef, movieId])
 
+  useEffect(() => {
+    setAtomsMap((oldState) => ({ ...oldState, [movieId]: movieAtom }))
+  }, [movieId, movieAtom, setAtomsMap])
+
   return !isBackdropLoading && movie ? (
     <Tile
       tabIndex={-1}
@@ -99,7 +92,11 @@ export default function MovieTile({ movieId }: { movieId: number }) {
       layout
     >
       <StartContainer>
-        <Countdown nextEpisode={movie.nextEpisode} status={movie.status} />
+        <Countdown
+          nextEpisode={movie.nextEpisode}
+          status={movie.status}
+          movieId={movieId}
+        />
       </StartContainer>
       <EndContainer>
         <MovieDetailsCard

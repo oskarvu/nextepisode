@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import tw from 'twin.macro'
 
 import { Episode } from '../../api/types'
@@ -10,6 +10,8 @@ import X from '../../assets/icons/motionable/X'
 import Pencil from '../../assets/icons/Pencil'
 import Reply from '../../assets/icons/Reply'
 import Heart from '../../assets/icons/Heart'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { idMovieFilteringDataFamily } from '../MoviesList'
 
 const Container = tw.div`
   flex flex-row sm:flex-col items-center justify-center
@@ -43,6 +45,7 @@ const ReplyIcon = tw(Reply)`${IconBase}`
 const HeartIcon = tw(Heart)`${IconBase}`
 
 interface Props {
+  movieId: number
   nextEpisode: Episode | null
   status: string
 }
@@ -52,7 +55,28 @@ interface CountdownData {
   follow: string
 }
 
-export default function Countdown({ nextEpisode, status }: Props) {
+export default function Countdown({ nextEpisode, status, movieId }: Props) {
+  const setDaysLeft = useSetRecoilState(idMovieFilteringDataFamily(movieId))
+  const [daysLeft] = useState(() => initDaysState())
+  const [countdownData] = useState<CountdownData>(() =>
+    initCountdownData(daysLeft)
+  )
+
+  useEffect(() => {
+    const timeLeft = daysLeft ? daysLeft : Infinity
+    setDaysLeft((oldState) => ({
+      ...oldState,
+      timeLeftToAir: timeLeft,
+    }))
+  }, [daysLeft, setDaysLeft])
+
+  return (
+    <Container>
+      <Counter>{countdownData.counter}</Counter>
+      <FollowUp>{countdownData.follow}</FollowUp>
+    </Container>
+  )
+
   function initDaysState(): number | null {
     return nextEpisode?.airDate ? calculateDaysLeft(nextEpisode.airDate) : null
   }
@@ -93,16 +117,4 @@ export default function Countdown({ nextEpisode, status }: Props) {
         return { counter: '?', follow: CounterFollow.noInfo }
     }
   }
-
-  const [daysLeft] = useState(() => initDaysState())
-  const [countdownData] = useState<CountdownData>(() =>
-    initCountdownData(daysLeft)
-  )
-
-  return (
-    <Container>
-      <Counter>{countdownData.counter}</Counter>
-      <FollowUp>{countdownData.follow}</FollowUp>
-    </Container>
-  )
 }

@@ -1,6 +1,6 @@
 import React, { useState, createContext, useEffect } from 'react'
 import tw from 'twin.macro'
-import { RecoilRoot } from 'recoil'
+import { atom, atomFamily, RecoilRoot } from 'recoil'
 
 import Header from './Header'
 import MoviesList from './MoviesList'
@@ -11,21 +11,38 @@ const MainContainer = tw.div`
   bg-gray-200
 `
 
-export interface MoviesIdsContextShape {
-  moviesIds: number[]
-  setMoviesIds: React.Dispatch<React.SetStateAction<number[]>>
+enum Filters {
+  Studio,
+  AirTime,
+  AddTime,
 }
 
-export const MoviesIdsContext = createContext<MoviesIdsContextShape>({
-  moviesIds: [],
-  setMoviesIds: () => {},
+interface MovieShortData {
+  id: number | null
+  addTime: number | null
+  timeLeftToAir: number | null
+  studio: string | null
+}
+
+// export interface idAtom {
+//   [id: number]: IdMovieFilteringData
+// }
+
+const localData = localStorage.getItem('moviesShortData')
+export const movieList = atom<MovieShortData[]>({
+  key: 'movieAtoms',
+  default: localData
+    ? (JSON.parse(localData) as MovieShortData[])
+    : ([] as MovieShortData[]),
 })
 
 // todo: add error handling (api)
 export default function Main() {
   const localData = localStorage.getItem('moviesIds')
   const initialMoviesIds = () =>
-    localData ? (JSON.parse(localData) as number[]) : ([] as number[])
+    localData
+      ? (JSON.parse(localData) as MovieShortData[])
+      : ([] as MovieShortData[])
   const [moviesIds, setMoviesIds] = useState(initialMoviesIds)
 
   useEffect(() => {
@@ -34,12 +51,10 @@ export default function Main() {
 
   return (
     <MainContainer>
-      <MoviesIdsContext.Provider value={{ moviesIds, setMoviesIds }}>
-        <RecoilRoot>
-          <Header />
-          <MoviesList />
-        </RecoilRoot>
-      </MoviesIdsContext.Provider>
+      <RecoilRoot>
+        <Header />
+        <MoviesList />
+      </RecoilRoot>
       <Footer />
     </MainContainer>
   )

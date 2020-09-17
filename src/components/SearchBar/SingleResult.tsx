@@ -3,8 +3,8 @@ import { SearchResult } from '../../api/types'
 import tw from 'twin.macro'
 import Check from '../../assets/icons/Check'
 import { MoviesIdsContext, MoviesIdsContextShape } from '../Main'
-import { useSetRecoilState } from 'recoil'
-import { selectedMovieIdStateFamily } from '../MoviesList'
+import { atom, atomFamily, useRecoilState, useSetRecoilState } from 'recoil'
+import { idAtom, idMovieFilteringDataFamily, moviesAtoms } from '../MoviesList'
 
 const Result = tw.li`
   flex flex-row items-center
@@ -44,6 +44,11 @@ interface SingleResultProps {
   setSearchBarInputText: React.Dispatch<React.SetStateAction<string>>
 }
 
+export const selectedMovieIdStateFamily = atomFamily({
+  key: 'movieId',
+  default: false,
+})
+
 export default function SingleResult({
   result,
   setModalVisible,
@@ -52,17 +57,10 @@ export default function SingleResult({
   const { moviesIds, setMoviesIds } = useContext<MoviesIdsContextShape>(
     MoviesIdsContext
   )
+  const setAddTime = useSetRecoilState(idMovieFilteringDataFamily(result.id))
   const setMovieAsSelected = useSetRecoilState(
     selectedMovieIdStateFamily(result.id)
   )
-
-  function handleOnClick(result: SearchResult) {
-    setModalVisible(false)
-    setSearchBarInputText('')
-    !moviesIds.find((mId) => mId === result.id)
-      ? setMoviesIds([result.id, ...moviesIds])
-      : setMovieAsSelected(true)
-  }
 
   return (
     <Result>
@@ -81,4 +79,20 @@ export default function SingleResult({
       </ResultButton>
     </Result>
   )
+
+  function handleOnClick(result: SearchResult) {
+    console.log()
+    setModalVisible(false)
+    setSearchBarInputText('')
+    if (!moviesIds.find((mId) => mId === result.id)) {
+      setMoviesIds((oldState) => [result.id, ...oldState])
+      setAddTime((oldState) => ({
+        ...oldState,
+        id: result.id,
+        addTime: Date.now(),
+      }))
+    } else {
+      setMovieAsSelected(true)
+    }
+  }
 }

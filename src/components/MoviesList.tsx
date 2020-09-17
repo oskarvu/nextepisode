@@ -1,10 +1,18 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import tw from 'twin.macro'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 
 import { MoviesIdsContextShape, MoviesIdsContext } from './Main'
 import MovieTile from './MovieTile/MovieTile'
-import { atomFamily } from 'recoil'
+import {
+  atom,
+  atomFamily,
+  RecoilState,
+  selector,
+  selectorFamily,
+  useRecoilValue,
+  useSetRecoilState,
+} from 'recoil'
 
 const List = tw(motion.ul)`
   flex flex-wrap
@@ -12,13 +20,15 @@ const List = tw(motion.ul)`
   m-auto mt-2 px-4
 `
 
-export const selectedMovieIdStateFamily = atomFamily({
-  key: 'movieId',
-  default: false,
-})
-
 export default function MoviesList() {
   const { moviesIds } = useContext<MoviesIdsContextShape>(MoviesIdsContext)
+  const moviesAtomsList = useRecoilValue(moviesAtoms)
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log(moviesAtomsList)
+    }, 1000)
+  })
 
   return (
     <List>
