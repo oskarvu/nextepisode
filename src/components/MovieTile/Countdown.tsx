@@ -3,7 +3,7 @@ import tw from 'twin.macro'
 
 import { Episode } from '../../api/types'
 import { Status, CounterFollow } from '../../translations/en-US'
-import { calculateDaysLeft, calculateMonthsLeft } from '../../utils/utils'
+import { calculateDaysLeft, calculateMonthsLeft } from '../../utils/time'
 
 import Check from '../../assets/icons/Check'
 import X from '../../assets/icons/motionable/X'
@@ -55,24 +55,12 @@ interface CountdownData {
 }
 
 export default function Countdown({ nextEpisode, status, movieId }: Props) {
-  // const setState = useSetRecoilState(idMovieShortDataMap)
   const [daysLeft] = useState(() => initDaysState())
   const [countdownData] = useState<CountdownData>(() =>
     initCountdownData(daysLeft)
   )
 
   useSetMoviesShortData(movieId, 'timeLeftToAir', daysLeft)
-
-  // useEffect(() => {
-  //   setState((prev) => {
-  //     const newState = { ...prev }
-  //     newState[movieId] = {
-  //       ...newState[movieId],
-  //       timeLeftToAir: daysLeft ?? null,
-  //     }
-  //     return newState
-  //   })
-  // }, [movieId, daysLeft, setState])
 
   return (
     <Container>

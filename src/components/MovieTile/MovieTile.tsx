@@ -33,7 +33,10 @@ const Tile = styled(motion.div)`
   }
 `
 
-const FakeTile = styled(motion.div)(() => [tw`${tileBaseStyle}`])
+const FakeTile = tw(motion.div)`
+  ${tileBaseStyle}
+  justify-center
+`
 
 const FakeContent = tw(FakeContentImage)`
   w-full text-gray-300

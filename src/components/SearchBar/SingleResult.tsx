@@ -83,6 +83,7 @@ export default function SingleResult({
     if (!moviesData[result.id]) {
       const newMovie: MovieShortData = {
         id: result.id,
+        name: result.name,
         addTime: Date.now(),
         timeLeftToAir: null,
         studio: null,

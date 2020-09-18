@@ -19,6 +19,7 @@ const MainContainer = tw.div`
 
 export interface MovieShortData {
   id: number
+  name: string
   addTime: number
   timeLeftToAir: number | null
   studio: string | null

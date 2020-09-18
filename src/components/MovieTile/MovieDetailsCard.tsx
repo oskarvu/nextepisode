@@ -6,7 +6,7 @@ import Trash from '../../assets/icons/Trash'
 import DetailsCardTable from './DetailsCardTable'
 import { Texts } from '../../translations/en-US'
 import { useSetRecoilState } from 'recoil'
-import { IdMovieShortDataMap, idMovieShortDataMap, movieIdList } from '../Main'
+import { idMovieShortDataMap, movieIdList } from '../Main'
 import useSetMoviesShortData from '../../hooks/useSetMoviesShortData'
 
 const Details = tw.div`
@@ -65,7 +65,7 @@ export default function MovieDetailsCard({ movie }: { movie: Movie }) {
   function handleTrashIconClick() {
     setMoviesIds((prev) => prev.filter((id) => id !== movie.id))
     setMoviesData((prev) => {
-      const newState: IdMovieShortDataMap = {
+      const newState = {
         ...prev,
       }
       delete newState[movie.id]
