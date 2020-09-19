@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import tw, { styled } from 'twin.macro'
 
-import SearchBar from './SearchBar/SearchBar'
+import SearchBar from '../components/SearchBar/SearchBar'
 
 const TopContainer = styled.div(({ isScrolled }: { isScrolled: boolean }) => [
   tw`
@@ -13,7 +13,7 @@ const TopContainer = styled.div(({ isScrolled }: { isScrolled: boolean }) => [
   isScrolled && tw`shadow-lg`,
 ])
 
-function Header() {
+function TopBar() {
   const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
@@ -44,4 +44,4 @@ function Header() {
   )
 }
 
-export default Header
+export default TopBar

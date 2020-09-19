@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import tw from 'twin.macro'
 import { atom, useRecoilValue } from 'recoil'
 
-import Header from './Header'
-import MoviesList from './MoviesList'
-import Footer from './Footer'
+import TopBar from '../views/TopBar'
+import MovieCollection from '../views/MovieCollection'
+import Footer from '../views/Footer'
 
 const MainContainer = tw.div`
   min-h-screen
@@ -57,8 +57,8 @@ export default function Main() {
 
   return (
     <MainContainer>
-      <Header />
-      <MoviesList />
+      <TopBar />
+      <MovieCollection />
       <Footer />
     </MainContainer>
   )

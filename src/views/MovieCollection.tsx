@@ -2,8 +2,8 @@ import React from 'react'
 import tw from 'twin.macro'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 
-import { movieIdList, idMovieShortDataMap } from './Main'
-import MovieTile from './MovieTile/MovieTile'
+import { movieIdList, idMovieShortDataMap } from '../components/Main'
+import MovieTile from '../components/MovieTile/MovieTile'
 import { useRecoilValue } from 'recoil'
 
 const List = tw(motion.ul)`
@@ -12,7 +12,7 @@ const List = tw(motion.ul)`
   m-auto mt-2 px-4
 `
 
-export default function MoviesList() {
+export default function MovieCollection() {
   const moviesData = useRecoilValue(idMovieShortDataMap)
   const moviesIds = useRecoilValue(movieIdList)
 

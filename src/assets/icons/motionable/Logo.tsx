@@ -1,5 +1,5 @@
 import * as React from 'react'
-import MotionWrapper from '../../../components/MotionWrapper'
+import MotionWrapper from '../../../components/Decorators/MotionWrapper'
 
 function Logo(props: any) {
   return (

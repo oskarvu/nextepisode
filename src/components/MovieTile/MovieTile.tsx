@@ -55,14 +55,8 @@ const EndContainer = tw.div`
 `
 
 export default function MovieTile({ movieId }: { movieId: number }) {
-  const [isSelected, setIsSelected] = useRecoilState(
-    selectedMovieIdStateFamily(movieId)
-  )
-  const { data: movie } = useTMDBFetch<Movie>(
-    ApiQueryType.TV,
-    movieId.toString(),
-    parseToMovie
-  )
+  const [isSelected, setIsSelected] = useRecoilState(selectedMovieIdStateFamily(movieId))
+  const { data: movie } = useTMDBFetch<Movie>(ApiQueryType.TV, movieId.toString(), parseToMovie)
   const { isBackdropLoading, backdrop } = useBackdropImage(movie)
   const tileRef = useRef<HTMLDivElement>(null)
 
@@ -84,11 +78,7 @@ export default function MovieTile({ movieId }: { movieId: number }) {
       layout
     >
       <StartContainer>
-        <Countdown
-          nextEpisode={movie.nextEpisode}
-          status={movie.status}
-          movieId={movieId}
-        />
+        <Countdown nextEpisode={movie.nextEpisode} status={movie.status} movieId={movieId} />
       </StartContainer>
       <EndContainer>
         <MovieDetailsCard movie={movie} />
