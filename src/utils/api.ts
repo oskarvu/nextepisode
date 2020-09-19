@@ -1,34 +1,29 @@
-import {
-  keyField,
-  searchURL,
-  tvDataURL,
-  searchFields,
-  tvFields,
-} from '../api/config'
-import { ApiQueryType, Movie, SearchResult } from '../api/types'
+import { keyField, searchURL, tvDataURL, searchFields, tvFields } from '../api/config'
+import { Movie, SearchResult } from '../api/types'
 
-export function getApiURL(query: string, type: ApiQueryType): string {
-  switch (type) {
-    case ApiQueryType.Search:
-      return `${searchURL}${keyField}${searchFields}&query=${encodeURI(
-        query as string
-      )}`
-    case ApiQueryType.TV:
-      return `${tvDataURL}${query}?${keyField}${tvFields}`
-    default:
-      return ''
-  }
-}
-
-export async function fetchFromTMDB(apiQuery: string): Promise<any> {
+export async function fetchFromTMDB<T>(apiQuery: string, parser: (data: any) => T): Promise<T> {
   const response = await fetch(apiQuery)
   if (!response.ok) {
     throw new Error(`${response.status}`)
   }
-  return await response.json()
+  const data = await response.json()
+  return Promise.resolve(parser(data))
 }
 
-export function parseToSearchResult(data: any): SearchResult[] {
+export async function fetchMovieDetails(id: number) {
+  const apiQuery = `${tvDataURL}${id}?${keyField}${tvFields}`
+  return fetchFromTMDB(apiQuery, parseRawMovieData)
+}
+
+export async function fetchMovieSearchResults(query: string) {
+  if (!query) {
+    return Promise.resolve([])
+  }
+  const apiQuery = `${searchURL}${keyField}${searchFields}&query=${encodeURI(query)}`
+  return fetchFromTMDB(apiQuery, parseRawSearchResult)
+}
+
+export function parseRawSearchResult(data: any): SearchResult[] {
   return data.results.map((movieResult: any) => ({
     name: movieResult.name,
     firstAirDate: movieResult.first_air_date,
@@ -36,7 +31,7 @@ export function parseToSearchResult(data: any): SearchResult[] {
   }))
 }
 
-export function parseToMovie(apiMovie: any): Movie {
+export function parseRawMovieData(apiMovie: any): Movie {
   const lastEpisodeToAir = apiMovie?.last_episode_to_air
     ? {
         airDate: apiMovie.last_episode_to_air.air_date,

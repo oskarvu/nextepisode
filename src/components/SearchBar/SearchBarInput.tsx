@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import tw, { styled } from 'twin.macro'
 import { AnimatePresence } from 'framer-motion'
 
@@ -9,6 +9,7 @@ import Search from '../../assets/icons/motionable/Search'
 import X from '../../assets/icons/motionable/X'
 import Spinner from '../../assets/icons/motionable/Spinner'
 import Logo from '../../assets/icons/motionable/Logo'
+import { fetchDelay } from '../../api/config'
 
 const InputContainer = tw.div`
   relative px-4
@@ -63,13 +64,14 @@ const CloseIcon = tw(X)`
 
 const StyledLogo = styled(Logo)(() => [
   tw`absolute
-    right-0 mr-8 w-8 h-8
-    text-red-500`,
+  right-0 mr-8 w-8 h-8
+  text-red-500`,
   'margin-top: 1.4rem',
 ])
 
 interface Props {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
+  setEnableFetch: React.Dispatch<React.SetStateAction<boolean>>
   inputText: string
   setInputText: React.Dispatch<React.SetStateAction<string>>
   isLoading: boolean
@@ -78,27 +80,12 @@ interface Props {
 // todo: handle errors from api
 export default function SearchBarInput({
   setModalVisible,
+  setEnableFetch,
   inputText,
   setInputText,
   isLoading,
 }: Props) {
-  function handleClick() {
-    inputText && setModalVisible(true)
-  }
-
-  function handleOnKeyUp(event: React.KeyboardEvent) {
-    event.key === 'Escape' || event.key === 'Esc'
-      ? setModalVisible(false)
-      : !inputText && setModalVisible(false)
-  }
-
-  function handleOnFocus() {
-    inputText && setModalVisible(true)
-  }
-
-  function handleOnChange(event: React.FormEvent<HTMLInputElement>) {
-    setInputText((event.target as HTMLInputElement).value)
-  }
+  const [fetchTimeout, setFetchTimeout] = useState<number>()
 
   return (
     <InputContainer>
@@ -137,4 +124,28 @@ export default function SearchBarInput({
       />
     </InputContainer>
   )
+
+  function handleClick() {
+    inputText && setModalVisible(true)
+  }
+
+  function handleOnKeyUp(event: React.KeyboardEvent) {
+    event.key === 'Escape' || event.key === 'Esc'
+      ? setModalVisible(false)
+      : !inputText && setModalVisible(false)
+  }
+
+  function handleOnFocus() {
+    inputText && setModalVisible(true)
+  }
+
+  function handleOnChange(event: React.FormEvent<HTMLInputElement>) {
+    clearTimeout(fetchTimeout)
+    setInputText((event.target as HTMLInputElement).value)
+    const fetchTimeoutId = setTimeout(() => {
+      setEnableFetch(true)
+    }, fetchDelay)
+    setFetchTimeout(fetchTimeoutId)
+    setEnableFetch(false)
+  }
 }

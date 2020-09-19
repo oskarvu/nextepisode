@@ -4,14 +4,14 @@ import { AnimatePresence } from 'framer-motion'
 
 import { ApiQueryType, SearchResult } from '../../api/types'
 import { fetchDelay } from '../../api/config'
-import { parseToSearchResult } from '../../utils/api'
+import { fetchMovieDetails, fetchMovieSearchResults, parseRawSearchResult } from '../../utils/api'
 
 import useHideWhenClickedOutside from '../../hooks/useHideWhenClickedOutside'
 import useWindowInnerHeight from '../../hooks/useWindowInnerHeight'
-import useTMDBFetch from '../../hooks/useTMDBFetch'
 
 import ResultsModal from './ResultsModal'
 import SearchBarInput from './SearchBarInput'
+import { useQuery } from 'react-query'
 
 const Container = tw.div`
   mx-auto
@@ -25,13 +25,12 @@ function SearchBar() {
   const [modalMaxHeight, setModalMaxHeight] = useState(1000)
   const windowInnerHeight = useWindowInnerHeight()
   const searchBarRef = useRef<HTMLDivElement>(null)
+  const [enableFetch, setEnableFetch] = useState(false)
 
-  const { isLoading, data } = useTMDBFetch<SearchResult[]>(
-    ApiQueryType.Search,
-    inputText,
-    parseToSearchResult,
-    fetchDelay,
-    60
+  const { isLoading, isError, data, error } = useQuery(
+    encodeURI(inputText),
+    () => fetchMovieSearchResults(inputText),
+    { enabled: enableFetch }
   )
 
   useHideWhenClickedOutside(searchBarRef, setModalVisible)
@@ -52,6 +51,7 @@ function SearchBar() {
     <Container ref={searchBarRef}>
       <SearchBarInput
         inputText={inputText}
+        setEnableFetch={setEnableFetch}
         setInputText={setInputText}
         setModalVisible={setModalVisible}
         isLoading={isLoading}
@@ -62,7 +62,7 @@ function SearchBar() {
             maxHeight={modalMaxHeight}
             setVisible={setModalVisible}
             setSearchBarInputText={setInputText}
-            results={data as SearchResult[]}
+            results={data}
           />
         )}
       </AnimatePresence>
