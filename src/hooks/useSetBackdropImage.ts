@@ -5,7 +5,7 @@ import { Movie } from '../api/types'
 import DefaultBGImage from '../assets/images/tile-default-bg.jpg'
 import { backdropBaseUrl, backdropMedium } from '../api/config'
 
-export default function useBackdropImage(movie: Movie | undefined) {
+export default function useSetBackdropImage(movie: Movie | undefined) {
   const [backdrop, setBackdrop] = useState<string>(DefaultBGImage)
   const [isBackdropLoading, setIsBackdropLoading] = useState(true)
 

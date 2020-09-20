@@ -1,16 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import tw from 'twin.macro'
 
 import { Episode } from '../../api/types'
 import { Status, CounterFollow } from '../../translations/en-US'
 import { calculateDaysLeft, calculateMonthsLeft } from '../../utils/time'
 
+import { useSetRecoilState } from 'recoil'
+import { movieSharedState } from './movieSharedState'
+
 import Check from '../../assets/icons/Check'
 import X from '../../assets/icons/motionable/X'
 import Pencil from '../../assets/icons/Pencil'
 import Reply from '../../assets/icons/Reply'
 import Heart from '../../assets/icons/Heart'
-import useSetMoviesShortData from '../../hooks/useSetMoviesShortData'
 
 const Container = tw.div`
   flex flex-row sm:flex-col items-center justify-center
@@ -56,11 +58,12 @@ interface CountdownData {
 
 export default function Countdown({ nextEpisode, status, movieId }: Props) {
   const [daysLeft] = useState(() => initDaysState())
-  const [countdownData] = useState<CountdownData>(() =>
-    initCountdownData(daysLeft)
-  )
+  const [countdownData] = useState<CountdownData>(() => initCountdownData(daysLeft))
+  const setMovieSharedData = useSetRecoilState(movieSharedState(movieId))
 
-  useSetMoviesShortData(movieId, 'timeLeftToAir', daysLeft)
+  useEffect(() => {
+    setMovieSharedData((prevState) => ({ ...prevState, timeLeftToAir: daysLeft }))
+  }, [daysLeft, setMovieSharedData])
 
   return (
     <Container>
@@ -84,15 +87,13 @@ export default function Countdown({ nextEpisode, status, movieId }: Props) {
       if (daysLeft <= 60) {
         return {
           counter: daysLeft,
-          follow:
-            daysLeft === 1 ? CounterFollow.dayLeft : CounterFollow.daysLeft,
+          follow: daysLeft === 1 ? CounterFollow.dayLeft : CounterFollow.daysLeft,
         }
       }
       const monthsLeft = calculateMonthsLeft(daysLeft)
       return {
         counter: monthsLeft,
-        follow:
-          monthsLeft === 1 ? CounterFollow.monthLeft : CounterFollow.monthsLeft,
+        follow: monthsLeft === 1 ? CounterFollow.monthLeft : CounterFollow.monthsLeft,
       }
     }
 

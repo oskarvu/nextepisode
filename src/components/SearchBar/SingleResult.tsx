@@ -2,8 +2,13 @@ import React from 'react'
 import { SearchResult } from '../../api/types'
 import tw from 'twin.macro'
 import Check from '../../assets/icons/Check'
-import { idMovieShortDataMap, MovieShortData, movieIdList } from '../Main'
-import { atomFamily, useRecoilState, useSetRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import {
+  clickedMovieId,
+  clickedMovieState,
+  isMovieResultClicked,
+} from '../MovieTile/movieSharedState'
+import { movieIds } from '../../views/movieCollectionState'
 
 const Result = tw.li`
   flex flex-row items-center
@@ -37,11 +42,6 @@ const InfoPill = tw.div`
   bg-gray-300
 `
 
-export const selectedMovieIdStateFamily = atomFamily({
-  key: 'movieId',
-  default: false,
-})
-
 interface SingleResultProps {
   result: SearchResult
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
@@ -53,45 +53,38 @@ export default function SingleResult({
   setModalVisible,
   setSearchBarInputText,
 }: SingleResultProps) {
-  const [moviesData, setMoviesData] = useRecoilState(idMovieShortDataMap)
-  const setMoviesIds = useSetRecoilState(movieIdList)
-  const setMovieAsSelected = useSetRecoilState(
-    selectedMovieIdStateFamily(result.id)
-  )
+  const setClickedMovieId = useSetRecoilState(clickedMovieId)
+  const setIsMovieResultClicked = useSetRecoilState(isMovieResultClicked(result.id))
+  const [clickedMovieData, setClickedMovieData] = useRecoilState(clickedMovieState)
+  const [movieIdsList, setMoviesIdsList] = useRecoilState(movieIds)
 
   return (
     <Result>
       <ResultButton onClick={() => handleOnClick(result)}>
         <ResultText>{result.name}</ResultText>
         <PillsContainer>
-          {moviesData[result.id] && (
+          {clickedMovieData.id && (
             <InfoPill>
               <ResultCheck />
             </InfoPill>
           )}
-          {result.firstAirDate && (
-            <InfoPill>{result.firstAirDate.substr(0, 4)}</InfoPill>
-          )}
+          {result.firstAirDate && <InfoPill>{result.firstAirDate.substr(0, 4)}</InfoPill>}
         </PillsContainer>
       </ResultButton>
     </Result>
   )
 
   function handleOnClick(result: SearchResult) {
+    setClickedMovieId(result.id)
     setModalVisible(false)
     setSearchBarInputText('')
-    if (!moviesData[result.id]) {
-      const newMovie: MovieShortData = {
-        id: result.id,
-        name: result.name,
-        addTime: Date.now(),
-        timeLeftToAir: null,
-        studio: null,
-      }
-      setMoviesIds((prev) => [result.id, ...prev])
-      setMoviesData((prev) => ({ [result.id]: newMovie, ...prev }))
-    } else {
-      setMovieAsSelected(true)
-    }
+    setClickedMovieData((prevState) =>
+      prevState.id
+        ? { ...prevState }
+        : { ...prevState, id: result.id, name: result.name, addTime: Date.now() }
+    )
+    const clickedExists = movieIdsList.find((id) => id === result.id)
+    clickedExists && setIsMovieResultClicked(true)
+    setMoviesIdsList((prevState) => (clickedExists ? prevState : [result.id, ...prevState]))
   }
 }

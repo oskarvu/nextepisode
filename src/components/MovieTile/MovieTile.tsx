@@ -3,18 +3,15 @@ import tw, { styled } from 'twin.macro'
 import { motion } from 'framer-motion'
 import { useRecoilState } from 'recoil'
 
-import { ApiQueryType, Movie } from '../../api/types'
-import { fetchMovieDetails, parseRawMovieData } from '../../utils/api'
+import { fetchMovieDetails } from '../../utils/api'
 
-import useBackdropImage from '../../hooks/useBackdropImage'
-
-import { selectedMovieIdStateFamily } from '../SearchBar/SingleResult'
+import useSetBackdropImage from '../../hooks/useSetBackdropImage'
 
 import Countdown from './Countdown'
 import MovieDetailsCard from './MovieDetailsCard'
 import { ReactComponent as FakeContentImage } from '../../assets/images/fake-tile-bg.svg'
 import { useQuery } from 'react-query'
-import { keyField, tvDataURL, tvFields } from '../../api/config'
+import { clickedMovieResultExists } from './movieSharedState'
 
 const tileBaseStyle = `
   flex flex-col sm:flex-row
@@ -57,11 +54,11 @@ const EndContainer = tw.div`
 `
 
 export default function MovieTile({ movieId }: { movieId: number }) {
-  const [isSelected, setIsSelected] = useRecoilState(selectedMovieIdStateFamily(movieId))
+  const [isSelected, setIsSelected] = useRecoilState(clickedMovieResultExists(movieId))
   const { isLoading, isError, data: movie, error } = useQuery(`${movieId}`, () =>
     fetchMovieDetails(movieId)
   )
-  const { isBackdropLoading, backdrop } = useBackdropImage(movie)
+  const { isBackdropLoading, backdrop } = useSetBackdropImage(movie)
   const tileRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

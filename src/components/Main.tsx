@@ -17,44 +17,36 @@ const MainContainer = tw.div`
 //   AddTime,
 // }
 
-export interface MovieShortData {
-  id: number
-  name: string
-  addTime: number
-  timeLeftToAir: number | null
-  studio: string | null
-}
-
-export interface IdMovieShortDataMap {
-  [id: number]: MovieShortData
-}
-
-const stored = localStorage.getItem('storage')
-
-export const idMovieShortDataMap = atom<IdMovieShortDataMap>({
-  key: 'idMovieShortDataMap',
-  default: stored
-    ? (JSON.parse(stored).moviesData as MovieShortData[])
-    : ([] as MovieShortData[]),
-})
-
-export const movieIdList = atom<number[]>({
-  key: 'movieIdList',
-  default: stored
-    ? (JSON.parse(stored).moviesIds as number[])
-    : ([] as number[]),
-})
+// export interface MovieShortData {
+//   id: number
+//   name: string
+//   addTime: number
+//   timeLeftToAir: number | null
+//   studio: string | null
+// }
+//
+// export interface IdMovieShortDataMap {
+//   [id: number]: MovieShortData
+// }
+//
+// const stored = localStorage.getItem('storage')
+//
+// export const idMovieShortDataMap = atom<IdMovieShortDataMap>({
+//   key: 'idMovieShortDataMap',
+//   default: stored
+//     ? (JSON.parse(stored).moviesData as MovieShortData[])
+//     : ([] as MovieShortData[]),
+// })
+//
+// export const movieIdList = atom<number[]>({
+//   key: 'movieIdList',
+//   default: stored
+//     ? (JSON.parse(stored).moviesIds as number[])
+//     : ([] as number[]),
+// })
 
 // todo: add error handling (api)
 export default function Main() {
-  const moviesData = useRecoilValue(idMovieShortDataMap)
-  const moviesIds = useRecoilValue(movieIdList)
-
-  useEffect(() => {
-    const toStore = { moviesData, moviesIds }
-    localStorage.setItem('storage', JSON.stringify(toStore))
-  }, [moviesData, moviesIds])
-
   return (
     <MainContainer>
       <TopBar />

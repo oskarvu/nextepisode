@@ -9161,6 +9161,11 @@ recoil@^0.0.11:
   resolved "https://registry.yarnpkg.com/recoil/-/recoil-0.0.11.tgz#3be3bfe8e62de94a98b8c292bb3243a176679a00"
   integrity sha512-GgSi9rFUdpnCbmgyPztN9+9COIfc8NiEOc5oqjj4z2P9u4GvpDShS1K7sTuqaeYsRE9qUP5Lj0W6PHTDXcvXsg==
 
+recoilize@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/recoilize/-/recoilize-0.8.0.tgz#2bb724f066e62f6b572cc45b8d82321b990de778"
+  integrity sha512-+9oWTCZMdhukqXLyiBaBiVN6SQqpB+Uc5q0IyNF+uHRjKSHj+lIVFuuUAhASk5kcdAPZPF2Krp+yql6BEmteog==
+
 recursive-readdir@2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/recursive-readdir/-/recursive-readdir-2.2.2.tgz#9946fb3274e1628de6e36b2f6714953b4845094f"
