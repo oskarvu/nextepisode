@@ -5,7 +5,7 @@ import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 import { MovieTile } from '../components/MovieTile/MovieTile'
 import { useRecoilCallback, useRecoilValue } from 'recoil'
 import { movieFilteredIds, movieIds, toStoreMovieInitState } from './movieCollectionState'
-import { movieInitState } from '../components/MovieTile/movieSharedState'
+import { isMovieListed, movieInitState } from '../components/MovieTile/movieSharedState'
 
 const List = tw(motion.ul)`
   flex flex-wrap
@@ -27,6 +27,7 @@ export default function MovieCollection() {
           ...prevState,
           ...storedInitState[keyAsNum],
         }))
+        set(isMovieListed(keyAsNum), true)
       })
     }
   }, [])
@@ -45,7 +46,6 @@ export default function MovieCollection() {
         <AnimatePresence>
           {ids.map((id) => {
             // setIteratedMovie(id)
-            // console.log(iteratedMovie.name)
             return <MovieTile key={id} movieId={id} />
           })}
         </AnimatePresence>

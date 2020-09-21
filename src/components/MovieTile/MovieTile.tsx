@@ -62,10 +62,6 @@ export const MovieTile: React.FC<{ movieId: number }> = ({ movieId }) => {
   const tileRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    console.log('renders - singleTile', movieId)
-  })
-
-  useEffect(() => {
     if (movieFocusIsOn) {
       tileRef.current?.focus()
       setMovieFocusIsOn(false)
