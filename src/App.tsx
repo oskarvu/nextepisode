@@ -2,7 +2,6 @@ import React from 'react'
 import 'tailwindcss/dist/base.min.css'
 
 import { RecoilRoot } from 'recoil'
-import { ReactQueryDevtools } from 'react-query-devtools'
 import TopBar from './views/TopBar'
 import MovieCollection from './views/MovieCollection'
 import Footer from './views/Footer'
@@ -22,7 +21,6 @@ function App() {
         <MovieCollection />
         <Footer />
       </MainContainer>
-      <ReactQueryDevtools initialIsOpen />
     </RecoilRoot>
   )
 }
