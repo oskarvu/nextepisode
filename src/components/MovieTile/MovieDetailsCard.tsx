@@ -6,8 +6,8 @@ import Trash from '../../assets/icons/Trash'
 import DetailsCardTable from './DetailsCardTable'
 import { Texts } from '../../translations/en-US'
 import { useSetRecoilState } from 'recoil'
-// import { movieIdList } from '../../views/movieCollectionState'
-import { movieSharedState } from './movieSharedState'
+import { isMovieListed, movieNetwork } from './movieSharedState'
+import { movieIds, toStoreMovieInitState } from '../../views/movieCollectionState'
 
 const Details = tw.div`
   relative flex justify-between flex-col
@@ -41,12 +41,14 @@ const TrashIcon = tw(Trash)`
 `
 
 export default function MovieDetailsCard({ movie }: { movie: Movie }) {
-  const setMovieSharedData = useSetRecoilState(movieSharedState(movie.id))
-  // const setMoviesIds = useSetRecoilState(movieIdList)
+  const setMovieNetwork = useSetRecoilState(movieNetwork(movie.id))
+  const setIsMovieListed = useSetRecoilState(isMovieListed(movie.id))
+  const setIds = useSetRecoilState(movieIds)
+  const setMovieInitStateToStore = useSetRecoilState(toStoreMovieInitState)
 
   useEffect(() => {
-    setMovieSharedData((prevState) => ({ ...prevState, network: movie.network }))
-  }, [movie.network, setMovieSharedData])
+    setMovieNetwork(movie.network)
+  }, [movie.network, setMovieNetwork])
 
   return (
     <Details>
@@ -65,6 +67,12 @@ export default function MovieDetailsCard({ movie }: { movie: Movie }) {
   )
 
   function handleTrashIconClick() {
-    // setMoviesIds((prev) => prev.filter((id) => id !== movie.id))
+    setIds((prev) => prev.filter((id) => id !== movie.id))
+    setIsMovieListed(false)
+    setMovieInitStateToStore((prevState) => {
+      const newState = { ...prevState }
+      delete newState[movie.id]
+      return newState
+    })
   }
 }

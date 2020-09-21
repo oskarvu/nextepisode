@@ -6,7 +6,7 @@ import { Status, CounterFollow } from '../../translations/en-US'
 import { calculateDaysLeft, calculateMonthsLeft } from '../../utils/time'
 
 import { useSetRecoilState } from 'recoil'
-import { movieSharedState } from './movieSharedState'
+import { timeLeftToAir } from './movieSharedState'
 
 import Check from '../../assets/icons/Check'
 import X from '../../assets/icons/motionable/X'
@@ -59,11 +59,11 @@ interface CountdownData {
 export default function Countdown({ nextEpisode, status, movieId }: Props) {
   const [daysLeft] = useState(() => initDaysState())
   const [countdownData] = useState<CountdownData>(() => initCountdownData(daysLeft))
-  const setMovieSharedData = useSetRecoilState(movieSharedState(movieId))
+  const setTimeLeftToAir = useSetRecoilState(timeLeftToAir(movieId))
 
   useEffect(() => {
-    setMovieSharedData((prevState) => ({ ...prevState, timeLeftToAir: daysLeft }))
-  }, [daysLeft, setMovieSharedData])
+    setTimeLeftToAir(daysLeft)
+  }, [daysLeft, setTimeLeftToAir])
 
   return (
     <Container>

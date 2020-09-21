@@ -1,45 +1,36 @@
-import { atomFamily, atom, selectorFamily, selector, RecoilValue, RecoilState } from 'recoil'
-import { iteratedMovieFilterDataId } from '../../views/movieCollectionState'
+import { atomFamily } from 'recoil'
 
-export type MovieSharedState = {
+export interface MovieInitState {
   id: number | undefined
   name: string | undefined
   addTime: number | undefined
-  timeLeftToAir: number | null
-  network: string | null
-  listed: boolean
 }
 
-export const movieSharedState = atomFamily<MovieSharedState, number>({
-  key: 'movieSharedState',
+export const movieInitState = atomFamily<MovieInitState, number>({
+  key: 'movieInitState',
   default: {
     id: undefined,
     name: undefined,
     addTime: undefined,
-    timeLeftToAir: null,
-    network: null,
-    listed: false,
   },
 })
 
-export const clickedMovieId = atom<number>({
-  key: 'clickedMovieId',
-  default: -1,
-})
-
-export const isMovieResultClicked = atomFamily<boolean, number>({
-  key: 'isMovieResultClicked',
+export const movieFocusOn = atomFamily<boolean, number>({
+  key: 'movieFocusOn',
   default: false,
 })
 
-export const clickedMovieState = selector<MovieSharedState>({
-  key: 'clickedMovieState',
-  get: ({ get }) => {
-    const id = get(clickedMovieId)
-    return get(movieSharedState(id))
-  },
-  set: ({ set, get }, newStateValue) => {
-    const id = get(clickedMovieId)
-    set(movieSharedState(id), newStateValue)
-  },
+export const movieNetwork = atomFamily<string | null, number>({
+  key: 'movieNetwork',
+  default: null,
+})
+
+export const isMovieListed = atomFamily<boolean, number>({
+  key: 'isMovieListed',
+  default: false,
+})
+
+export const timeLeftToAir = atomFamily<number | null, number>({
+  key: 'timeLeftToAir',
+  default: null,
 })

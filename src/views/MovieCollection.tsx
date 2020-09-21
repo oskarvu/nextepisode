@@ -2,13 +2,10 @@ import React, { useEffect } from 'react'
 import tw from 'twin.macro'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 
-import MovieTile from '../components/MovieTile/MovieTile'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
-import {
-  iteratedMovieFilterDataId,
-  movieIdListWithoutDuplicates,
-  selectIteratedMovieFilterData,
-} from './movieCollectionState'
+import { MovieTile } from '../components/MovieTile/MovieTile'
+import { useRecoilCallback, useRecoilValue } from 'recoil'
+import { movieFilteredIds, movieIds, toStoreMovieInitState } from './movieCollectionState'
+import { movieInitState } from '../components/MovieTile/movieSharedState'
 
 const List = tw(motion.ul)`
   flex flex-wrap
@@ -17,24 +14,36 @@ const List = tw(motion.ul)`
 `
 
 export default function MovieCollection() {
-  const setIteratedMovie = useSetRecoilState(iteratedMovieFilterDataId)
-  const iteratedMovie = useRecoilValue(selectIteratedMovieFilterData)
-  const moviesIds = useRecoilValue(movieIdListWithoutDuplicates)
+  const ids = useRecoilValue(movieIds)
+  const filteredIds = useRecoilValue(movieFilteredIds)
+  const movieInitData = useRecoilValue(toStoreMovieInitState)
 
-  // useEffect(() => {
-  //   const toStore = { moviesData, moviesIds }
-  //   localStorage.setItem('storage', JSON.stringify(toStore))
-  // }, [moviesData, moviesIds])
+  const restoreInitData = useRecoilCallback(({ snapshot, set }) => {
+    return async () => {
+      const storedInitState = await snapshot.getPromise(toStoreMovieInitState)
+      Object.keys(storedInitState).forEach((key) => {
+        const keyAsNum = Number.parseInt(key)
+        set(movieInitState(keyAsNum), (prevState) => ({
+          ...prevState,
+          ...storedInitState[keyAsNum],
+        }))
+      })
+    }
+  }, [])
 
   useEffect(() => {
-    console.log(moviesIds)
-  }, [moviesIds])
+    restoreInitData()
+  }, [restoreInitData])
+
+  useEffect(() => {
+    localStorage.setItem('storage', JSON.stringify({ ids, filteredIds, movieInitData }))
+  }, [ids, filteredIds, movieInitData])
 
   return (
     <List>
       <AnimateSharedLayout>
         <AnimatePresence>
-          {moviesIds.map((id) => {
+          {ids.map((id) => {
             // setIteratedMovie(id)
             // console.log(iteratedMovie.name)
             return <MovieTile key={id} movieId={id} />

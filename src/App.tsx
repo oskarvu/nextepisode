@@ -1,7 +1,6 @@
 import React from 'react'
 import 'tailwindcss/dist/base.min.css'
 
-import Main from './components/Main'
 import { RecoilRoot } from 'recoil'
 import { ReactQueryDevtools } from 'react-query-devtools'
 import TopBar from './views/TopBar'

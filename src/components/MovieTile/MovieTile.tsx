@@ -11,7 +11,7 @@ import Countdown from './Countdown'
 import MovieDetailsCard from './MovieDetailsCard'
 import { ReactComponent as FakeContentImage } from '../../assets/images/fake-tile-bg.svg'
 import { useQuery } from 'react-query'
-import { clickedMovieResultExists } from './movieSharedState'
+import { movieFocusOn } from './movieSharedState'
 
 const tileBaseStyle = `
   flex flex-col sm:flex-row
@@ -53,8 +53,8 @@ const EndContainer = tw.div`
   p-3 pt-0 sm:p-5 sm:pl-0 mt-auto
 `
 
-export default function MovieTile({ movieId }: { movieId: number }) {
-  const [isSelected, setIsSelected] = useRecoilState(clickedMovieResultExists(movieId))
+export const MovieTile: React.FC<{ movieId: number }> = ({ movieId }) => {
+  const [movieFocusIsOn, setMovieFocusIsOn] = useRecoilState(movieFocusOn(movieId))
   const { isLoading, isError, data: movie, error } = useQuery(`${movieId}`, () =>
     fetchMovieDetails(movieId)
   )
@@ -62,11 +62,15 @@ export default function MovieTile({ movieId }: { movieId: number }) {
   const tileRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (isSelected) {
+    console.log('renders - singleTile', movieId)
+  })
+
+  useEffect(() => {
+    if (movieFocusIsOn) {
       tileRef.current?.focus()
-      setIsSelected(false)
+      setMovieFocusIsOn(false)
     }
-  }, [isSelected, setIsSelected, tileRef, movieId])
+  }, [movieFocusIsOn, setMovieFocusIsOn, tileRef, movieId])
 
   return !isBackdropLoading && movie ? (
     <Tile

@@ -1,24 +1,21 @@
-import { atom, selector } from 'recoil'
-import {
-  clickedMovieId,
-  MovieSharedState,
-  movieSharedState,
-} from '../components/MovieTile/movieSharedState'
+import { atom } from 'recoil'
+import { MovieInitState } from '../components/MovieTile/movieSharedState'
+
+type IdMovieInitStateMap = Record<number, MovieInitState>
+
+const stored = localStorage.getItem('storage')
 
 export const movieIds = atom<number[]>({
-  key: 'movieIdList',
-  default: [],
+  key: 'movieIds',
+  default: stored ? JSON.parse(stored)?.ids : [],
 })
 
-export const iteratedMovieFilterDataId = atom<number>({
-  key: 'currentMovieFilterDataId',
-  default: -1,
+export const movieFilteredIds = atom<number[]>({
+  key: 'movieFilteredIds',
+  default: stored ? JSON.parse(stored)?.filteredIds : [],
 })
 
-export const selectIteratedMovieFilterData = selector<MovieSharedState>({
-  key: 'selectMovieFilterData',
-  get: ({ get }) => {
-    const id = get(iteratedMovieFilterDataId)
-    return get(movieSharedState(id))
-  },
+export const toStoreMovieInitState = atom<IdMovieInitStateMap>({
+  key: 'toStoreMovieInitState',
+  default: stored ? JSON.parse(stored)?.movieInitData : [],
 })

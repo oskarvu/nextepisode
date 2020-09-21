@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import tw, { styled } from 'twin.macro'
 import { AnimatePresence } from 'framer-motion'
 

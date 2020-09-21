@@ -2,13 +2,9 @@ import React from 'react'
 import { SearchResult } from '../../api/types'
 import tw from 'twin.macro'
 import Check from '../../assets/icons/Check'
-import { useRecoilState, useSetRecoilState } from 'recoil'
-import {
-  clickedMovieId,
-  clickedMovieState,
-  isMovieResultClicked,
-} from '../MovieTile/movieSharedState'
-import { movieIds } from '../../views/movieCollectionState'
+import { useRecoilCallback, useRecoilValue } from 'recoil'
+import { isMovieListed, movieFocusOn, movieInitState } from '../MovieTile/movieSharedState'
+import { movieIds, toStoreMovieInitState } from '../../views/movieCollectionState'
 
 const Result = tw.li`
   flex flex-row items-center
@@ -53,17 +49,43 @@ export default function SingleResult({
   setModalVisible,
   setSearchBarInputText,
 }: SingleResultProps) {
-  const setClickedMovieId = useSetRecoilState(clickedMovieId)
-  const setIsMovieResultClicked = useSetRecoilState(isMovieResultClicked(result.id))
-  const [clickedMovieData, setClickedMovieData] = useRecoilState(clickedMovieState)
-  const [movieIdsList, setMoviesIdsList] = useRecoilState(movieIds)
+  const ids = useRecoilValue(movieIds)
+
+  const addIfNotListed = useRecoilCallback(({ snapshot, set }) => {
+    return async (resultId: number) => {
+      const isClickedListed = await snapshot.getPromise(isMovieListed(resultId))
+      if (!isClickedListed) {
+        set(movieIds, (prevState) => [resultId, ...prevState])
+        set(isMovieListed(resultId), true)
+        set(movieInitState(resultId), (prevState) => ({
+          ...prevState,
+          id: result.id,
+          name: result.name,
+          addTime: Date.now(),
+        }))
+        set(toStoreMovieInitState, (prevState) => ({
+          ...prevState,
+          [resultId]: { id: result.id, name: result.name, addTime: Date.now() },
+        }))
+      }
+    }
+  }, [])
+
+  const setFocusOnIfListed = useRecoilCallback(({ snapshot, set }) => {
+    return async (resultId: number) => {
+      const isClickedListed = await snapshot.getPromise(isMovieListed(resultId))
+      if (isClickedListed) {
+        set(movieFocusOn(resultId), true)
+      }
+    }
+  }, [])
 
   return (
     <Result>
       <ResultButton onClick={() => handleOnClick(result)}>
         <ResultText>{result.name}</ResultText>
         <PillsContainer>
-          {clickedMovieData.id && (
+          {ids.includes(result.id) && (
             <InfoPill>
               <ResultCheck />
             </InfoPill>
@@ -75,16 +97,9 @@ export default function SingleResult({
   )
 
   function handleOnClick(result: SearchResult) {
-    setClickedMovieId(result.id)
     setModalVisible(false)
     setSearchBarInputText('')
-    setClickedMovieData((prevState) =>
-      prevState.id
-        ? { ...prevState }
-        : { ...prevState, id: result.id, name: result.name, addTime: Date.now() }
-    )
-    const clickedExists = movieIdsList.find((id) => id === result.id)
-    clickedExists && setIsMovieResultClicked(true)
-    setMoviesIdsList((prevState) => (clickedExists ? prevState : [result.id, ...prevState]))
+    addIfNotListed(result.id)
+    setFocusOnIfListed(result.id)
   }
 }
