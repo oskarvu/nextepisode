@@ -13,11 +13,9 @@ export default function useSetBackdropImage(movie: Movie | undefined) {
     if (!movie) {
       return
     }
-    if (!movie?.backdrop) {
-      setIsBackdropLoading(false)
-      return
-    }
-    const imageUrl = `${backdropBaseUrl}${backdropMedium}${movie.backdrop}`
+    const imageUrl = !movie?.backdrop
+      ? DefaultBGImage
+      : `${backdropBaseUrl}${backdropMedium}${movie.backdrop}`
     const preloadedImg: HTMLImageElement = document.createElement('img')
     preloadedImg.src = imageUrl
     preloadedImg.addEventListener('load', () => {
