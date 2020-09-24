@@ -8,7 +8,7 @@ export interface Episode {
 export interface Movie {
   name: string
   status: string
-  id: number
+  id: string
   numberOfSeasons: number
   network: string | null
   backdrop: string | null
@@ -21,7 +21,7 @@ export interface Movie {
 export interface SearchResult {
   name: string
   firstAirDate: string
-  id: number
+  id: string
 }
 
 export enum ApiQueryType {

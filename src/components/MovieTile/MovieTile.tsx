@@ -53,9 +53,9 @@ const EndContainer = tw.div`
   p-3 pt-0 sm:p-5 sm:pl-0 mt-auto
 `
 
-export const MovieTile: React.FC<{ movieId: number }> = ({ movieId }) => {
+export const MovieTile: React.FC<{ movieId: string }> = ({ movieId }) => {
   const [movieFocusIsOn, setMovieFocusIsOn] = useRecoilState(movieFocusOn(movieId))
-  const { isLoading, isError, data: movie, error } = useQuery(`${movieId}`, () =>
+  const { isLoading, isError, data: movie, error } = useQuery(movieId, () =>
     fetchMovieDetails(movieId)
   )
   const { isBackdropLoading, backdrop } = useSetBackdropImage(movie)

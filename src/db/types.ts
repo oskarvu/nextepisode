@@ -1,5 +1,3 @@
 export enum LocalStorage {
-  idArray = 'ids',
-  filteredIdArray = 'filtered-ids',
-  idMovieInitDataMap = 'id-movie-map',
+  idMovieInitDataRecord = 'id-movie-record',
 }

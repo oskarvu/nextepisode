@@ -46,7 +46,7 @@ const ReplyIcon = tw(Reply)`${IconBase}`
 const HeartIcon = tw(Heart)`${IconBase}`
 
 interface Props {
-  movieId: number
+  movieId: string
   nextEpisode: Episode | null
   status: string
 }

@@ -3,10 +3,10 @@ import tw from 'twin.macro'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 
 import { MovieTile } from '../components/MovieTile/MovieTile'
-import { useRecoilValue } from 'recoil'
-import { idMovieInitDataMap, movieFilteredIds, movieIds } from './movieCollectionState'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { FiltersModal } from '../components/FiltersModal'
 import { LocalStorage } from '../db/types'
+import { firstRenderSortedIds, idMovieInitDataRecord } from './movieCollectionState'
 
 const List = tw(motion.ul)`
   flex flex-wrap
@@ -15,22 +15,20 @@ const List = tw(motion.ul)`
 `
 
 export default function MovieCollection() {
-  const ids = useRecoilValue(movieIds)
-  const filteredIds = useRecoilValue(movieFilteredIds)
+  const idMovieRecord = useRecoilValue(idMovieInitDataRecord)
+  const firstRenderIds = useRecoilValue(firstRenderSortedIds)
 
   useEffect(() => {
-    localStorage.setItem(LocalStorage.filteredIdArray, JSON.stringify(filteredIds))
-    localStorage.setItem(LocalStorage.idArray, JSON.stringify(ids))
-    localStorage.setItem(LocalStorage.idMovieInitDataMap, JSON.stringify(idMovieInitDataMap))
-  }, [ids, filteredIds])
+    localStorage.setItem(LocalStorage.idMovieInitDataRecord, JSON.stringify(idMovieRecord))
+  }, [idMovieRecord])
 
   return (
     <List>
       <AnimateSharedLayout>
         <AnimatePresence>
-          {ids.map((id) => {
-            return <MovieTile key={id} movieId={id} />
-          })}
+          {firstRenderIds.map((id) => (
+            <MovieTile key={id} movieId={id} />
+          ))}
         </AnimatePresence>
       </AnimateSharedLayout>
       <FiltersModal />

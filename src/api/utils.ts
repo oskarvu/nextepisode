@@ -10,7 +10,7 @@ export async function fetchFromTMDB<T>(apiQuery: string, parser: (data: any) => 
   return Promise.resolve(parser(data))
 }
 
-export async function fetchMovieDetails(id: number) {
+export async function fetchMovieDetails(id: string) {
   const apiQuery = `${tvDataURL}${id}?${keyField}${tvFields}`
   return fetchFromTMDB(apiQuery, parseRawMovieData)
 }
@@ -53,7 +53,7 @@ export function parseRawMovieData(apiMovie: any): Movie {
   return {
     name: apiMovie.name,
     status: apiMovie.status,
-    id: apiMovie.id,
+    id: apiMovie.id.toString(),
     numberOfSeasons: apiMovie.number_of_seasons,
     network: apiMovie?.networks[0]?.name,
     backdrop: apiMovie.backdrop_path,
