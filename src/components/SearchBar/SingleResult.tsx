@@ -5,7 +5,6 @@ import Check from '../../assets/icons/Check'
 import { useRecoilCallback, useRecoilState } from 'recoil'
 import { movieFocusOn } from '../MovieTile/movieSharedState'
 import { idMovieInitDataRecord } from '../../views/movieCollectionState'
-import { LocalStorage } from '../../db/types'
 
 const Result = tw.li`
   flex flex-row items-center

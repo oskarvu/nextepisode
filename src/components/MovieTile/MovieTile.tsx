@@ -55,9 +55,7 @@ const EndContainer = tw.div`
 
 export const MovieTile: React.FC<{ movieId: string }> = ({ movieId }) => {
   const [movieFocusIsOn, setMovieFocusIsOn] = useRecoilState(movieFocusOn(movieId))
-  const { isLoading, isError, data: movie, error } = useQuery(movieId, () =>
-    fetchMovieDetails(movieId)
-  )
+  const { data: movie } = useQuery(movieId, () => fetchMovieDetails(movieId))
   const { isBackdropLoading, backdrop } = useSetBackdropImage(movie)
   const tileRef = useRef<HTMLDivElement>(null)
 
@@ -66,7 +64,7 @@ export const MovieTile: React.FC<{ movieId: string }> = ({ movieId }) => {
       tileRef.current?.focus()
       setMovieFocusIsOn(false)
     }
-  }, [movieFocusIsOn, setMovieFocusIsOn, tileRef, movieId])
+  }, [movieFocusIsOn, setMovieFocusIsOn])
 
   return !isBackdropLoading && movie ? (
     <Tile

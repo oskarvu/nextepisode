@@ -3,7 +3,7 @@ import tw from 'twin.macro'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 
 import { MovieTile } from '../components/MovieTile/MovieTile'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilValue } from 'recoil'
 import { FiltersModal } from '../components/FiltersModal'
 import { LocalStorage } from '../db/types'
 import { firstRenderSortedIds, idMovieInitDataRecord } from './movieCollectionState'

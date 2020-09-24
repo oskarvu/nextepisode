@@ -25,7 +25,7 @@ function SearchBar() {
   const searchBarRef = useRef<HTMLDivElement>(null)
   const [enableFetch, setEnableFetch] = useState(false)
 
-  const { isLoading, isError, data, error } = useQuery(
+  const { isLoading, data } = useQuery(
     encodeURI(inputText),
     () => fetchMovieSearchResults(inputText),
     { enabled: enableFetch }

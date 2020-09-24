@@ -1,5 +1,5 @@
 import React from 'react'
-import { atom } from 'recoil'
+import { atom, useSetRecoilState } from 'recoil'
 
 export enum Sort {
   alphabetically = 'alphabetically',
@@ -13,6 +13,7 @@ export const sortMethod = atom<Sort>({
 })
 
 export const FiltersModal: React.FC<any> = ({ children }) => {
+  const setSortMethod = useSetRecoilState(sortMethod)
   return (
     <div onChange={handleOnChange}>
       <label htmlFor={Sort.alphabetically}>alphabetically</label>
@@ -25,6 +26,6 @@ export const FiltersModal: React.FC<any> = ({ children }) => {
   )
 
   function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
-    console.log(event.target.value)
+    setSortMethod(event.target.value as Sort)
   }
 }

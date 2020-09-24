@@ -5,7 +5,7 @@ import { Movie } from '../../api/types'
 import Trash from '../../assets/icons/Trash'
 import DetailsCardTable from './DetailsCardTable'
 import { Texts } from '../../translations/en-US'
-import { useRecoilState, useSetRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 import { movieNetwork } from './movieSharedState'
 import { idMovieInitDataRecord } from '../../views/movieCollectionState'
 
