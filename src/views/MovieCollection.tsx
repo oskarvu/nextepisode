@@ -6,6 +6,7 @@ import { MovieTile } from '../components/MovieTile/MovieTile'
 import { useRecoilCallback, useRecoilValue } from 'recoil'
 import { movieFilteredIds, movieIds, toStoreMovieInitState } from './movieCollectionState'
 import { isMovieListed, movieInitState } from '../components/MovieTile/movieSharedState'
+import { FiltersModal } from '../components/FiltersModal'
 
 const List = tw(motion.ul)`
   flex flex-wrap
@@ -45,11 +46,11 @@ export default function MovieCollection() {
       <AnimateSharedLayout>
         <AnimatePresence>
           {ids.map((id) => {
-            // setIteratedMovie(id)
             return <MovieTile key={id} movieId={id} />
           })}
         </AnimatePresence>
       </AnimateSharedLayout>
+      <FiltersModal />
     </List>
   )
 }

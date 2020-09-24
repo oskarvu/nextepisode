@@ -19,3 +19,7 @@ export const toStoreMovieInitState = atom<IdMovieInitStateMap>({
   key: 'toStoreMovieInitState',
   default: stored ? JSON.parse(stored)?.movieInitData : [],
 })
+
+export const idMovieInitStateRecord: Record<number, MovieInitState> = {}
+
+export const idMovieInitStateMap = new Map<number, MovieInitState>()

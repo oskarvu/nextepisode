@@ -4,7 +4,11 @@ import tw from 'twin.macro'
 import Check from '../../assets/icons/Check'
 import { useRecoilCallback, useRecoilValue } from 'recoil'
 import { isMovieListed, movieFocusOn, movieInitState } from '../MovieTile/movieSharedState'
-import { movieIds, toStoreMovieInitState } from '../../views/movieCollectionState'
+import {
+  idMovieInitStateMap,
+  movieIds,
+  toStoreMovieInitState,
+} from '../../views/movieCollectionState'
 
 const Result = tw.li`
   flex flex-row items-center
@@ -51,32 +55,9 @@ export default function SingleResult({
 }: SingleResultProps) {
   const ids = useRecoilValue(movieIds)
 
-  const addIfNotListed = useRecoilCallback(({ snapshot, set }) => {
-    return async (resultId: number) => {
-      const isClickedListed = await snapshot.getPromise(isMovieListed(resultId))
-      if (!isClickedListed) {
-        set(movieIds, (prevState) => [resultId, ...prevState])
-        set(isMovieListed(resultId), true)
-        set(movieInitState(resultId), (prevState) => ({
-          ...prevState,
-          id: result.id,
-          name: result.name,
-          addTime: Date.now(),
-        }))
-        set(toStoreMovieInitState, (prevState) => ({
-          ...prevState,
-          [resultId]: { id: result.id, name: result.name, addTime: Date.now() },
-        }))
-      }
-    }
-  }, [])
-
-  const setFocusOnIfListed = useRecoilCallback(({ snapshot, set }) => {
-    return async (resultId: number) => {
-      const isClickedListed = await snapshot.getPromise(isMovieListed(resultId))
-      if (isClickedListed) {
-        set(movieFocusOn(resultId), true)
-      }
+  const setFocusOn = useRecoilCallback(({ set }) => {
+    return (resultId: number) => {
+      set(movieFocusOn(resultId), true)
     }
   }, [])
 
@@ -99,7 +80,11 @@ export default function SingleResult({
   function handleOnClick(result: SearchResult) {
     setModalVisible(false)
     setSearchBarInputText('')
-    addIfNotListed(result.id)
-    setFocusOnIfListed(result.id)
+    const isMapped = idMovieInitStateMap.has(result.id)
+    if (isMapped) {
+      setFocusOn(result.id)
+    } else {
+      idMovieInitStateMap.set(result.id, { id: result.id, name: result.name, addTime: Date.now() })
+    }
   }
 }
