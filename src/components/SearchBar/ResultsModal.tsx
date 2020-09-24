@@ -25,6 +25,7 @@ interface ResultsModalProps {
 
 // todo: handle errors from api
 // todo: focus on already existing element on list if clicked
+// todo: make results limit parametrized
 export default function ResultsModal({
   results,
   setVisible,

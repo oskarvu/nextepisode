@@ -2,13 +2,9 @@ import React from 'react'
 import { SearchResult } from '../../api/types'
 import tw from 'twin.macro'
 import Check from '../../assets/icons/Check'
-import { useRecoilCallback, useRecoilValue } from 'recoil'
-import { isMovieListed, movieFocusOn, movieInitState } from '../MovieTile/movieSharedState'
-import {
-  idMovieInitStateMap,
-  movieIds,
-  toStoreMovieInitState,
-} from '../../views/movieCollectionState'
+import { useRecoilCallback, useRecoilState } from 'recoil'
+import { movieFocusOn } from '../MovieTile/movieSharedState'
+import { idMovieInitDataMap, movieIds } from '../../views/movieCollectionState'
 
 const Result = tw.li`
   flex flex-row items-center
@@ -53,7 +49,7 @@ export default function SingleResult({
   setModalVisible,
   setSearchBarInputText,
 }: SingleResultProps) {
-  const ids = useRecoilValue(movieIds)
+  const [ids, setIds] = useRecoilState(movieIds)
 
   const setFocusOn = useRecoilCallback(({ set }) => {
     return (resultId: number) => {
@@ -80,11 +76,12 @@ export default function SingleResult({
   function handleOnClick(result: SearchResult) {
     setModalVisible(false)
     setSearchBarInputText('')
-    const isMapped = idMovieInitStateMap.has(result.id)
+    const isMapped = idMovieInitDataMap.has(result.id)
     if (isMapped) {
       setFocusOn(result.id)
     } else {
-      idMovieInitStateMap.set(result.id, { id: result.id, name: result.name, addTime: Date.now() })
+      setIds((prevState) => [result.id, ...prevState])
+      idMovieInitDataMap.set(result.id, { id: result.id, name: result.name, addTime: Date.now() })
     }
   }
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import tw from 'twin.macro'
 import { AnimatePresence } from 'framer-motion'
 
-import { fetchMovieSearchResults } from '../../utils/api'
+import { fetchMovieSearchResults } from '../../api/utils'
 
 import useHideWhenClickedOutside from '../../hooks/useHideWhenClickedOutside'
 import useWindowInnerHeight from '../../hooks/useWindowInnerHeight'

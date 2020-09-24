@@ -1,25 +1,21 @@
 import { atom } from 'recoil'
-import { MovieInitState } from '../components/MovieTile/movieSharedState'
+import { MovieInitData } from '../components/MovieTile/movieSharedState'
+import { LocalStorage } from '../db/types'
 
-type IdMovieInitStateMap = Record<number, MovieInitState>
-
-const stored = localStorage.getItem('storage')
+const ids = localStorage.getItem(LocalStorage.idArray)
+const filteredIds = localStorage.getItem(LocalStorage.filteredIdArray)
+const idMovieMap = localStorage.getItem(LocalStorage.idMovieInitDataMap)
 
 export const movieIds = atom<number[]>({
   key: 'movieIds',
-  default: stored ? JSON.parse(stored)?.ids : [],
+  default: ids ? JSON.parse(ids) : [],
 })
 
 export const movieFilteredIds = atom<number[]>({
   key: 'movieFilteredIds',
-  default: stored ? JSON.parse(stored)?.filteredIds : [],
+  default: filteredIds ? JSON.parse(filteredIds) : [],
 })
 
-export const toStoreMovieInitState = atom<IdMovieInitStateMap>({
-  key: 'toStoreMovieInitState',
-  default: stored ? JSON.parse(stored)?.movieInitData : [],
-})
-
-export const idMovieInitStateRecord: Record<number, MovieInitState> = {}
-
-export const idMovieInitStateMap = new Map<number, MovieInitState>()
+export const idMovieInitDataMap = idMovieMap
+  ? new Map<number, MovieInitData>(JSON.parse(idMovieMap))
+  : new Map<number, MovieInitData>()

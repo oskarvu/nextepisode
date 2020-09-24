@@ -1,5 +1,5 @@
-import { keyField, searchURL, tvDataURL, searchFields, tvFields } from '../api/config'
-import { Movie, SearchResult } from '../api/types'
+import { keyField, searchURL, tvDataURL, searchFields, tvFields } from './config'
+import { Movie, SearchResult } from './types'
 
 export async function fetchFromTMDB<T>(apiQuery: string, parser: (data: any) => T): Promise<T> {
   const response = await fetch(apiQuery)

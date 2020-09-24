@@ -3,7 +3,7 @@ import tw, { styled } from 'twin.macro'
 import { motion } from 'framer-motion'
 import { useRecoilState } from 'recoil'
 
-import { fetchMovieDetails } from '../../utils/api'
+import { fetchMovieDetails } from '../../api/utils'
 
 import useSetBackdropImage from '../../hooks/useSetBackdropImage'
 

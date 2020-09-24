@@ -3,10 +3,10 @@ import tw from 'twin.macro'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 
 import { MovieTile } from '../components/MovieTile/MovieTile'
-import { useRecoilCallback, useRecoilValue } from 'recoil'
-import { movieFilteredIds, movieIds, toStoreMovieInitState } from './movieCollectionState'
-import { isMovieListed, movieInitState } from '../components/MovieTile/movieSharedState'
+import { useRecoilValue } from 'recoil'
+import { idMovieInitDataMap, movieFilteredIds, movieIds } from './movieCollectionState'
 import { FiltersModal } from '../components/FiltersModal'
+import { LocalStorage } from '../db/types'
 
 const List = tw(motion.ul)`
   flex flex-wrap
@@ -17,29 +17,12 @@ const List = tw(motion.ul)`
 export default function MovieCollection() {
   const ids = useRecoilValue(movieIds)
   const filteredIds = useRecoilValue(movieFilteredIds)
-  const movieInitData = useRecoilValue(toStoreMovieInitState)
-
-  const restoreInitData = useRecoilCallback(({ snapshot, set }) => {
-    return async () => {
-      const storedInitState = await snapshot.getPromise(toStoreMovieInitState)
-      Object.keys(storedInitState).forEach((key) => {
-        const keyAsNum = Number.parseInt(key)
-        set(movieInitState(keyAsNum), (prevState) => ({
-          ...prevState,
-          ...storedInitState[keyAsNum],
-        }))
-        set(isMovieListed(keyAsNum), true)
-      })
-    }
-  }, [])
 
   useEffect(() => {
-    restoreInitData()
-  }, [restoreInitData])
-
-  useEffect(() => {
-    localStorage.setItem('storage', JSON.stringify({ ids, filteredIds, movieInitData }))
-  }, [ids, filteredIds, movieInitData])
+    localStorage.setItem(LocalStorage.filteredIdArray, JSON.stringify(filteredIds))
+    localStorage.setItem(LocalStorage.idArray, JSON.stringify(ids))
+    localStorage.setItem(LocalStorage.idMovieInitDataMap, JSON.stringify(idMovieInitDataMap))
+  }, [ids, filteredIds])
 
   return (
     <List>
