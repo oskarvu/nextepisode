@@ -1,4 +1,4 @@
-export enum Status {
+export enum StatusText {
   Rumored = 'rumored',
   Planned = 'planned',
   InProduction = 'in production',
@@ -10,7 +10,7 @@ export enum Status {
   Planed = 'planned',
 }
 
-export enum CounterFollow {
+export enum CounterFollowText {
   dayLeft = 'day left',
   daysLeft = 'days left',
   monthLeft = 'month left',
@@ -27,4 +27,10 @@ export enum Texts {
   seasons = 'seasons',
   // Search input
   searchForTvShow = 'search for a tv show',
+}
+
+export enum FilterModalText {
+  alphabetically = 'a-z',
+  timeLeft = 'time left',
+  addOrder = 'add order',
 }

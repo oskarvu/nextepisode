@@ -78,6 +78,7 @@ interface Props {
 }
 
 // todo: handle errors from api
+// todo: correct spinner fire up time
 export default function SearchBarInput({
   setModalVisible,
   setEnableFetch,

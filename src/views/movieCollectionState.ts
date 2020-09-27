@@ -1,7 +1,7 @@
 import { atom, selector } from 'recoil'
 import { MovieInitData, timeLeftToAir } from '../components/MovieTile/movieSharedState'
 import { LocalStorage } from '../db/types'
-import { Sort, sortMethod } from '../components/FiltersModal'
+import { Sort, sortMethod } from '../components/FiltersModal/FiltersModal'
 
 const idMovieRecord = localStorage.getItem(LocalStorage.idMovieInitDataRecord)
 const storedIdLastTimeLeft = localStorage.getItem(LocalStorage.idTimeLeftRecord)

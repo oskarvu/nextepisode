@@ -1,4 +1,4 @@
-import { atomFamily, RecoilState, selectorFamily } from 'recoil'
+import { atomFamily, selectorFamily } from 'recoil'
 
 export interface MovieInitData {
   id: string

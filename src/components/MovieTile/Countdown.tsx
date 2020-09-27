@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import tw from 'twin.macro'
 
 import { Episode } from '../../api/types'
-import { Status, CounterFollow } from '../../translations/en-US'
+import { StatusText, CounterFollowText } from '../../translations/en-US'
 import { calculateDaysLeft, calculateMonthsLeft } from '../../utils/time'
 
 import { useSetRecoilState } from 'recoil'
@@ -89,33 +89,33 @@ export default function Countdown({ nextEpisode, status, movieId }: Props) {
       if (daysLeft === 0) {
         return {
           counter: <HeartIcon />,
-          follow: CounterFollow.today,
+          follow: CounterFollowText.today,
         }
       }
       if (daysLeft <= 60) {
         return {
           counter: daysLeft,
-          follow: daysLeft === 1 ? CounterFollow.dayLeft : CounterFollow.daysLeft,
+          follow: daysLeft === 1 ? CounterFollowText.dayLeft : CounterFollowText.daysLeft,
         }
       }
       const monthsLeft = calculateMonthsLeft(daysLeft)
       return {
         counter: monthsLeft,
-        follow: monthsLeft === 1 ? CounterFollow.monthLeft : CounterFollow.monthsLeft,
+        follow: monthsLeft === 1 ? CounterFollowText.monthLeft : CounterFollowText.monthsLeft,
       }
     }
 
     switch (status.toLowerCase()) {
-      case Status.Ended:
-        return { counter: <CheckIcon />, follow: Status.Ended }
-      case Status.Canceled:
-        return { counter: <XIcon />, follow: Status.Canceled }
-      case Status.ReturningSeries:
-        return { counter: <ReplyIcon />, follow: Status.ReturningSeries }
-      case Status.Planed:
-        return { counter: <PencilIcon />, follow: Status.Planed }
+      case StatusText.Ended:
+        return { counter: <CheckIcon />, follow: StatusText.Ended }
+      case StatusText.Canceled:
+        return { counter: <XIcon />, follow: StatusText.Canceled }
+      case StatusText.ReturningSeries:
+        return { counter: <ReplyIcon />, follow: StatusText.ReturningSeries }
+      case StatusText.Planed:
+        return { counter: <PencilIcon />, follow: StatusText.Planed }
       default:
-        return { counter: '?', follow: CounterFollow.noInfo }
+        return { counter: '?', follow: CounterFollowText.noInfo }
     }
   }
 }
