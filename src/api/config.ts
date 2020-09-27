@@ -3,7 +3,7 @@ const apiBaseURL = 'https://api.themoviedb.org/3/'
 export const keyField = `api_key=${process.env.REACT_APP_API_KEY}`
 export const searchURL = `${apiBaseURL}search/tv?`
 export const tvDataURL = `${apiBaseURL}tv/`
-export const fetchDelay = 200
+export const fetchDelay = 250
 export const searchFields = '&language=en-US&include-adult=false'
 export const tvFields = '&language=en-US'
 export const backdropBaseUrl = 'https://image.tmdb.org/t/p/'

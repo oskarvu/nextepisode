@@ -9,7 +9,7 @@ import tw from 'twin.macro'
 
 const MainContainer = tw.div`
   min-h-screen
-  bg-gray-200
+  bg-gray-300
 `
 
 // todo: add error handling (api)

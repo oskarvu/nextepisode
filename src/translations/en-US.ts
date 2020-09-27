@@ -32,5 +32,5 @@ export enum Texts {
 export enum FilterModalText {
   alphabetically = 'a-z',
   timeLeft = 'time left',
-  addOrder = 'add order',
+  addOrder = 'newly added',
 }

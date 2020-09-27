@@ -80,6 +80,7 @@ export default function SingleResult({
     if (isMapped) {
       setFocusOn(result.id)
     } else {
+      setFocusOn(result.id)
       setIdMovieRecord((prevState) => ({
         ...prevState,
         [result.id]: { id: result.id, name: result.name, addTime: Date.now() },

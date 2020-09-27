@@ -11,7 +11,7 @@ const RadioInput = tw.input`
 
 const Label = styled.label(({ hasChecked }: { hasChecked: boolean }) => [
   tw`bg-gray-300 p-2 first:pl-3 first:rounded-l-full last:rounded-r-full cursor-pointer hover:bg-gray-200
-  text-xs uppercase font-bold text-gray-800 tracking-wide border-gray-400 border-r-2 last:border-r-0`,
+  text-xs sm:text-sm uppercase font-bold text-gray-800 tracking-wide border-gray-400 border-r-2 last:border-r-0`,
   hasChecked && tw`bg-gray-200 text-gray-700`,
 ])
 

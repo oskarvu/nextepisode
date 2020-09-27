@@ -4,8 +4,8 @@ import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 
 import { MovieTile } from '../components/MovieTile/MovieTile'
 import { useRecoilValue } from 'recoil'
-import { FiltersModal } from '../components/FiltersModal/FiltersModal'
 import { LocalStorage } from '../db/types'
+import { FiltersModal } from '../components/FiltersModal/FiltersModal'
 import { firstRenderSortedIds, idMovieInitDataRecord } from './movieCollectionState'
 
 const List = tw(motion.ul)`

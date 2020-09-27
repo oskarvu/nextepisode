@@ -31,13 +31,13 @@ const SpinnerIcon = tw(Spinner)`
 `
 
 const spinnerMotionProps = {
-  initial: { opacity: 0, scale: 0.8 },
-  exit: { opacity: 0, scale: 0.8 },
+  initial: { opacity: 0.5, scale: 0.8 },
+  exit: { opacity: 0.5, scale: 0.8 },
   animate: {
-    opacity: [0.3, 1, 0.3],
+    opacity: [0.7, 1, 0.7],
     rotate: 360,
   },
-  transition: { duration: 1.2, ease: 'linear', loop: Infinity },
+  transition: { duration: 1, ease: 'linear', loop: Infinity },
 }
 
 const SearchIcon = tw(Search)`
@@ -95,7 +95,7 @@ export default function SearchBarInput({
           <SpinnerIcon {...spinnerMotionProps} />
         ) : (
           <label htmlFor="search-input">
-            <SearchIcon title="search" {...opacityMotionProps} />
+            <SearchIcon title="search" />
           </label>
         )}
       </AnimatePresence>

@@ -60,11 +60,11 @@ export const MovieTile: React.FC<{ movieId: string }> = ({ movieId }) => {
   const tileRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (movieFocusIsOn) {
+    if (movieFocusIsOn && movie && !isBackdropLoading) {
       tileRef.current?.focus()
       setMovieFocusIsOn(false)
     }
-  }, [movieFocusIsOn, setMovieFocusIsOn])
+  }, [isBackdropLoading, movie, movieFocusIsOn, setMovieFocusIsOn])
 
   return !isBackdropLoading && movie ? (
     <Tile

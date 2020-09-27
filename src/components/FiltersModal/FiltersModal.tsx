@@ -16,7 +16,7 @@ const Modal = styled(motion.div)(({ isModalOpen }: { isModalOpen: boolean }) => 
 ])
 
 const SectionName = tw.h5`
-  ml-1 mb-2 mt-2 text-gray-600 font-bold text-xs tracking-wide uppercase
+  ml-1 mb-2 mt-1 text-gray-600 font-bold text-xs sm:text-sm tracking-wide uppercase
 `
 
 const AdjustmentsIcon = tw(Adjustments)`
@@ -29,7 +29,7 @@ const ModalContent = tw(motion.div)`
 
 const CloseIcon = tw(X)`
   absolute
-  right-0 -mt-4 -mr-2 w-6 h-6
+  right-0 -mt-3 -mr-2 w-6 h-6
   text-gray-500 cursor-pointer
   hover:text-gray-800
 `
