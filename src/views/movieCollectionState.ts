@@ -10,6 +10,7 @@ export const idMovieInitDataRecord = atom<Record<string, MovieInitData>>({
   default: idMovieRecord ? JSON.parse(idMovieRecord) : ({} as Record<string, MovieInitData>),
 })
 
+// todo: refactor
 export const firstRenderSortedIds = selector<string[]>({
   key: 'firstRenderSortedIds',
   get: ({ get }) => {

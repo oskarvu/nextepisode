@@ -1,4 +1,4 @@
-import { atomFamily, selectorFamily } from 'recoil'
+import { atomFamily, RecoilState, selectorFamily } from 'recoil'
 
 export interface MovieInitData {
   id: string
@@ -23,18 +23,18 @@ const leftToAir = atomFamily<number | null, string>({
 
 export const movieFocusOn = selectorFamily<boolean, string>({
   key: 'movieFocusOn',
-  get: (param) => ({ get }) => get(focusOn(`focusOn${param}`)),
-  set: (param) => ({ set }, newValue) => set(focusOn(`focusOn${param}`), newValue),
+  get: (id) => ({ get }) => get(focusOn(`focusOn${id}`)),
+  set: (id) => ({ set }, newValue) => set(focusOn(`focusOn${id}`), newValue),
 })
 
 export const movieNetwork = selectorFamily<string | null, string>({
   key: 'movieNetwork',
-  get: (param) => ({ get }) => get(network(`networkOf${param}`)),
-  set: (param) => ({ set }, newValue) => set(network(`networkOf${param}`), newValue),
+  get: (id) => ({ get }) => get(network(`networkOf${id}`)),
+  set: (id) => ({ set }, newValue) => set(network(`networkOf${id}`), newValue),
 })
 
 export const timeLeftToAir = selectorFamily<number | null, string>({
   key: 'timeLeftToAir',
-  get: (param) => ({ get }) => get(leftToAir(`timeLeftOf${param}`)),
-  set: (param) => ({ set }, newValue) => set(leftToAir(`timeLeftOf${param}`), newValue),
+  get: (id) => ({ get }) => get(leftToAir(`timeLeftOf${id}`)),
+  set: (id) => ({ set }, newValue) => set(leftToAir(`timeLeftOf${id}`), newValue),
 })
