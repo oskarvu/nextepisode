@@ -143,6 +143,7 @@ module.exports = {
       },
       boxShadow: {
         focus: '0 0 0 6px #F56565',
+        delicate: '0px 6px 8px 0 rgb(0 0 0 / 13%), 0px 1px 2px 0 rgb(0 0 0 / 18%)',
       },
       opacity: {
         '55': '0.55',

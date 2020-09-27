@@ -10,8 +10,9 @@ import useHideWhenClickedOutside from '../../hooks/useHideWhenClickedOutside'
 import X from '../../assets/icons/motionable/X'
 
 const Modal = styled(motion.div)(({ isModalOpen }: { isModalOpen: boolean }) => [
-  tw`fixed bottom-0 mb-2 -ml-2 bg-white p-4 rounded-4xl shadow-md`,
-  !isModalOpen && tw`cursor-pointer rounded-full`,
+  tw`fixed bottom-0 z-10 h-24 mb-3 xl:top-0 xl:mt-32 xl:-ml-20
+  mt-4 mr-3 -ml-1 bg-white p-4 rounded-4xl shadow-delicate`,
+  !isModalOpen && tw`h-14 w-14 cursor-pointer rounded-full`,
 ])
 
 const SectionName = tw.h5`
