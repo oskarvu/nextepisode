@@ -4,10 +4,14 @@ import { LocalStorage } from '../db/types'
 import { Sort, sortMethod } from '../components/FiltersModal'
 
 const idMovieRecord = localStorage.getItem(LocalStorage.idMovieInitDataRecord)
+const storedIdLastTimeLeft = localStorage.getItem(LocalStorage.idTimeLeftRecord)
+const idLastTimeLeft: Record<string, number> = storedIdLastTimeLeft
+  ? JSON.parse(storedIdLastTimeLeft)
+  : {}
 
 export const idMovieInitDataRecord = atom<Record<string, MovieInitData>>({
   key: 'idMovieInitDataMap',
-  default: idMovieRecord ? JSON.parse(idMovieRecord) : ({} as Record<string, MovieInitData>),
+  default: idMovieRecord ? JSON.parse(idMovieRecord) : {},
 })
 
 // todo: refactor
@@ -25,8 +29,8 @@ export const firstRenderSortedIds = selector<string[]>({
       case Sort.byPremiere:
         return idMovieRecordKeys.sort((aMovieId, bMovieId) => {
           const [aTimeLeft, bTimeLeft] = [
-            get(timeLeftToAir(aMovieId)),
-            get(timeLeftToAir(bMovieId)),
+            get(timeLeftToAir(aMovieId)) ?? idLastTimeLeft[aMovieId],
+            get(timeLeftToAir(bMovieId)) ?? idLastTimeLeft[bMovieId],
           ]
           if (aTimeLeft !== null && bTimeLeft !== null) return aTimeLeft - bTimeLeft
           if (aTimeLeft !== null && bTimeLeft === null) return -1
@@ -41,7 +45,7 @@ export const firstRenderSortedIds = selector<string[]>({
             idMovieRecords[aMovieId].addTime,
             idMovieRecords[bMovieId].addTime,
           ]
-          return aAddTime - bAddTime
+          return bAddTime - aAddTime
         })
     }
   },

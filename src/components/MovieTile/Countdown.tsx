@@ -13,6 +13,7 @@ import X from '../../assets/icons/motionable/X'
 import Pencil from '../../assets/icons/Pencil'
 import Reply from '../../assets/icons/Reply'
 import Heart from '../../assets/icons/Heart'
+import { LocalStorage } from '../../db/types'
 
 const Container = tw.div`
   flex flex-row sm:flex-col items-center justify-center
@@ -56,6 +57,8 @@ interface CountdownData {
   follow: string
 }
 
+let idTimeLeftRecord: Record<string, number> = {}
+
 export default function Countdown({ nextEpisode, status, movieId }: Props) {
   const [daysLeft] = useState(() => initDaysState())
   const [countdownData] = useState<CountdownData>(() => initCountdownData(daysLeft))
@@ -64,6 +67,11 @@ export default function Countdown({ nextEpisode, status, movieId }: Props) {
   useEffect(() => {
     setTimeLeftToAir(daysLeft)
   }, [daysLeft, setTimeLeftToAir])
+
+  useEffect(() => {
+    idTimeLeftRecord = { ...idTimeLeftRecord, [movieId]: daysLeft as number }
+    localStorage.setItem(LocalStorage.idTimeLeftRecord, JSON.stringify(idTimeLeftRecord))
+  }, [movieId, daysLeft])
 
   return (
     <Container>
