@@ -6,7 +6,7 @@ import { Texts } from '../../translations/en-US'
 
 const Cell = tw.div`
   flex flex-grow justify-center
-  px-3 py-1 sm:py-2
+  px-2 py-1 sm:py-1
   border border-gray-300 border-4 first:border-r-0 last:border-l-0
   uppercase text-sm font-bold text-gray-600 tracking-wider
 `
@@ -16,19 +16,10 @@ const Row = tw.div`
   w-full
 `
 
-function SeasonEpisode({
-  season,
-  episode,
-}: {
-  season: number
-  episode: number
-}) {
+function SeasonEpisode({ season, episode }: { season: number; episode: number }) {
   return (
     <span>
-      {'s' +
-        season.toString().padStart(2, '0') +
-        'e' +
-        episode.toString().padStart(2, '0')}
+      {'s' + season.toString().padStart(2, '0') + 'e' + episode.toString().padStart(2, '0')}
     </span>
   )
 }
@@ -42,10 +33,7 @@ export default function DetailsCardTable({ movie }: { movie: Movie }) {
     <Row>
       <Cell>{Texts.next}</Cell>
       <Cell>
-        <SeasonEpisode
-          season={movie.nextEpisode.season}
-          episode={movie.nextEpisode.episode}
-        />
+        <SeasonEpisode season={movie.nextEpisode.season} episode={movie.nextEpisode.episode} />
       </Cell>
       <Cell>{formatDate(movie.nextEpisode.airDate)}</Cell>
     </Row>
@@ -54,10 +42,7 @@ export default function DetailsCardTable({ movie }: { movie: Movie }) {
       <Row>
         <Cell>{Texts.last}</Cell>
         <Cell>
-          <SeasonEpisode
-            season={movie.lastEpisode.season}
-            episode={movie.lastEpisode.episode}
-          />
+          <SeasonEpisode season={movie.lastEpisode.season} episode={movie.lastEpisode.episode} />
         </Cell>
         <Cell>{formatDate(movie.lastEpisode.airDate)}</Cell>
       </Row>

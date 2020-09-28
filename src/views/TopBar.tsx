@@ -8,7 +8,7 @@ const TopContainer = styled.div(({ isScrolled }: { isScrolled: boolean }) => [
     sticky top-0 z-10
     flex items-center justify-center
     w-full
-    bg-white
+    bg-white shadow-none transition-shadow duration-300
   `,
   isScrolled && tw`shadow-lg`,
 ])

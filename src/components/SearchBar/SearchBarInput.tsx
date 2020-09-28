@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import tw, { styled } from 'twin.macro'
 import { AnimatePresence } from 'framer-motion'
 
@@ -9,7 +9,7 @@ import Search from '../../assets/icons/motionable/Search'
 import X from '../../assets/icons/motionable/X'
 import Spinner from '../../assets/icons/motionable/Spinner'
 import Logo from '../../assets/icons/motionable/Logo'
-import { fetchDelay } from '../../api/config'
+import { fetchDelay, spinDelay } from '../../api/config'
 
 const InputContainer = tw.div`
   relative px-4
@@ -87,12 +87,21 @@ export default function SearchBarInput({
   isLoading,
 }: Props) {
   const [fetchTimeout, setFetchTimeout] = useState<number>()
+  const [spin, setSpin] = useState(false)
+
+  useEffect(() => {
+    const spinTimout = setTimeout(() => {
+      isLoading ? setSpin(true) : setSpin(false)
+    }, spinDelay)
+
+    return () => clearTimeout(spinTimout)
+  }, [isLoading])
 
   return (
     <InputContainer>
       <AnimatePresence>
-        {isLoading ? (
-          <SpinnerIcon {...spinnerMotionProps} />
+        {spin ? (
+          <SpinnerIcon trigger={isLoading} {...spinnerMotionProps} />
         ) : (
           <label htmlFor="search-input">
             <SearchIcon title="search" />
