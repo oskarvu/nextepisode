@@ -27,6 +27,7 @@ export enum Texts {
   seasons = 'seasons',
   // Search input
   searchForTvShow = 'search for a tv show',
+  noResults = 'no results match your query',
 }
 
 export enum FilterModalText {

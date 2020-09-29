@@ -1,5 +1,5 @@
 import { keyField, searchURL, tvDataURL, searchFields, tvFields } from './config'
-import { Movie, SearchResult } from './types'
+import { Movie, SearchResult, Status } from './types'
 
 export async function fetchFromTMDB<T>(apiQuery: string, parser: (data: any) => T): Promise<T> {
   const response = await fetch(apiQuery)
@@ -52,7 +52,7 @@ export function parseRawMovieData(apiMovie: any): Movie {
 
   return {
     name: apiMovie.name,
-    status: apiMovie.status,
+    status: apiMovie.status.toLowerCase(),
     id: apiMovie.id.toString(),
     numberOfSeasons: apiMovie.number_of_seasons,
     network: apiMovie?.networks[0]?.name,
@@ -61,5 +61,22 @@ export function parseRawMovieData(apiMovie: any): Movie {
     lastAirDate: apiMovie.last_air_date,
     lastEpisode: lastEpisodeToAir,
     nextEpisode: nextEpisodeToAir,
+  }
+}
+
+export function statusOrder(status: string | null) {
+  switch (status) {
+    case Status.ReturningSeries:
+      return 1
+    case Status.InProduction:
+      return 2
+    case Status.Planned:
+      return 3
+    case Status.Canceled:
+      return 4
+    case Status.Ended:
+      return 5
+    default:
+      return Infinity
   }
 }

@@ -7,7 +7,8 @@ import DetailsCardTable from './DetailsCardTable'
 import { Texts } from '../../translations/en-US'
 import { useSetRecoilState } from 'recoil'
 import { movieNetwork } from './movieSharedState'
-import { idMovieInitDataRecord } from '../../views/movieCollectionState'
+import { idMovieInitDataRecord, IdTimeLeftHistoric } from '../../views/movieCollectionState'
+import { LocalStorage } from '../../db/types'
 
 const Details = tw.div`
   relative flex justify-between flex-col
@@ -69,5 +70,10 @@ export default function MovieDetailsCard({ movie }: { movie: Movie }) {
       const { [movie.id]: drop, ...newState } = prevState
       return newState
     })
+    IdTimeLeftHistoric.delete(movie.id)
+    localStorage.setItem(
+      LocalStorage.idTimeLeftMap,
+      JSON.stringify(Array.from(IdTimeLeftHistoric.entries()))
+    )
   }
 }

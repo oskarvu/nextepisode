@@ -10,6 +10,8 @@ import X from '../../assets/icons/motionable/X'
 import Spinner from '../../assets/icons/motionable/Spinner'
 import Logo from '../../assets/icons/motionable/Logo'
 import { fetchDelay, spinDelay } from '../../api/config'
+import { useSetRecoilState } from 'recoil'
+import { isResultsModalVisible } from './resultsModalSharedState'
 
 const InputContainer = tw.div`
   relative px-4
@@ -70,7 +72,6 @@ const StyledLogo = styled(Logo)(() => [
 ])
 
 interface Props {
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
   setEnableFetch: React.Dispatch<React.SetStateAction<boolean>>
   inputText: string
   setInputText: React.Dispatch<React.SetStateAction<string>>
@@ -78,9 +79,7 @@ interface Props {
 }
 
 // todo: handle errors from api
-// todo: correct spinner fire up time
 export default function SearchBarInput({
-  setModalVisible,
   setEnableFetch,
   inputText,
   setInputText,
@@ -88,6 +87,7 @@ export default function SearchBarInput({
 }: Props) {
   const [fetchTimeout, setFetchTimeout] = useState<number>()
   const [spin, setSpin] = useState(false)
+  const setIsModalVisible = useSetRecoilState(isResultsModalVisible)
 
   useEffect(() => {
     const spinTimout = setTimeout(() => {
@@ -114,7 +114,7 @@ export default function SearchBarInput({
             title="close"
             {...opacityMotionProps}
             onClick={() => {
-              setModalVisible(false)
+              setIsModalVisible(false)
               setInputText('')
             }}
           />
@@ -136,17 +136,17 @@ export default function SearchBarInput({
   )
 
   function handleClick() {
-    inputText && setModalVisible(true)
+    inputText && setIsModalVisible(true)
   }
 
   function handleOnKeyUp(event: React.KeyboardEvent) {
     event.key === 'Escape' || event.key === 'Esc'
-      ? setModalVisible(false)
-      : !inputText && setModalVisible(false)
+      ? setIsModalVisible(false)
+      : !inputText && setIsModalVisible(false)
   }
 
   function handleOnFocus() {
-    inputText && setModalVisible(true)
+    inputText && setIsModalVisible(true)
   }
 
   function handleOnChange(event: React.FormEvent<HTMLInputElement>) {

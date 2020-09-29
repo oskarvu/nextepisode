@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import tw from 'twin.macro'
 
-import { Episode } from '../../api/types'
+import { Episode, Status } from '../../api/types'
 import { StatusText, CounterFollowText } from '../../translations/en-US'
 import { calculateDaysLeft, calculateMonthsLeft } from '../../utils/time'
 
@@ -14,6 +14,7 @@ import Pencil from '../../assets/icons/Pencil'
 import Reply from '../../assets/icons/Reply'
 import Heart from '../../assets/icons/Heart'
 import { LocalStorage } from '../../db/types'
+import { IdTimeLeftHistoric } from '../../views/movieCollectionState'
 
 const Container = tw.div`
   flex flex-row sm:flex-col items-center justify-center
@@ -57,8 +58,6 @@ interface CountdownData {
   follow: string
 }
 
-let idTimeLeftRecord: Record<string, number> = {}
-
 export default function Countdown({ nextEpisode, status, movieId }: Props) {
   const [daysLeft] = useState(() => initDaysState())
   const [countdownData] = useState<CountdownData>(() => initCountdownData(daysLeft))
@@ -69,8 +68,11 @@ export default function Countdown({ nextEpisode, status, movieId }: Props) {
   }, [daysLeft, setTimeLeftToAir])
 
   useEffect(() => {
-    idTimeLeftRecord = { ...idTimeLeftRecord, [movieId]: daysLeft as number }
-    localStorage.setItem(LocalStorage.idTimeLeftRecord, JSON.stringify(idTimeLeftRecord))
+    IdTimeLeftHistoric.set(movieId, daysLeft)
+    localStorage.setItem(
+      LocalStorage.idTimeLeftMap,
+      JSON.stringify(Array.from(IdTimeLeftHistoric.entries()))
+    )
   }, [movieId, daysLeft])
 
   return (
@@ -105,14 +107,14 @@ export default function Countdown({ nextEpisode, status, movieId }: Props) {
       }
     }
 
-    switch (status.toLowerCase()) {
-      case StatusText.Ended:
+    switch (status) {
+      case Status.Ended:
         return { counter: <CheckIcon />, follow: StatusText.Ended }
-      case StatusText.Canceled:
+      case Status.Canceled:
         return { counter: <XIcon />, follow: StatusText.Canceled }
-      case StatusText.ReturningSeries:
+      case Status.ReturningSeries:
         return { counter: <ReplyIcon />, follow: StatusText.ReturningSeries }
-      case StatusText.Planed:
+      case Status.Planed:
         return { counter: <PencilIcon />, follow: StatusText.Planed }
       default:
         return { counter: '?', follow: CounterFollowText.noInfo }

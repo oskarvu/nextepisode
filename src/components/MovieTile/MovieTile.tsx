@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import tw, { styled } from 'twin.macro'
 import { motion } from 'framer-motion'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 
 import { fetchMovieDetails } from '../../api/utils'
 
@@ -11,7 +11,7 @@ import Countdown from './Countdown'
 import MovieDetailsCard from './MovieDetailsCard'
 import { ReactComponent as FakeContentImage } from '../../assets/images/fake-tile-bg.svg'
 import { useQuery } from 'react-query'
-import { movieFocusOn } from './movieSharedState'
+import { movieFocusOn, movieStatus } from './movieSharedState'
 
 const tileBaseStyle = `
   flex flex-col sm:flex-row
@@ -58,6 +58,7 @@ export const MovieTile: React.FC<{ movieId: string }> = ({ movieId }) => {
   const { data: movie } = useQuery(movieId, () => fetchMovieDetails(movieId))
   const { isBackdropLoading, backdrop } = useSetBackdropImage(movie)
   const tileRef = useRef<HTMLDivElement>(null)
+  const setStatus = useSetRecoilState(movieStatus(movieId))
 
   useEffect(() => {
     if (movieFocusIsOn && movie && !isBackdropLoading) {
@@ -65,6 +66,10 @@ export const MovieTile: React.FC<{ movieId: string }> = ({ movieId }) => {
       setMovieFocusIsOn(false)
     }
   }, [isBackdropLoading, movie, movieFocusIsOn, setMovieFocusIsOn])
+
+  useEffect(() => {
+    movie && setStatus(movie.status)
+  }, [movie, setStatus])
 
   return !isBackdropLoading && movie ? (
     <Tile

@@ -1,3 +1,15 @@
+export enum Status {
+  Rumored = 'rumored',
+  Planned = 'planned',
+  InProduction = 'in production',
+  PostProduction = 'post production',
+  Released = 'released',
+  Canceled = 'canceled',
+  ReturningSeries = 'returning series',
+  Ended = 'ended',
+  Planed = 'planned',
+}
+
 export interface Episode {
   airDate: string
   episode: number

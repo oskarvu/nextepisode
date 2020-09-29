@@ -10,6 +10,8 @@ import useWindowInnerHeight from '../../hooks/useWindowInnerHeight'
 import ResultsModal from './ResultsModal'
 import SearchBarInput from './SearchBarInput'
 import { useQuery } from 'react-query'
+import { useRecoilState } from 'recoil'
+import { isResultsModalVisible } from './resultsModalSharedState'
 
 const Container = tw.div`
   mx-auto
@@ -19,7 +21,7 @@ const Container = tw.div`
 
 function SearchBar() {
   const [inputText, setInputText] = useState('')
-  const [modalVisible, setModalVisible] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useRecoilState(isResultsModalVisible)
   const [modalMaxHeight, setModalMaxHeight] = useState(1000)
   const windowInnerHeight = useWindowInnerHeight()
   const searchBarRef = useRef<HTMLDivElement>(null)
@@ -31,7 +33,7 @@ function SearchBar() {
     { enabled: enableFetch }
   )
 
-  useHideWhenClickedOutside(searchBarRef, setModalVisible)
+  useHideWhenClickedOutside(searchBarRef, setIsModalVisible)
 
   useEffect(() => {
     if (searchBarRef.current) {
@@ -40,10 +42,10 @@ function SearchBar() {
   }, [searchBarRef, windowInnerHeight])
 
   useEffect(() => {
-    if (data) {
-      setModalVisible(true)
+    if (data && inputText) {
+      setIsModalVisible(true)
     }
-  }, [data])
+  }, [data, setIsModalVisible, inputText])
 
   return (
     <Container ref={searchBarRef}>
@@ -51,15 +53,14 @@ function SearchBar() {
         inputText={inputText}
         setEnableFetch={setEnableFetch}
         setInputText={setInputText}
-        setModalVisible={setModalVisible}
         isLoading={isLoading}
       />
       <AnimatePresence>
-        {modalVisible && data && (
+        {isModalVisible && data && (
           <ResultsModal
             maxHeight={modalMaxHeight}
-            setVisible={setModalVisible}
             setSearchBarInputText={setInputText}
+            searchBarInputText={inputText}
             results={data}
           />
         )}

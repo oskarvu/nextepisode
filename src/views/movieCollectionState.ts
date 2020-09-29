@@ -1,52 +1,65 @@
 import { atom, selector } from 'recoil'
-import { MovieInitData, timeLeftToAir } from '../components/MovieTile/movieSharedState'
+import { MovieInitData, movieStatus, timeLeftToAir } from '../components/MovieTile/movieSharedState'
 import { LocalStorage } from '../db/types'
 import { Sort, sortMethod } from '../components/FiltersModal/FiltersModal'
+import { statusOrder } from '../api/utils'
 
 const idMovieRecord = localStorage.getItem(LocalStorage.idMovieInitDataRecord)
-const storedIdLastTimeLeft = localStorage.getItem(LocalStorage.idTimeLeftRecord)
-const idLastTimeLeft: Record<string, number> = storedIdLastTimeLeft
-  ? JSON.parse(storedIdLastTimeLeft)
-  : {}
+const storedIdLeftTime = localStorage.getItem(LocalStorage.idTimeLeftMap)
+const idTimeLeftHistoric: Map<string, number> = storedIdLeftTime
+  ? new Map<string, number>(JSON.parse(storedIdLeftTime))
+  : new Map<string, number>()
 
 export const idMovieInitDataRecord = atom<Record<string, MovieInitData>>({
   key: 'idMovieInitDataMap',
   default: idMovieRecord ? JSON.parse(idMovieRecord) : {},
 })
 
-// todo: refactor
+export const IdTimeLeftHistoric = new Map<string, number | null>()
+
 export const firstRenderSortedIds = selector<string[]>({
   key: 'firstRenderSortedIds',
   get: ({ get }) => {
     const currentSortMethod = get(sortMethod)
     const idMovieRecords = get(idMovieInitDataRecord)
     const idMovieRecordKeys = Object.keys(idMovieRecords)
+
     switch (currentSortMethod) {
       case Sort.alphabetically:
-        return idMovieRecordKeys.sort((aMovieId, bMovieId) => {
-          return idMovieRecords[aMovieId].name.localeCompare(idMovieRecords[bMovieId].name)
-        })
+        return idMovieRecordKeys.sort(byNameAZ)
       case Sort.byPremiere:
         return idMovieRecordKeys.sort((aMovieId, bMovieId) => {
           const [aTimeLeft, bTimeLeft] = [
-            get(timeLeftToAir(aMovieId)) ?? idLastTimeLeft[aMovieId],
-            get(timeLeftToAir(bMovieId)) ?? idLastTimeLeft[bMovieId],
+            get(timeLeftToAir(aMovieId)) ?? idTimeLeftHistoric.get(aMovieId) ?? null,
+            get(timeLeftToAir(bMovieId)) ?? idTimeLeftHistoric.get(bMovieId) ?? null,
           ]
           if (aTimeLeft !== null && bTimeLeft !== null) return aTimeLeft - bTimeLeft
           if (aTimeLeft !== null && bTimeLeft === null) return -1
           if (aTimeLeft === null && bTimeLeft !== null) return 1
-          return 0
+          return byStatusPriority(aMovieId, bMovieId)
         })
       case Sort.byAddTime:
       default:
-        // by add time
-        return idMovieRecordKeys.sort((aMovieId, bMovieId) => {
-          const [aAddTime, bAddTime] = [
-            idMovieRecords[aMovieId].addTime,
-            idMovieRecords[bMovieId].addTime,
-          ]
-          return bAddTime - aAddTime
-        })
+        return idMovieRecordKeys.sort(byNewlyAddedFirst)
+    }
+
+    function byNameAZ(aMovieId: string, bMovieId: string) {
+      return idMovieRecords[aMovieId].name.localeCompare(idMovieRecords[bMovieId].name)
+    }
+
+    function byNewlyAddedFirst(aMovieId: string, bMovieId: string) {
+      return idMovieRecords[bMovieId].addTime - idMovieRecords[aMovieId].addTime
+    }
+
+    function byStatusPriority(aMovieId: string, bMovieId: string) {
+      const [aStatusPriority, bStatusPriority] = [
+        statusOrder(get(movieStatus(aMovieId))),
+        statusOrder(get(movieStatus(bMovieId))),
+      ]
+      if (aStatusPriority === bStatusPriority) {
+        return idMovieRecords[aMovieId].name.localeCompare(idMovieRecords[bMovieId].name)
+      }
+      return aStatusPriority - bStatusPriority
     }
   },
 })

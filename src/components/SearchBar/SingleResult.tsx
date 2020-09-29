@@ -2,18 +2,20 @@ import React from 'react'
 import { SearchResult } from '../../api/types'
 import tw from 'twin.macro'
 import Check from '../../assets/icons/Check'
-import { useRecoilCallback, useRecoilState } from 'recoil'
-import { movieFocusOn } from '../MovieTile/movieSharedState'
+import { useRecoilCallback, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { movieFocusOn, timeLeftToAir } from '../MovieTile/movieSharedState'
 import { idMovieInitDataRecord } from '../../views/movieCollectionState'
+import { CounterFollowText } from '../../translations/en-US'
+import { isResultsModalVisible } from './resultsModalSharedState'
 
 const Result = tw.li`
   flex flex-row items-center
-  mx-3 last:mb-1
+  mx-3 last:mb-4
 `
 
 const ResultButton = tw.button`
   flex flex-row justify-between items-center
-  w-full py-3 pr-2 pl-4 ml-1
+  w-full py-2 pr-2 pl-4 ml-1
   rounded-full border-white border-2
   focus:outline-none focus:bg-white focus:border-gray-300
   text-gray-700 text-base sm:text-xl font-medium text-left
@@ -24,7 +26,7 @@ const ResultText = tw.div`
   pr-2 pb-1
 `
 
-const ResultCheck = tw(Check)`
+const InCollectionIcon = tw(Check)`
   w-4 h-6
 `
 
@@ -40,16 +42,13 @@ const InfoPill = tw.div`
 
 interface SingleResultProps {
   result: SearchResult
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
   setSearchBarInputText: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function SingleResult({
-  result,
-  setModalVisible,
-  setSearchBarInputText,
-}: SingleResultProps) {
+export default function SingleResult({ result, setSearchBarInputText }: SingleResultProps) {
   const [idMovieRecord, setIdMovieRecord] = useRecoilState(idMovieInitDataRecord)
+  const timeLeftToAirValue = useRecoilValue(timeLeftToAir(result.id))
+  const setIsModalVisible = useSetRecoilState(isResultsModalVisible)
 
   const setFocusOn = useRecoilCallback(({ set }) => {
     return (resultId: string) => {
@@ -64,8 +63,11 @@ export default function SingleResult({
         <PillsContainer>
           {idMovieRecord[result.id] && (
             <InfoPill>
-              <ResultCheck />
+              <InCollectionIcon />
             </InfoPill>
+          )}
+          {timeLeftToAirValue !== null && timeLeftToAirValue < 60 && (
+            <InfoPill>{getTimeLeftPillText(timeLeftToAirValue)}</InfoPill>
           )}
           {result.firstAirDate && <InfoPill>{result.firstAirDate.substr(0, 4)}</InfoPill>}
         </PillsContainer>
@@ -74,7 +76,7 @@ export default function SingleResult({
   )
 
   function handleOnClick(result: SearchResult) {
-    setModalVisible(false)
+    setIsModalVisible(false)
     setSearchBarInputText('')
     const isMapped = idMovieRecord[result.id]
     if (isMapped) {
@@ -86,5 +88,15 @@ export default function SingleResult({
         [result.id]: { id: result.id, name: result.name, addTime: Date.now() },
       }))
     }
+  }
+
+  function getTimeLeftPillText(daysLeft: number) {
+    if (daysLeft === 0) {
+      return CounterFollowText.today
+    }
+    if (daysLeft === 1) {
+      return `${daysLeft} ${CounterFollowText.dayLeft}`
+    }
+    return `${daysLeft} ${CounterFollowText.daysLeft}`
   }
 }

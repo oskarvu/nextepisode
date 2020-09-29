@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { atom, useRecoilState } from 'recoil'
+import { atom, useRecoilState, useRecoilValue } from 'recoil'
 import tw, { styled } from 'twin.macro'
 import { LocalStorage } from '../../db/types'
 import { FilterModalText } from '../../translations/en-US'
@@ -8,11 +8,18 @@ import Adjustments from '../../assets/icons/motionable/Adjustments'
 import { AnimatePresence, motion } from 'framer-motion'
 import useHideWhenClickedOutside from '../../hooks/useHideWhenClickedOutside'
 import X from '../../assets/icons/motionable/X'
+import { isResultsModalVisible } from '../SearchBar/resultsModalSharedState'
 
-const Modal = styled(motion.div)(({ isModalOpen }: { isModalOpen: boolean }) => [
-  tw`fixed bottom-0 z-10 h-24 mb-3 xl:top-0 xl:mt-32 xl:-ml-20
+interface ModalProps {
+  isModalOpen: boolean
+  isResultsModalVisible: boolean
+}
+
+const Modal = styled(motion.div)(({ isModalOpen, isResultsModalVisible }: ModalProps) => [
+  tw`fixed bottom-0 z-10 h-24 mb-3 md:top-0 md:mt-32 md:-ml-16 lg:-ml-24
   mt-4 mr-3 -ml-1 bg-white p-4 rounded-4xl shadow-delicate`,
   !isModalOpen && tw`h-14 w-14 cursor-pointer rounded-full`,
+  isResultsModalVisible && tw`hidden lg:block`,
 ])
 
 const SectionName = tw.h5`
@@ -50,6 +57,7 @@ export const sortMethod = atom<Sort>({
 export const FiltersModal: React.FC<any> = () => {
   const [sortBy, setSortBy] = useRecoilState(sortMethod)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const isResultsModalVisibleValue = useRecoilValue(isResultsModalVisible)
   const modalRef = useRef<HTMLDivElement>(null)
 
   useHideWhenClickedOutside(modalRef, setIsModalOpen)
@@ -59,12 +67,16 @@ export const FiltersModal: React.FC<any> = () => {
   }, [sortBy])
 
   return (
-    <Modal
-      isModalOpen={isModalOpen}
-      onClick={() => !isModalOpen && setIsModalOpen(true)}
-      ref={modalRef}
-    >
-      <AnimatePresence>
+    <AnimatePresence>
+      <Modal
+        isModalOpen={isModalOpen}
+        isResultsModalVisible={isResultsModalVisibleValue}
+        onClick={() => !isModalOpen && setIsModalOpen(true)}
+        ref={modalRef}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
         {isModalOpen ? (
           <ModalContent initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <CloseIcon onClick={() => setIsModalOpen(false)} />
@@ -96,7 +108,7 @@ export const FiltersModal: React.FC<any> = () => {
         ) : (
           <AdjustmentsIcon />
         )}
-      </AnimatePresence>
-    </Modal>
+      </Modal>
+    </AnimatePresence>
   )
 }

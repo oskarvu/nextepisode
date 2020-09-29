@@ -21,6 +21,11 @@ const leftToAir = atomFamily<number | null, string>({
   default: null,
 })
 
+const status = atomFamily<string | null, string>({
+  key: 'status',
+  default: null,
+})
+
 export const movieFocusOn = selectorFamily<boolean, string>({
   key: 'movieFocusOn',
   get: (id) => ({ get }) => get(focusOn(`focusOn${id}`)),
@@ -37,4 +42,10 @@ export const timeLeftToAir = selectorFamily<number | null, string>({
   key: 'timeLeftToAir',
   get: (id) => ({ get }) => get(leftToAir(`timeLeftOf${id}`)),
   set: (id) => ({ set }, newValue) => set(leftToAir(`timeLeftOf${id}`), newValue),
+})
+
+export const movieStatus = selectorFamily<string | null, string>({
+  key: 'timeLeftToAir',
+  get: (id) => ({ get }) => get(status(`statusOf${id}`)),
+  set: (id) => ({ set }, newValue) => set(status(`statusOf${id}`), newValue),
 })
