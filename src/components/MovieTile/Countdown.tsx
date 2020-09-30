@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import tw from 'twin.macro'
 
 import { Episode, Status } from '../../api/types'
-import { StatusText, CounterFollowText } from '../../translations/en-US'
+import { StatusText, CounterFollowText, FetchErrors } from '../../translations/en-US'
 import { calculateDaysLeft, calculateMonthsLeft } from '../../utils/time'
 
 import { useSetRecoilState } from 'recoil'
@@ -15,6 +15,7 @@ import Reply from '../../assets/icons/Reply'
 import Heart from '../../assets/icons/Heart'
 import { LocalStorage } from '../../db/types'
 import { IdTimeLeftHistoric } from '../../views/movieCollectionState'
+import Exclamation from '../../assets/icons/Exclamation'
 
 const Container = tw.div`
   flex flex-row sm:flex-col items-center justify-center
@@ -47,10 +48,13 @@ const ReplyIcon = tw(Reply)`${IconBase}`
 
 const HeartIcon = tw(Heart)`${IconBase}`
 
+const ErrorIcon = tw(Exclamation)`${IconBase}`
+
 interface Props {
   movieId: string
   nextEpisode: Episode | null
   status: string
+  isError: boolean
 }
 
 interface CountdownData {
@@ -58,7 +62,7 @@ interface CountdownData {
   follow: string
 }
 
-export default function Countdown({ nextEpisode, status, movieId }: Props) {
+export default function Countdown({ nextEpisode, status, movieId, isError }: Props) {
   const [daysLeft] = useState(() => initDaysState())
   const [countdownData] = useState<CountdownData>(() => initCountdownData(daysLeft))
   const setTimeLeftToAir = useSetRecoilState(timeLeftToAir(movieId))
@@ -75,7 +79,14 @@ export default function Countdown({ nextEpisode, status, movieId }: Props) {
     )
   }, [movieId, daysLeft])
 
-  return (
+  return isError ? (
+    <Container>
+      <Counter>
+        <ErrorIcon />
+      </Counter>
+      <FollowUp>{FetchErrors.movieDetailsFetchError}</FollowUp>
+    </Container>
+  ) : (
     <Container>
       <Counter>{countdownData.counter}</Counter>
       <FollowUp>{countdownData.follow}</FollowUp>

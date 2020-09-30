@@ -5,8 +5,9 @@ import { motion } from 'framer-motion'
 import { SearchResult } from '../../api/types'
 
 import SingleResult from './SingleResult'
-import { Texts } from '../../translations/en-US'
+import { FetchErrors, Texts } from '../../translations/en-US'
 import capitalize from '../../utils/capitalize'
+import { searchResultsRenderLimit } from '../../api/config'
 
 const Modal = styled(motion.div)(({ maxHeight }: { maxHeight: number }) => [
   tw`
@@ -18,7 +19,7 @@ const Modal = styled(motion.div)(({ maxHeight }: { maxHeight: number }) => [
   `max-height: ${maxHeight}px`,
 ])
 
-const NoResultsText = tw.li`
+const NotResultsText = tw.li`
   ml-6 mt-3 mb-4
   text-gray-700 text-base sm:text-xl font-medium text-left
 `
@@ -28,16 +29,35 @@ interface ResultsModalProps {
   maxHeight: number
   setSearchBarInputText: React.Dispatch<React.SetStateAction<string>>
   searchBarInputText: string
+  isFetchError: boolean
 }
 
-// todo: handle errors from api
-// todo: make results limit parametrized
 export default function ResultsModal({
   results,
   maxHeight,
   setSearchBarInputText,
   searchBarInputText,
+  isFetchError,
 }: ResultsModalProps) {
+  let toRender
+  if (results.length === 0 && searchBarInputText) {
+    toRender = <NotResultsText>{`${capitalize(Texts.noResults)}...`}</NotResultsText>
+  } else if (isFetchError) {
+    toRender = (
+      <NotResultsText>{`${capitalize(FetchErrors.searchResultFetchError)}...`}</NotResultsText>
+    )
+  } else {
+    toRender = results
+      .slice(0, searchResultsRenderLimit)
+      .map((result) => (
+        <SingleResult
+          key={result.id}
+          result={result}
+          setSearchBarInputText={setSearchBarInputText}
+        />
+      ))
+  }
+
   return (
     <Modal
       maxHeight={maxHeight}
@@ -47,21 +67,7 @@ export default function ResultsModal({
       style={{ originY: 0 }}
       transition={{ duration: 0.3, type: 'tween' }}
     >
-      <ul>
-        {results.length === 0 && searchBarInputText ? (
-          <NoResultsText>{`${capitalize(Texts.noResults)}...`}</NoResultsText>
-        ) : (
-          results
-            .slice(0, 10)
-            .map((result) => (
-              <SingleResult
-                key={result.id}
-                result={result}
-                setSearchBarInputText={setSearchBarInputText}
-              />
-            ))
-        )}
-      </ul>
+      <ul>{toRender}</ul>
     </Modal>
   )
 }

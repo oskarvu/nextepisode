@@ -30,6 +30,12 @@ export enum Texts {
   noResults = 'no results match your query',
 }
 
+export enum FetchErrors {
+  searchResultFetchError = 'some problem occurred, please try again',
+  movieDetailsFetchError = 'error',
+  movieDetailsFetchErrorDesc = 'Some problem occurred during fetching data. Delete tile and try again later...',
+}
+
 export enum FilterModalText {
   alphabetically = 'a-z',
   timeLeft = 'time left',

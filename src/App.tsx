@@ -12,7 +12,6 @@ const MainContainer = tw.div`
   bg-gray-300
 `
 
-// todo: add error handling (api)
 function App() {
   return (
     <RecoilRoot>

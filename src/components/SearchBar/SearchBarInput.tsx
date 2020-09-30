@@ -78,7 +78,6 @@ interface Props {
   isLoading: boolean
 }
 
-// todo: handle errors from api
 export default function SearchBarInput({
   setEnableFetch,
   inputText,

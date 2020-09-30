@@ -2,6 +2,7 @@ const apiBaseURL = 'https://api.themoviedb.org/3/'
 
 export const keyField = `api_key=${process.env.REACT_APP_API_KEY}`
 export const searchURL = `${apiBaseURL}search/tv?`
+export const searchResultsRenderLimit = 10
 export const tvDataURL = `${apiBaseURL}tv/`
 export const searchFields = '&language=en-US&include-adult=false'
 export const tvFields = '&language=en-US'

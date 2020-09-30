@@ -27,7 +27,7 @@ function SearchBar() {
   const searchBarRef = useRef<HTMLDivElement>(null)
   const [enableFetch, setEnableFetch] = useState(false)
 
-  const { isLoading, data } = useQuery(
+  const { isLoading, isError, data } = useQuery(
     encodeURI(inputText),
     () => fetchMovieSearchResults(inputText),
     { enabled: enableFetch }
@@ -62,6 +62,7 @@ function SearchBar() {
             setSearchBarInputText={setInputText}
             searchBarInputText={inputText}
             results={data}
+            isFetchError={isError}
           />
         )}
       </AnimatePresence>

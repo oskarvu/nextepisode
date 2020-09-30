@@ -12,6 +12,7 @@ import MovieDetailsCard from './MovieDetailsCard'
 import { ReactComponent as FakeContentImage } from '../../assets/images/fake-tile-bg.svg'
 import { useQuery } from 'react-query'
 import { movieFocusOn, movieStatus } from './movieSharedState'
+import { Movie } from '../../api/types'
 
 const tileBaseStyle = `
   flex flex-col sm:flex-row
@@ -41,13 +42,13 @@ const FakeContent = tw(FakeContentImage)`
   w-full text-gray-300
 `
 
-const StartContainer = tw.div`
+const CountdownContainer = tw.div`
     flex flex-grow justify-center
     w-full sm:w-6/12 xl:w-5/12 sm:h-full
     px-3 pt-2 pb-0 sm:p-5 sm:pr-0
   `
 
-const EndContainer = tw.div`
+const DetailsContainer = tw.div`
   flex justify-end
   w-full sm:w-6/12 xl:w-7/12 sm:h-full
   p-3 pt-0 sm:p-5 sm:pl-0 mt-auto
@@ -55,8 +56,8 @@ const EndContainer = tw.div`
 
 export const MovieTile: React.FC<{ movieId: string }> = ({ movieId }) => {
   const [movieFocusIsOn, setMovieFocusIsOn] = useRecoilState(movieFocusOn(movieId))
-  const { data: movie } = useQuery(movieId, () => fetchMovieDetails(movieId))
-  const { isBackdropLoading, backdrop } = useSetBackdropImage(movie)
+  const { isError, data: movie } = useQuery(movieId, () => fetchMovieDetails(movieId))
+  const { isBackdropLoading, backdrop } = useSetBackdropImage(isError, movie)
   const tileRef = useRef<HTMLDivElement>(null)
   const setStatus = useSetRecoilState(movieStatus(movieId))
 
@@ -81,12 +82,17 @@ export const MovieTile: React.FC<{ movieId: string }> = ({ movieId }) => {
       exit={{ opacity: 0, transition: { duration: 0.3 } }}
       layout
     >
-      <StartContainer>
-        <Countdown nextEpisode={movie.nextEpisode} status={movie.status} movieId={movieId} />
-      </StartContainer>
-      <EndContainer>
-        <MovieDetailsCard movie={movie} />
-      </EndContainer>
+      <CountdownContainer>
+        <Countdown
+          isError={isError}
+          nextEpisode={movie.nextEpisode}
+          status={movie.status}
+          movieId={movieId}
+        />
+      </CountdownContainer>
+      <DetailsContainer>
+        <MovieDetailsCard isError={isError} movie={movie} />
+      </DetailsContainer>
     </Tile>
   ) : (
     <FakeTile

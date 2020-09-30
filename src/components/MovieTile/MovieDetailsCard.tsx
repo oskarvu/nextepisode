@@ -4,7 +4,7 @@ import tw, { styled } from 'twin.macro'
 import { Movie } from '../../api/types'
 import Trash from '../../assets/icons/Trash'
 import DetailsCardTable from './DetailsCardTable'
-import { Texts } from '../../translations/en-US'
+import { FetchErrors, Texts } from '../../translations/en-US'
 import { useSetRecoilState } from 'recoil'
 import { movieNetwork } from './movieSharedState'
 import { idMovieInitDataRecord, IdTimeLeftHistoric } from '../../views/movieCollectionState'
@@ -41,7 +41,7 @@ const TrashIcon = tw(Trash)`
   cursor-pointer text-gray-500 hover:text-gray-700
 `
 
-export default function MovieDetailsCard({ movie }: { movie: Movie }) {
+export default function MovieDetailsCard({ isError, movie }: { isError: boolean; movie: Movie }) {
   const setIdMovieRecord = useSetRecoilState(idMovieInitDataRecord)
   const setMovieNetwork = useSetRecoilState(movieNetwork(movie.id))
 
@@ -49,7 +49,16 @@ export default function MovieDetailsCard({ movie }: { movie: Movie }) {
     setMovieNetwork(movie.network)
   }, [movie.network, setMovieNetwork])
 
-  return (
+  return isError ? (
+    <Details>
+      <div>
+        <MovieName letters={FetchErrors.movieDetailsFetchErrorDesc.length}>
+          {FetchErrors.movieDetailsFetchErrorDesc}
+        </MovieName>
+      </div>
+      <TrashIcon onClick={handleTrashIconClick} />
+    </Details>
+  ) : (
     <Details>
       <div>
         <MovieName letters={movie.name.length}>{movie.name}</MovieName>
