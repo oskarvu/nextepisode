@@ -66,9 +66,11 @@ const CloseIcon = tw(X)`
 
 const StyledLogo = styled(Logo)(() => [
   tw`absolute
-  right-0 mr-8 w-8 h-8
+  right-0 mr-8
   text-red-500`,
-  'margin-top: 1.4rem',
+  'margin-top: 1.6rem;',
+  'width: 1.7rem;',
+  'height: 1.7rem;',
 ])
 
 interface Props {
