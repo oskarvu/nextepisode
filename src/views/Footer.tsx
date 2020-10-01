@@ -1,5 +1,5 @@
 import React from 'react'
-import tw from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 import { ReactComponent as TMDbLogo } from '../assets/images/tmdb-logo.svg'
 import External from '../assets/icons/ExternalLink'
 import { FooterTexts } from '../translations/en-US'
@@ -22,8 +22,9 @@ const ExternalLinkIcon = tw(External)`
   ml-1 w-6 h-6 inline
 `
 
-const FooterTMDbLogo = tw(TMDbLogo)`
-  h-5 ml-3 inline
+const FooterTMDbLogo = styled(TMDbLogo)`
+  margin-bottom: 3px;
+  ${tw`h-3 ml-3 inline-block`}
 `
 
 const ExternalLink = tw.a`
