@@ -8,6 +8,7 @@ import Footer from './views/Footer'
 import tw from 'twin.macro'
 
 const MainContainer = tw.div`
+  flex flex-col
   min-h-screen
   bg-gray-300
 `

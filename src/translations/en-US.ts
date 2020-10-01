@@ -30,6 +30,11 @@ export enum Texts {
   noResults = 'no results match your query',
 }
 
+export enum FooterTexts {
+  aboutApp = 'about app',
+  attribution = 'This product uses the TMDb API but is not endorsed or certified by TMDb.',
+}
+
 export enum FetchErrors {
   searchResultFetchError = 'some problem occurred, please try again',
   movieDetailsFetchError = 'error',
