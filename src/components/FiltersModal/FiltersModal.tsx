@@ -30,7 +30,7 @@ const AdjustmentsIcon = tw(Adjustments)`
   h-6 w-6 text-gray-700
 `
 
-const ModalContent = tw(motion.div)`
+const ModalContent = tw.div`
   relative mb-2
 `
 
@@ -51,7 +51,7 @@ const sortByMethod = localStorage.getItem(LocalStorage.sortMethod)
 
 export const sortMethod = atom<Sort>({
   key: 'sortMethod',
-  default: sortByMethod ? JSON.parse(sortByMethod) : Sort.byAddTime,
+  default: sortByMethod ? JSON.parse(sortByMethod) : Sort.byPremiere,
 })
 
 export const FiltersModal: React.FC<any> = () => {
@@ -78,7 +78,7 @@ export const FiltersModal: React.FC<any> = () => {
         exit={{ opacity: 0 }}
       >
         {isModalOpen ? (
-          <ModalContent initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <ModalContent>
             <CloseIcon onClick={() => setIsModalOpen(false)} />
             <SectionName>Sort by:</SectionName>
             <div>
