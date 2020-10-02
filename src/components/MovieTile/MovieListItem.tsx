@@ -12,7 +12,6 @@ import MovieDetailsCard from './MovieDetailsCard'
 import { ReactComponent as FakeContentImage } from '../../assets/images/fake-tile-bg.svg'
 import { useQuery } from 'react-query'
 import { movieFocusOn, movieStatus } from './movieSharedState'
-import { Movie } from '../../api/types'
 
 const tileBaseStyle = `
   flex flex-col sm:flex-row
@@ -21,7 +20,7 @@ const tileBaseStyle = `
   rounded-4xl overflow-hidden bg-gray-400 bg-cover bg-center
 `
 
-const Tile = styled(motion.div)`
+const Tile = styled.li`
   ${tw`${tileBaseStyle}`}
   ${({ backdrop }: { backdrop: string | null }) =>
     `background-image: url("${backdrop}");`}
@@ -33,7 +32,7 @@ const Tile = styled(motion.div)`
   }
 `
 
-const FakeTile = tw(motion.div)`
+const FakeTile = tw.li`
   ${tileBaseStyle}
   justify-center
 `
@@ -54,11 +53,11 @@ const DetailsContainer = tw.div`
   p-3 pt-0 sm:p-5 sm:pl-0 mt-auto
 `
 
-export const MovieTile: React.FC<{ movieId: string }> = ({ movieId }) => {
+export const MovieListItem: React.FC<{ movieId: string }> = ({ movieId }) => {
   const [movieFocusIsOn, setMovieFocusIsOn] = useRecoilState(movieFocusOn(movieId))
   const { isError, data: movie } = useQuery(movieId, () => fetchMovieDetails(movieId))
   const { isBackdropLoading, backdrop } = useSetBackdropImage(isError, movie)
-  const tileRef = useRef<HTMLDivElement>(null)
+  const tileRef = useRef<HTMLLIElement>(null)
   const setStatus = useSetRecoilState(movieStatus(movieId))
 
   useEffect(() => {
@@ -73,15 +72,7 @@ export const MovieTile: React.FC<{ movieId: string }> = ({ movieId }) => {
   }, [movie, setStatus])
 
   return !isBackdropLoading && movie ? (
-    <Tile
-      tabIndex={-1}
-      ref={tileRef}
-      backdrop={backdrop}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.3 } }}
-      layout
-    >
+    <Tile tabIndex={-1} ref={tileRef} backdrop={backdrop} layout>
       <CountdownContainer>
         <Countdown
           isError={isError}
@@ -95,12 +86,7 @@ export const MovieTile: React.FC<{ movieId: string }> = ({ movieId }) => {
       </DetailsContainer>
     </Tile>
   ) : (
-    <FakeTile
-      initial={{ opacity: 0 }}
-      animate={{ opacity: [1, 0.3, 1] }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 1.2, loop: Infinity }}
-    >
+    <FakeTile>
       <FakeContent />
     </FakeTile>
   )

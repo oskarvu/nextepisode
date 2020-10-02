@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import tw, { styled } from 'twin.macro'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 
-import { MovieTile } from '../components/MovieTile/MovieTile'
+import { MovieListItem } from '../components/MovieTile/MovieListItem'
 import { useRecoilValue } from 'recoil'
 import { LocalStorage } from '../db/types'
 import { FiltersModal } from '../components/FiltersModal/FiltersModal'
@@ -94,7 +94,7 @@ export default function MovieCollection() {
       <AnimateSharedLayout>
         <AnimatePresence>
           {firstRenderIds.map((id) => (
-            <MovieTile key={id} movieId={id} />
+            <MovieListItem key={id} movieId={id} />
           ))}
         </AnimatePresence>
       </AnimateSharedLayout>
