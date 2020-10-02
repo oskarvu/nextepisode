@@ -20,7 +20,7 @@ const tileBaseStyle = `
   rounded-4xl overflow-hidden bg-gray-400 bg-cover bg-center
 `
 
-const Tile = styled.li`
+const Tile = styled(motion.li)`
   ${tw`${tileBaseStyle}`}
   ${({ backdrop }: { backdrop: string | null }) =>
     `background-image: url("${backdrop}");`}
@@ -32,7 +32,7 @@ const Tile = styled.li`
   }
 `
 
-const FakeTile = tw.li`
+const FakeTile = tw(motion.li)`
   ${tileBaseStyle}
   justify-center
 `
@@ -72,7 +72,15 @@ export const MovieListItem: React.FC<{ movieId: string }> = ({ movieId }) => {
   }, [movie, setStatus])
 
   return !isBackdropLoading && movie ? (
-    <Tile tabIndex={-1} ref={tileRef} backdrop={backdrop} layout>
+    <Tile
+      tabIndex={-1}
+      ref={tileRef}
+      backdrop={backdrop}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, transition: { duration: 0.3 } }}
+      layout
+    >
       <CountdownContainer>
         <Countdown
           isError={isError}
@@ -86,7 +94,12 @@ export const MovieListItem: React.FC<{ movieId: string }> = ({ movieId }) => {
       </DetailsContainer>
     </Tile>
   ) : (
-    <FakeTile>
+    <FakeTile
+      initial={{ opacity: 0 }}
+      animate={{ opacity: [1, 0.3, 1] }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1.2, loop: Infinity }}
+    >
       <FakeContent />
     </FakeTile>
   )
