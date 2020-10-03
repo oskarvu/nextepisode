@@ -36,13 +36,10 @@ const ModalContent = tw(motion.div)`
   relative mb-2
 `
 
-const RadiosContainer = tw.div`
-  mb-6
-`
-
-const DeleteAllButton = tw.button`
-  bg-gray-300 px-3 -mt-1 py-2 rounded-full cursor-pointer hover:bg-gray-200
+const DeleteSectionButtons = tw(motion.button)`
+  bg-gray-300 mr-2 px-3 -mt-1 mb-2 py-2 rounded-full cursor-pointer hover:bg-gray-200
   text-xs sm:text-sm uppercase font-bold text-gray-800 tracking-wide
+  focus:outline-none
 `
 
 const CloseIcon = tw(X)`
@@ -65,14 +62,20 @@ export const sortMethod = atom<Sort>({
   default: sortByMethod ? JSON.parse(sortByMethod) : Sort.byAddTime,
 })
 
+export const isFilterModalExpanded = atom<boolean>({
+  key: 'isFilterModalExpanded',
+  default: false,
+})
+
 export const FiltersModal: React.FC<any> = () => {
   const [sortBy, setSortBy] = useRecoilState(sortMethod)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalExpanded, setIsModalExpanded] = useRecoilState(isFilterModalExpanded)
   const isResultsModalVisibleValue = useRecoilValue(isResultsModalVisible)
   const modalRef = useRef<HTMLDivElement>(null)
   const setIdMovieRecord = useSetRecoilState(idMovieInitDataRecord)
+  const [confirmButtonsVisible, setConfirmButtonsVisible] = useState(false)
 
-  useHideWhenClickedOutside(modalRef, setIsModalOpen)
+  useHideWhenClickedOutside(modalRef, setIsModalExpanded)
 
   useEffect(() => {
     localStorage.setItem(LocalStorage.sortMethod, JSON.stringify(sortBy))
@@ -81,19 +84,32 @@ export const FiltersModal: React.FC<any> = () => {
   return (
     <AnimatePresence>
       <Modal
-        isModalOpen={isModalOpen}
+        isModalOpen={isModalExpanded}
         isResultsModalVisible={isResultsModalVisibleValue}
-        onClick={() => !isModalOpen && setIsModalOpen(true)}
+        onClick={() => !isModalExpanded && setIsModalExpanded(true)}
         ref={modalRef}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
-        {isModalOpen ? (
+        {isModalExpanded ? (
           <ModalContent initial={{ opacity: 0.3 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <CloseIcon onClick={() => setIsModalOpen(false)} />
+            <CloseIcon onClick={() => setIsModalExpanded(false)} />
+            <SectionName>Remove all tv shows:</SectionName>
+            {confirmButtonsVisible ? (
+              <>
+                <DeleteSectionButtons onClick={handleDeleteAll}>yes</DeleteSectionButtons>
+                <DeleteSectionButtons onClick={() => setConfirmButtonsVisible(false)}>
+                  no
+                </DeleteSectionButtons>
+              </>
+            ) : (
+              <DeleteSectionButtons onClick={() => setConfirmButtonsVisible(true)}>
+                delete all
+              </DeleteSectionButtons>
+            )}
             <SectionName>Sort by:</SectionName>
-            <RadiosContainer>
+            <div>
               <LabeledRadio
                 setSortBy={setSortBy}
                 checked={sortBy === Sort.byPremiere}
@@ -115,9 +131,7 @@ export const FiltersModal: React.FC<any> = () => {
               >
                 {FilterModalText.alphabetically}
               </LabeledRadio>
-            </RadiosContainer>
-            <SectionName>Remove tv shows:</SectionName>
-            <DeleteAllButton onClick={handleDeleteAll}>delete all</DeleteAllButton>
+            </div>
           </ModalContent>
         ) : (
           <AdjustmentsIcon />

@@ -1,17 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import 'tailwindcss/dist/base.min.css'
 
 import { RecoilRoot } from 'recoil'
 import TopBar from './views/TopBar'
 import MovieCollection from './views/MovieCollection'
 import Footer from './views/Footer'
-import tw from 'twin.macro'
-
-const MainContainer = tw.div`
-  flex flex-col justify-between items-center
-  min-h-screen
-  bg-gray-300
-`
+import { MainContainer } from './views/MainContainer'
 
 function App() {
   return (

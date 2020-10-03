@@ -8,6 +8,8 @@ import SingleResult from './SingleResult'
 import { FetchErrors, Texts } from '../../translations/en-US'
 import capitalize from '../../utils/capitalize'
 import { searchResultsRenderLimit } from '../../api/config'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { isResultsModalVisible } from './resultsModalSharedState'
 
 const Modal = styled(motion.div)(({ maxHeight }: { maxHeight: number }) => [
   tw`
@@ -23,7 +25,7 @@ const NotResultsLi = tw.li`
   text-gray-700 text-base sm:text-xl font-medium text-left
 `
 
-const TrendindTextConatiner = tw.div`
+const TrendingTextContainer = tw.div`
   py-2 text-center
 `
 
@@ -68,9 +70,9 @@ export default function ResultsModal({
   return (
     <Modal maxHeight={maxHeight} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       {!searchBarInputText && (
-        <TrendindTextConatiner>
+        <TrendingTextContainer>
           <TrendingText>Trending this week:</TrendingText>
-        </TrendindTextConatiner>
+        </TrendingTextContainer>
       )}
       <ul>{toRender}</ul>
     </Modal>
