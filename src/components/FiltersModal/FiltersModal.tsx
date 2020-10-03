@@ -18,6 +18,7 @@ interface ModalProps {
 const Modal = styled(motion.div)(({ isModalOpen, isResultsModalVisible }: ModalProps) => [
   tw`fixed bottom-0 z-10 h-24 mb-3 md:top-0 md:mt-32 md:-ml-16 lg:-ml-24
   mt-4 mr-3 -ml-1 bg-white p-4 rounded-4xl shadow-delicate`,
+  '-webkit-tap-highlight-color: transparent;',
   !isModalOpen && tw`h-14 w-14 cursor-pointer rounded-full`,
   isResultsModalVisible && tw`hidden lg:block`,
 ])

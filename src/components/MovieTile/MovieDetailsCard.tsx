@@ -16,8 +16,9 @@ const Details = tw.div`
   bg-white shadow-lg
 `
 
-const MovieName = styled.h1(({ letters }: { letters: number }) => [
+const MovieNameA = styled.a(({ letters }: { letters: number }) => [
   tw`
+    block hover:text-gray-800
     w-92/100
     ml-1 my-1 mb-1
     text-2xl sm:text-3xl font-bold text-gray-700 leading-tight
@@ -35,11 +36,12 @@ const InfoBadge = tw.div`
   text-xs uppercase font-bold text-gray-600 tracking-wider
 `
 
-const TrashIcon = tw(Trash)`
-  absolute right-0
+const TrashIcon = styled(Trash)(() => [
+  tw`absolute right-0
   w-8 h-8 p-1
-  cursor-pointer text-gray-500 hover:text-gray-700
-`
+  cursor-pointer text-gray-500 hover:text-gray-700`,
+  '-webkit-tap-highlight-color: transparent;',
+])
 
 export default function MovieDetailsCard({ isError, movie }: { isError: boolean; movie: Movie }) {
   const setIdMovieRecord = useSetRecoilState(idMovieInitDataRecord)
@@ -52,16 +54,23 @@ export default function MovieDetailsCard({ isError, movie }: { isError: boolean;
   return isError ? (
     <Details>
       <div>
-        <MovieName letters={FetchErrors.movieDetailsFetchErrorDesc.length}>
+        <MovieNameA letters={FetchErrors.movieDetailsFetchErrorDesc.length}>
           {FetchErrors.movieDetailsFetchErrorDesc}
-        </MovieName>
+        </MovieNameA>
       </div>
       <TrashIcon onClick={handleTrashIconClick} />
     </Details>
   ) : (
     <Details>
       <div>
-        <MovieName letters={movie.name.length}>{movie.name}</MovieName>
+        <MovieNameA
+          letters={movie.name.length}
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`https://www.google.com/search?q=${encodeURI(movie.name)}`}
+        >
+          {movie.name}
+        </MovieNameA>
         <InfoBadge>
           {movie.numberOfSeasons === 1
             ? `${movie.numberOfSeasons} ${Texts.season}`

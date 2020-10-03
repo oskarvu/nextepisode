@@ -35,7 +35,11 @@ function Footer() {
   return (
     <FooterContainer>
       <FooterNote>
-        <ExternalLink href="https://github.com/oszeleje/nextepisode" target="_blank">
+        <ExternalLink
+          href="https://github.com/oszeleje/nextepisode"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {capitalize(FooterTexts.aboutApp)}
           <ExternalLinkIcon />
         </ExternalLink>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { SearchResult } from '../../api/types'
-import tw from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 import Check from '../../assets/icons/Check'
 import { useRecoilCallback, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { movieFocusOn, timeLeftToAir } from '../MovieTile/movieSharedState'
@@ -13,14 +13,17 @@ const Result = tw.li`
   mx-3 last:mb-4
 `
 
-const ResultButton = tw.button`
+const ResultButton = styled.button(() => [
+  tw`
   flex flex-row justify-between items-center
   w-full py-2 pr-2 pl-4 ml-1
-  rounded-full border-white border-2
+  rounded-full border-transparent border-2
   focus:outline-none focus:bg-white focus:border-gray-300
   text-gray-700 text-base sm:text-xl font-medium text-left
   hover:bg-gray-100 hover:text-gray-800
-`
+`,
+  '-webkit-tap-highlight-color: transparent;',
+])
 
 const ResultText = tw.div`
   pr-2 pb-1

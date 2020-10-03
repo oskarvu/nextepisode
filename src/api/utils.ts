@@ -15,11 +15,14 @@ export async function fetchMovieDetails(id: string) {
   return fetchFromTMDB(apiQuery, parseRawMovieData)
 }
 
-export async function fetchMovieSearchResults(query: string) {
-  if (!query) {
-    return Promise.resolve([])
+export async function fetchMovieSearchResults(inputText: string) {
+  if (!inputText) {
+    return fetchFromTMDB(
+      'https://api.themoviedb.org/3/trending/tv/week?api_key=33020d6a8aceec0bc5a2c3ab41bc20a8',
+      parseRawSearchResult
+    )
   }
-  const apiQuery = `${searchURL}${keyField}${searchFields}&query=${encodeURI(query)}`
+  const apiQuery = `${searchURL}${keyField}${searchFields}&query=${encodeURI(inputText)}`
   return fetchFromTMDB(apiQuery, parseRawSearchResult)
 }
 

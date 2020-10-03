@@ -10,7 +10,7 @@ import X from '../../assets/icons/motionable/X'
 import Spinner from '../../assets/icons/motionable/Spinner'
 import Logo from '../../assets/icons/motionable/Logo'
 import { fetchDelay, spinDelay } from '../../api/config'
-import { useSetRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { isResultsModalVisible } from './resultsModalSharedState'
 
 const InputContainer = tw.div`
@@ -88,7 +88,7 @@ export default function SearchBarInput({
 }: Props) {
   const [fetchTimeout, setFetchTimeout] = useState<number>()
   const [spin, setSpin] = useState(false)
-  const setIsModalVisible = useSetRecoilState(isResultsModalVisible)
+  const [isModalVisible, setIsModalVisible] = useRecoilState(isResultsModalVisible)
 
   useEffect(() => {
     const spinTimout = setTimeout(() => {
@@ -110,7 +110,7 @@ export default function SearchBarInput({
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {inputText ? (
+        {isModalVisible ? (
           <CloseIcon
             title="close"
             {...opacityMotionProps}
@@ -129,34 +129,50 @@ export default function SearchBarInput({
         value={inputText}
         placeholder={capitalize(Texts.searchForTvShow) + '...'}
         onKeyUp={handleOnKeyUp}
-        onClick={handleClick}
-        onFocus={handleOnFocus}
+        onKeyDown={handleOnKeydown}
+        onClick={handleOnClickOrOnFocus}
+        onFocus={handleOnClickOrOnFocus}
         onChange={handleOnChange}
       />
     </InputContainer>
   )
 
-  function handleClick() {
-    inputText && setIsModalVisible(true)
+  function handleOnClickOrOnFocus() {
+    setEnableFetch(true)
+    setIsModalVisible(true)
   }
 
   function handleOnKeyUp(event: React.KeyboardEvent) {
-    event.key === 'Escape' || event.key === 'Esc'
-      ? setIsModalVisible(false)
-      : !inputText && setIsModalVisible(false)
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      setIsModalVisible(false)
+    }
   }
 
-  function handleOnFocus() {
-    inputText && setIsModalVisible(true)
+  function handleOnKeydown(event: React.KeyboardEvent) {
+    if (!inputText) {
+      switch (event.key) {
+        case 'Backspace':
+          setIsModalVisible(false)
+          break
+        case 'Enter':
+          setIsModalVisible(true)
+          break
+      }
+    }
   }
 
   function handleOnChange(event: React.FormEvent<HTMLInputElement>) {
+    const eventInputText = (event.target as HTMLInputElement).value
+    setInputText(eventInputText)
     clearTimeout(fetchTimeout)
-    setInputText((event.target as HTMLInputElement).value)
+    setEnableFetch(false)
+    if (!eventInputText) {
+      setIsModalVisible(false)
+      return
+    }
     const fetchTimeoutId = setTimeout(() => {
       setEnableFetch(true)
     }, fetchDelay)
     setFetchTimeout(fetchTimeoutId)
-    setEnableFetch(false)
   }
 }

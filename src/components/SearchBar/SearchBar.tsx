@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import tw from 'twin.macro'
-import { AnimatePresence } from 'framer-motion'
 
 import { fetchMovieSearchResults } from '../../api/utils'
 
@@ -14,9 +13,7 @@ import { useRecoilState } from 'recoil'
 import { isResultsModalVisible } from './resultsModalSharedState'
 
 const Container = tw.div`
-  mx-auto
   w-full md:w-10/12 lg:w-8/12 xl:w-7/12 xxl:w-5/12 xxxl:w-4/12 xxxxl:w-3/12
-  text-center
 `
 
 function SearchBar() {
@@ -28,7 +25,7 @@ function SearchBar() {
   const [enableFetch, setEnableFetch] = useState(false)
 
   const { isLoading, isError, data } = useQuery(
-    encodeURI(inputText),
+    inputText ? encodeURI(inputText) : 'trending',
     () => fetchMovieSearchResults(inputText),
     { enabled: enableFetch }
   )
@@ -55,17 +52,15 @@ function SearchBar() {
         setInputText={setInputText}
         isLoading={isLoading}
       />
-      <AnimatePresence>
-        {isModalVisible && data && (
-          <ResultsModal
-            maxHeight={modalMaxHeight}
-            setSearchBarInputText={setInputText}
-            searchBarInputText={inputText}
-            results={data}
-            isFetchError={isError}
-          />
-        )}
-      </AnimatePresence>
+      {isModalVisible && data && (
+        <ResultsModal
+          maxHeight={modalMaxHeight}
+          setSearchBarInputText={setInputText}
+          searchBarInputText={inputText}
+          results={data}
+          isFetchError={isError}
+        />
+      )}
     </Container>
   )
 }

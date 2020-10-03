@@ -13,15 +13,24 @@ const Modal = styled(motion.div)(({ maxHeight }: { maxHeight: number }) => [
   tw`
     absolute z-50 overflow-y-auto
     w-full md:w-10/12 lg:w-8/12 xl:w-7/12 xxl:w-5/12 xxxl:w-4/12 xxxxl:w-3/12
-    ml-auto
     bg-white rounded-b-4xl shadow-lg
   `,
   `max-height: ${maxHeight}px`,
 ])
 
-const NotResultsText = tw.li`
+const NotResultsLi = tw.li`
   ml-6 mt-3 mb-4
   text-gray-700 text-base sm:text-xl font-medium text-left
+`
+
+const TrendindTextConatiner = tw.div`
+  pt-2 text-center
+`
+
+const TrendingText = tw.span`
+  py-2 px-3 mr-1 rounded-full relative z-20
+  text-base font-medium text-gray-700
+  bg-gray-200
 `
 
 interface ResultsModalProps {
@@ -41,11 +50,9 @@ export default function ResultsModal({
 }: ResultsModalProps) {
   let toRender
   if (results.length === 0 && searchBarInputText) {
-    toRender = <NotResultsText>{`${capitalize(Texts.noResults)}...`}</NotResultsText>
+    toRender = <NotResultsLi>{`${capitalize(Texts.noResults)}...`}</NotResultsLi>
   } else if (isFetchError) {
-    toRender = (
-      <NotResultsText>{`${capitalize(FetchErrors.searchResultFetchError)}...`}</NotResultsText>
-    )
+    toRender = <NotResultsLi>{`${capitalize(FetchErrors.searchResultFetchError)}...`}</NotResultsLi>
   } else {
     toRender = results
       .slice(0, searchResultsRenderLimit)
@@ -59,14 +66,12 @@ export default function ResultsModal({
   }
 
   return (
-    <Modal
-      maxHeight={maxHeight}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      style={{ originY: 0 }}
-      transition={{ duration: 0.3, type: 'tween' }}
-    >
+    <Modal maxHeight={maxHeight} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      {!searchBarInputText && (
+        <TrendindTextConatiner>
+          <TrendingText>Trending this week:</TrendingText>
+        </TrendindTextConatiner>
+      )}
       <ul>{toRender}</ul>
     </Modal>
   )

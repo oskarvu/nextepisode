@@ -6,7 +6,7 @@ import SearchBar from '../components/SearchBar/SearchBar'
 const TopContainer = styled.div(({ isScrolled }: { isScrolled: boolean }) => [
   tw`
     sticky top-0 z-10
-    flex items-center justify-center
+    flex justify-center
     w-full
     bg-white shadow-none transition-shadow duration-300
   `,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import tw, { styled } from 'twin.macro'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 
@@ -18,7 +18,7 @@ import threeBg from '../assets/images/welcome-screen/threeBg.svg'
 const List = tw(motion.ul)`
   relative flex flex-wrap
   w-full md:w-10/12 lg:w-8/12 xl:w-10/12 xxl:w-8/12 xxxxl:w-7/12
-  m-auto mt-2 px-4
+  m-auto my-2 px-4
 `
 
 const WelcomeScreenList = styled(motion.ul)(() => [
@@ -64,7 +64,6 @@ const animateItem = {
 export default function MovieCollection() {
   const idMovieRecord = useRecoilValue(idMovieInitDataRecord)
   const firstRenderIds = useRecoilValue(firstRenderSortedIds)
-  const [isCollectionEmpty, setIsCollectionEmpty] = useState(true)
 
   useEffect(() => {
     localStorage.setItem(LocalStorage.idMovieInitDataRecord, JSON.stringify(idMovieRecord))
