@@ -16,7 +16,7 @@ import twoBg from '../assets/images/welcome-screen/twoBg.svg'
 import threeBg from '../assets/images/welcome-screen/threeBg.svg'
 
 const List = tw(motion.ul)`
-  relative flex flex-wrap
+  relative flex flex-wrap flex-grow content-start
   w-full md:w-10/12 lg:w-8/12 xl:w-10/12 xxl:w-8/12 xxxxl:w-7/12
   m-auto my-2 px-4
 `
