@@ -4,12 +4,12 @@ import { LocalStorage } from '../db/types'
 import { Sort, sortMethod } from '../components/FiltersModal/FiltersModal'
 import { statusOrder } from '../api/utils'
 
-const idMovieRecord = localStorage.getItem(LocalStorage.idMovieInitDataRecord)
 const storedIdLeftTime = localStorage.getItem(LocalStorage.idTimeLeftMap)
 const idTimeLeftHistoric: Map<string, number> = storedIdLeftTime
   ? new Map<string, number>(JSON.parse(storedIdLeftTime))
   : new Map<string, number>()
 
+const idMovieRecord = localStorage.getItem(LocalStorage.idMovieInitDataRecord)
 export const idMovieInitDataRecord = atom<Record<string, MovieInitData>>({
   key: 'idMovieInitDataMap',
   default: idMovieRecord ? JSON.parse(idMovieRecord) : {},

@@ -21,7 +21,7 @@ interface Props {
   setSortBy: SetterOrUpdater<Sort>
 }
 
-export const LabeledCheckbox: React.FC<Props> = ({ checked, value, setSortBy, children }) => {
+export const LabeledRadio: React.FC<Props> = ({ checked, value, setSortBy, children }) => {
   return (
     <Label hasChecked={checked}>
       {children}

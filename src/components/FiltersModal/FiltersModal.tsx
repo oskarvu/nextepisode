@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { atom, useRecoilState, useRecoilValue } from 'recoil'
+import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import tw, { styled } from 'twin.macro'
 import { LocalStorage } from '../../db/types'
 import { FilterModalText } from '../../translations/en-US'
-import { LabeledCheckbox } from './LabeledCheckbox'
+import { LabeledRadio } from './LabeledRadio'
 import Adjustments from '../../assets/icons/motionable/Adjustments'
 import { AnimatePresence, motion } from 'framer-motion'
 import useHideWhenClickedOutside from '../../hooks/useHideWhenClickedOutside'
 import X from '../../assets/icons/motionable/X'
 import { isResultsModalVisible } from '../SearchBar/resultsModalSharedState'
+import { idMovieInitDataRecord, IdTimeLeftHistoric } from '../../views/movieCollectionState'
 
 interface ModalProps {
   isModalOpen: boolean
@@ -16,7 +17,7 @@ interface ModalProps {
 }
 
 const Modal = styled(motion.div)(({ isModalOpen, isResultsModalVisible }: ModalProps) => [
-  tw`fixed bottom-0 z-10 h-24 mb-3 md:top-0 md:mt-32 md:-ml-16 lg:-ml-24
+  tw`fixed bottom-0 z-10 h-44 mb-3 md:top-0 md:mt-32 md:-ml-16 lg:-ml-24
   mt-4 mr-3 -ml-1 bg-white p-4 rounded-4xl shadow-delicate`,
   '-webkit-tap-highlight-color: transparent;',
   !isModalOpen && tw`h-14 w-14 cursor-pointer rounded-full`,
@@ -24,7 +25,7 @@ const Modal = styled(motion.div)(({ isModalOpen, isResultsModalVisible }: ModalP
 ])
 
 const SectionName = tw.h5`
-  ml-1 mb-2 mt-1 text-gray-600 font-bold text-xs sm:text-sm tracking-wide uppercase
+  ml-1 mt-1 mb-2 text-gray-600 font-bold text-xs sm:text-sm tracking-wide uppercase
 `
 
 const AdjustmentsIcon = tw(Adjustments)`
@@ -33,6 +34,15 @@ const AdjustmentsIcon = tw(Adjustments)`
 
 const ModalContent = tw(motion.div)`
   relative mb-2
+`
+
+const RadiosContainer = tw.div`
+  mb-6
+`
+
+const DeleteAllButton = tw.button`
+  bg-gray-300 px-3 -mt-1 py-2 rounded-full cursor-pointer hover:bg-gray-200
+  text-xs sm:text-sm uppercase font-bold text-gray-800 tracking-wide
 `
 
 const CloseIcon = tw(X)`
@@ -60,6 +70,7 @@ export const FiltersModal: React.FC<any> = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const isResultsModalVisibleValue = useRecoilValue(isResultsModalVisible)
   const modalRef = useRef<HTMLDivElement>(null)
+  const setIdMovieRecord = useSetRecoilState(idMovieInitDataRecord)
 
   useHideWhenClickedOutside(modalRef, setIsModalOpen)
 
@@ -82,29 +93,31 @@ export const FiltersModal: React.FC<any> = () => {
           <ModalContent initial={{ opacity: 0.3 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <CloseIcon onClick={() => setIsModalOpen(false)} />
             <SectionName>Sort by:</SectionName>
-            <div>
-              <LabeledCheckbox
+            <RadiosContainer>
+              <LabeledRadio
                 setSortBy={setSortBy}
                 checked={sortBy === Sort.byPremiere}
                 value={Sort.byPremiere}
               >
                 {FilterModalText.timeLeft}
-              </LabeledCheckbox>
-              <LabeledCheckbox
+              </LabeledRadio>
+              <LabeledRadio
                 setSortBy={setSortBy}
                 checked={sortBy === Sort.byAddTime}
                 value={Sort.byAddTime}
               >
                 {FilterModalText.addOrder}
-              </LabeledCheckbox>
-              <LabeledCheckbox
+              </LabeledRadio>
+              <LabeledRadio
                 setSortBy={setSortBy}
                 checked={sortBy === Sort.alphabetically}
                 value={Sort.alphabetically}
               >
                 {FilterModalText.alphabetically}
-              </LabeledCheckbox>
-            </div>
+              </LabeledRadio>
+            </RadiosContainer>
+            <SectionName>Remove tv shows:</SectionName>
+            <DeleteAllButton onClick={handleDeleteAll}>delete all</DeleteAllButton>
           </ModalContent>
         ) : (
           <AdjustmentsIcon />
@@ -112,4 +125,10 @@ export const FiltersModal: React.FC<any> = () => {
       </Modal>
     </AnimatePresence>
   )
+
+  function handleDeleteAll() {
+    setIdMovieRecord({})
+    IdTimeLeftHistoric.clear()
+    localStorage.setItem(LocalStorage.idTimeLeftMap, JSON.stringify([]))
+  }
 }
