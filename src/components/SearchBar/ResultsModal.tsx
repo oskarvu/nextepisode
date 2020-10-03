@@ -24,7 +24,7 @@ const NotResultsLi = tw.li`
 `
 
 const TrendindTextConatiner = tw.div`
-  pt-2 text-center
+  py-2 text-center
 `
 
 const TrendingText = tw.span`

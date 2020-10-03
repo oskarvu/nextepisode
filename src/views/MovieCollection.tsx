@@ -45,7 +45,7 @@ const animateList = {
     opacity: 1,
     transition: {
       when: 'beforeChildren',
-      staggerChildren: 0.2,
+      staggerChildren: 0.4,
     },
   },
   hidden: {

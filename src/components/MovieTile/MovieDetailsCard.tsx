@@ -20,9 +20,10 @@ const MovieNameA = styled.a(({ letters }: { letters: number }) => [
   tw`
     block hover:text-gray-800
     w-92/100
-    ml-1 my-1 mb-1
-    text-2xl sm:text-3xl font-bold text-gray-700 leading-tight
+    ml-1 my-1 mb-2
+    text-2xl sm:text-3xl font-bold text-gray-700 leading-tight underline
   `,
+  'text-decoration-color: #cccccc;',
   letters > 14 && tw`text-lg sm:text-2xl`,
   letters > 24 && tw`text-base sm:text-xl`,
   letters > 40 && tw`text-sm sm:text-lg`,
