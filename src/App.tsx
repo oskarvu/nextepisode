@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import 'tailwindcss/dist/base.min.css'
 
 import { RecoilRoot } from 'recoil'

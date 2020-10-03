@@ -8,8 +8,6 @@ import SingleResult from './SingleResult'
 import { FetchErrors, Texts } from '../../translations/en-US'
 import capitalize from '../../utils/capitalize'
 import { searchResultsRenderLimit } from '../../api/config'
-import { useRecoilState, useSetRecoilState } from 'recoil'
-import { isResultsModalVisible } from './resultsModalSharedState'
 
 const Modal = styled(motion.div)(({ maxHeight }: { maxHeight: number }) => [
   tw`
