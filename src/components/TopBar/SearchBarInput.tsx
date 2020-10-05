@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import tw, { styled } from 'twin.macro'
 import { AnimatePresence } from 'framer-motion'
 
-import { Texts } from '../../translations/en-US'
-import capitalize from '../../utils/capitalize'
+import { SearchBarTexts } from '../../translations/en-US'
+import { capitalize } from '../../utils/capitalize'
 
 import { Search } from '../../assets/icons/motionable/Search'
 import { X } from '../../assets/icons/motionable/X'
@@ -11,7 +11,7 @@ import { Spinner } from '../../assets/icons/motionable/Spinner'
 import { Logo } from '../../assets/icons/motionable/Logo'
 import { fetchDelay, spinDelay } from '../../api/config'
 import { useRecoilState } from 'recoil'
-import { isResultsModalVisible } from './resultsModalSharedState'
+import { isResultsModalVisible } from './sharedState'
 
 const InputContainer = tw.div`
   relative px-4
@@ -64,14 +64,14 @@ const CloseIcon = tw(X)`
   hover:text-gray-800
 `
 
-const StyledLogo = styled(Logo)(() => [
-  tw`absolute
+const StyledLogo = styled(Logo)`
+  margin-top: 1.6rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  ${tw`absolute
   right-0 mr-8
-  text-red-500`,
-  'margin-top: 1.6rem;',
-  'width: 1.7rem;',
-  'height: 1.7rem;',
-])
+  text-red-500`}
+`
 
 interface Props {
   setEnableFetch: React.Dispatch<React.SetStateAction<boolean>>
@@ -80,12 +80,7 @@ interface Props {
   isLoading: boolean
 }
 
-export default function SearchBarInput({
-  setEnableFetch,
-  inputText,
-  setInputText,
-  isLoading,
-}: Props) {
+export function SearchBarInput({ setEnableFetch, inputText, setInputText, isLoading }: Props) {
   const [fetchTimeout, setFetchTimeout] = useState<number>()
   const [spin, setSpin] = useState(false)
   const [isModalVisible, setIsModalVisible] = useRecoilState(isResultsModalVisible)
@@ -127,7 +122,7 @@ export default function SearchBarInput({
         id="search-input"
         type="text"
         value={inputText}
-        placeholder={capitalize(Texts.searchForTvShow) + '...'}
+        placeholder={capitalize(SearchBarTexts.searchForTvShow) + '...'}
         onKeyUp={handleOnKeyUp}
         onKeyDown={handleOnKeydown}
         onClick={handleOnClickOrOnFocus}

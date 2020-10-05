@@ -5,13 +5,13 @@ import { useRecoilState, useSetRecoilState } from 'recoil'
 
 import { fetchMovieDetails } from '../../api/utils'
 
-import useSetBackdropImage from '../../hooks/useSetBackdropImage'
+import { useSetBackdropImage } from '../../hooks/useSetBackdropImage'
 
-import Countdown from './Countdown'
-import MovieDetailsCard from './MovieDetailsCard'
+import { Countdown } from './Countdown'
+import { MovieDetailsCard } from './MovieDetailsCard'
 import { ReactComponent as FakeContentImage } from '../../assets/images/fake-tile-bg.svg'
 import { useQuery } from 'react-query'
-import { movieFocusOn, movieStatus } from './movieSharedState'
+import { movieFocusOn, movieStatus } from './sharedState'
 
 const tileBaseStyle = `
   flex flex-col sm:flex-row
@@ -53,12 +53,12 @@ const DetailsContainer = tw.div`
   p-3 pt-0 sm:p-5 sm:pl-0 mt-auto
 `
 
-export const MovieListItem: React.FC<{ movieId: string }> = ({ movieId }) => {
+export function MovieListItem({ movieId }: { movieId: string }) {
   const [movieFocusIsOn, setMovieFocusIsOn] = useRecoilState(movieFocusOn(movieId))
   const { isError, data: movie } = useQuery(movieId, () => fetchMovieDetails(movieId))
   const { isBackdropLoading, backdrop } = useSetBackdropImage(isError, movie)
-  const tileRef = useRef<HTMLLIElement>(null)
   const setStatus = useSetRecoilState(movieStatus(movieId))
+  const tileRef = useRef<HTMLLIElement>(null)
 
   useEffect(() => {
     if (movieFocusIsOn && movie && !isBackdropLoading) {

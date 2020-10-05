@@ -1,12 +1,15 @@
 import React from 'react'
-import { SearchResult } from '../../api/types'
 import tw, { styled } from 'twin.macro'
-import { Check } from '../../assets/icons/Check'
 import { useRecoilCallback, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { movieFocusOn, timeLeftToAir } from '../MovieTile/movieSharedState'
-import { idMovieInitDataRecord } from '../../views/movieCollectionState'
-import { CounterFollowText } from '../../translations/en-US'
-import { isResultsModalVisible } from './resultsModalSharedState'
+
+import { CounterFollowTexts } from '../../translations/en-US'
+import { SearchResult } from '../../api/types'
+
+import { isResultsModalVisible } from './sharedState'
+import { movieFocusOn, timeLeftToAir } from '../MovieTile/sharedState'
+import { idMovieInitDataRecord } from '../MovieCollection/sharedState'
+
+import { Check } from '../../assets/icons/Check'
 
 const Result = tw.li`
   flex flex-row items-center
@@ -17,9 +20,9 @@ const ResultButton = styled.button(() => [
   tw`
   flex flex-row justify-between items-center
   w-full py-2 pr-2 pl-4 ml-1
+  text-gray-700 text-base sm:text-xl font-medium text-left
   rounded-full border-transparent border-2
   focus:outline-none focus:bg-white focus:border-gray-300
-  text-gray-700 text-base sm:text-xl font-medium text-left
   hover:bg-gray-100 hover:text-gray-800
 `,
   '-webkit-tap-highlight-color: transparent;',
@@ -48,7 +51,7 @@ interface SingleResultProps {
   setSearchBarInputText: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function SingleResult({ result, setSearchBarInputText }: SingleResultProps) {
+export function SingleResult({ result, setSearchBarInputText }: SingleResultProps) {
   const [idMovieRecord, setIdMovieRecord] = useRecoilState(idMovieInitDataRecord)
   const timeLeftToAirValue = useRecoilValue(timeLeftToAir(result.id))
   const setIsModalVisible = useSetRecoilState(isResultsModalVisible)
@@ -95,11 +98,11 @@ export default function SingleResult({ result, setSearchBarInputText }: SingleRe
 
   function getTimeLeftPillText(daysLeft: number) {
     if (daysLeft === 0) {
-      return CounterFollowText.today
+      return CounterFollowTexts.today
     }
     if (daysLeft === 1) {
-      return `${daysLeft} ${CounterFollowText.dayLeft}`
+      return `${daysLeft} ${CounterFollowTexts.dayLeft}`
     }
-    return `${daysLeft} ${CounterFollowText.daysLeft}`
+    return `${daysLeft} ${CounterFollowTexts.daysLeft}`
   }
 }

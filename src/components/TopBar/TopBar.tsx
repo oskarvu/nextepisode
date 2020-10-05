@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import tw, { styled } from 'twin.macro'
 
-import SearchBar from '../components/SearchBar/SearchBar'
+import { SearchBar } from './SearchBar'
 
 const TopContainer = styled.div(({ isScrolled }: { isScrolled: boolean }) => [
-  tw`
-    sticky top-0 z-10
-    flex justify-center
-    w-full
-    bg-white shadow-none transition-shadow duration-300
-  `,
+  tw`sticky top-0 z-10
+  flex justify-center
+  w-full
+  bg-white shadow-none transition-shadow duration-300`,
   isScrolled && tw`shadow-lg`,
 ])
 
-function TopBar() {
+export function TopBar() {
   const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
@@ -43,5 +41,3 @@ function TopBar() {
     </TopContainer>
   )
 }
-
-export default TopBar

@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 import tw, { styled } from 'twin.macro'
-
-import { Movie } from '../../api/types'
-import { Trash } from '../../assets/icons/Trash'
-import DetailsCardTable from './DetailsCardTable'
-import { FetchErrors, Texts } from '../../translations/en-US'
 import { useSetRecoilState } from 'recoil'
-import { movieNetwork } from './movieSharedState'
-import { idMovieInitDataRecord, IdTimeLeftHistoric } from '../../views/movieCollectionState'
+
+import { FetchErrors, CommonTexts } from '../../translations/en-US'
+import { idMovieInitDataRecord, IdTimeLeftHistoric } from '../MovieCollection/sharedState'
+import { movieNetwork } from './sharedState'
+import { Movie } from '../../api/types'
 import { LocalStorage } from '../../db/types'
+
+import { Trash } from '../../assets/icons/Trash'
+import { DetailsCardTable } from './DetailsCardTable'
 
 const Details = tw.div`
   relative flex justify-between flex-col
@@ -44,7 +45,7 @@ const TrashIcon = styled(Trash)(() => [
   '-webkit-tap-highlight-color: transparent;',
 ])
 
-export default function MovieDetailsCard({ isError, movie }: { isError: boolean; movie: Movie }) {
+export function MovieDetailsCard({ isError, movie }: { isError: boolean; movie: Movie }) {
   const setIdMovieRecord = useSetRecoilState(idMovieInitDataRecord)
   const setMovieNetwork = useSetRecoilState(movieNetwork(movie.id))
 
@@ -74,8 +75,8 @@ export default function MovieDetailsCard({ isError, movie }: { isError: boolean;
         </MovieNameLink>
         <InfoBadge>
           {movie.numberOfSeasons === 1
-            ? `${movie.numberOfSeasons} ${Texts.season}`
-            : `${movie.numberOfSeasons} ${Texts.seasons}`}
+            ? `${movie.numberOfSeasons} ${CommonTexts.season}`
+            : `${movie.numberOfSeasons} ${CommonTexts.seasons}`}
         </InfoBadge>
         {movie.network && <InfoBadge>{movie.network}</InfoBadge>}
       </div>
@@ -91,6 +92,7 @@ export default function MovieDetailsCard({ isError, movie }: { isError: boolean;
     })
     IdTimeLeftHistoric.delete(movie.id)
     localStorage.setItem(
+      //todo refactor
       LocalStorage.idTimeLeftMap,
       JSON.stringify(Array.from(IdTimeLeftHistoric.entries()))
     )

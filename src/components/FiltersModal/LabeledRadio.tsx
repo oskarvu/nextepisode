@@ -1,7 +1,8 @@
 import React from 'react'
 import tw from 'twin.macro'
-import { Sort } from './FiltersModal'
 import { SetterOrUpdater } from 'recoil'
+
+import { SortMethod } from './types'
 
 const RadioInput = tw.input`
   appearance-none h-2 w-2 ml-1
@@ -10,17 +11,20 @@ const RadioInput = tw.input`
 `
 
 const Label = tw.label`
-  bg-gray-300 p-2 first:pl-3 first:rounded-l-full last:rounded-r-full cursor-pointer hover:bg-gray-200
-  text-xs sm:text-sm uppercase font-bold text-gray-800 tracking-wide border-gray-400 border-r-2 last:border-r-0
+  p-2 first:pl-3
+  border-gray-400 border-r-2 first:rounded-l-full last:border-r-0 last:rounded-r-full
+  hover:bg-gray-200 bg-gray-300 cursor-pointer
+  text-xs sm:text-sm uppercase font-bold text-gray-800 tracking-wide
 `
 
 interface Props {
   checked: boolean
-  value: Sort
-  setSortBy: SetterOrUpdater<Sort>
+  value: SortMethod
+  setSortBy: SetterOrUpdater<SortMethod>
+  children: React.ReactNode
 }
 
-export const LabeledRadio: React.FC<Props> = ({ checked, value, setSortBy, children }) => {
+export function LabeledRadio({ checked, value, setSortBy, children }: Props) {
   return (
     <Label>
       {children}
@@ -35,6 +39,6 @@ export const LabeledRadio: React.FC<Props> = ({ checked, value, setSortBy, child
   )
 
   function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setSortBy(event.target.value as Sort)
+    setSortBy(event.target.value as SortMethod)
   }
 }

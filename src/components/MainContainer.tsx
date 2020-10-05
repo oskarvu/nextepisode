@@ -1,9 +1,9 @@
-import React from 'react'
-import { useSetRecoilState } from 'recoil'
-import { isFilterModalExpanded } from '../components/FiltersModal/FiltersModal'
-import { isResultsModalVisible } from '../components/SearchBar/resultsModalSharedState'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import tw from 'twin.macro'
+import { useSetRecoilState } from 'recoil'
+
+import { isFilterModalExpanded } from './FiltersModal/sharedState'
+import { isResultsModalVisible } from './TopBar/sharedState'
 
 const Container = tw.div`
   flex flex-col justify-between items-center
@@ -11,7 +11,7 @@ const Container = tw.div`
   bg-gray-300
 `
 
-export const MainContainer: React.FC = ({ children }) => {
+export function MainContainer({ children }: { children: React.ReactNode }) {
   const setIsFiltersModalExpanded = useSetRecoilState(isFilterModalExpanded)
   const setIsResultsModalVisible = useSetRecoilState(isResultsModalVisible)
 

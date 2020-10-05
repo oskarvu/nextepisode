@@ -1,4 +1,4 @@
-export enum StatusText {
+export enum StatusTexts {
   Rumored = 'rumored',
   Planned = 'planned',
   InProduction = 'in production',
@@ -10,7 +10,7 @@ export enum StatusText {
   Planed = 'planned',
 }
 
-export enum CounterFollowText {
+export enum CounterFollowTexts {
   dayLeft = 'day left',
   daysLeft = 'days left',
   monthLeft = 'month left',
@@ -19,13 +19,16 @@ export enum CounterFollowText {
   today = 'today',
 }
 
-export enum Texts {
-  // Details card
+export enum CommonTexts {
   next = 'next',
   last = 'last',
   season = 'season',
   seasons = 'seasons',
-  // Search input
+  yes = 'yes',
+  no = 'no',
+}
+
+export enum SearchBarTexts {
   searchForTvShow = 'search for a tv show',
   noResults = 'no results match your query',
 }
@@ -36,13 +39,22 @@ export enum FooterTexts {
 }
 
 export enum FetchErrors {
-  searchResultFetchError = 'some problem occurred, please try again',
+  searchResultFetchError = 'Some problem occurred, please try again.',
   movieDetailsFetchError = 'error',
   movieDetailsFetchErrorDesc = 'Some problem occurred during fetching data. Delete tile and try again later...',
 }
 
-export enum FilterModalText {
+export enum FilterModalTexts {
+  sortBy = 'sort by',
   alphabetically = 'a-z',
   timeLeft = 'time left',
   addOrder = 'newly added',
+  removeAll = 'remove all tv shows',
+  deleteAll = 'delete all',
+}
+
+export enum WelcomeScreenTexts {
+  findYourFavShow = 'Use search bar to find your favourite tv show',
+  addToCollection = 'Click on result to add it to your collection',
+  nowYouKnow = 'Now you know when the next episode will be aired',
 }

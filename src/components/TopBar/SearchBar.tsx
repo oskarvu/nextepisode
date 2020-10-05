@@ -1,22 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react'
 import tw from 'twin.macro'
-
-import { fetchMovieSearchResults } from '../../api/utils'
-
-import useHideWhenClickedOutside from '../../hooks/useHideWhenClickedOutside'
-import useWindowInnerHeight from '../../hooks/useWindowInnerHeight'
-
-import ResultsModal from './ResultsModal'
-import SearchBarInput from './SearchBarInput'
 import { useQuery } from 'react-query'
 import { useRecoilState } from 'recoil'
-import { isResultsModalVisible } from './resultsModalSharedState'
+
+import { fetchMovieSearchResults } from '../../api/utils'
+import { isResultsModalVisible } from './sharedState'
+
+import { useHideWhenClickedOutside } from '../../hooks/useHideWhenClickedOutside'
+import { useWindowInnerHeight } from '../../hooks/useWindowInnerHeight'
+
+import { ResultsModal } from './ResultsModal'
+import { SearchBarInput } from './SearchBarInput'
 
 const Container = tw.div`
   w-full md:w-10/12 lg:w-8/12 xl:w-7/12 xxl:w-5/12 xxxl:w-4/12 xxxxl:w-3/12
 `
 
-function SearchBar() {
+export function SearchBar() {
   const [inputText, setInputText] = useState('')
   const [isModalVisible, setIsModalVisible] = useRecoilState(isResultsModalVisible)
   const [modalMaxHeight, setModalMaxHeight] = useState(1000)
@@ -64,5 +64,3 @@ function SearchBar() {
     </Container>
   )
 }
-
-export default SearchBar

@@ -1,9 +1,11 @@
 import { atom, selector } from 'recoil'
-import { MovieInitData, movieStatus, timeLeftToAir } from '../components/MovieTile/movieSharedState'
-import { LocalStorage } from '../db/types'
-import { Sort, sortMethod } from '../components/FiltersModal/FiltersModal'
-import { statusOrder } from '../api/utils'
+import { MovieInitData, movieStatus, timeLeftToAir } from '../MovieTile/sharedState'
+import { LocalStorage } from '../../db/types'
+import { statusOrder } from '../../api/utils'
+import { SortByMethod } from '../FiltersModal/sharedState'
+import { SortMethod } from '../FiltersModal/types'
 
+//todo refactor
 const storedIdLeftTime = localStorage.getItem(LocalStorage.idTimeLeftMap)
 const idTimeLeftHistoric: Map<string, number> = storedIdLeftTime
   ? new Map<string, number>(JSON.parse(storedIdLeftTime))
@@ -20,14 +22,14 @@ export const IdTimeLeftHistoric = new Map<string, number | null>()
 export const firstRenderSortedIds = selector<string[]>({
   key: 'firstRenderSortedIds',
   get: ({ get }) => {
-    const currentSortMethod = get(sortMethod)
+    const currentSortMethod = get(SortByMethod)
     const idMovieRecords = get(idMovieInitDataRecord)
     const idMovieRecordKeys = Object.keys(idMovieRecords)
 
     switch (currentSortMethod) {
-      case Sort.alphabetically:
+      case SortMethod.alphabetically:
         return idMovieRecordKeys.sort(byNameAZ)
-      case Sort.byPremiere:
+      case SortMethod.byPremiere:
         return idMovieRecordKeys.sort((aMovieId, bMovieId) => {
           const [aTimeLeft, bTimeLeft] = [
             get(timeLeftToAir(aMovieId)) ?? idTimeLeftHistoric.get(aMovieId) ?? null,
@@ -38,7 +40,7 @@ export const firstRenderSortedIds = selector<string[]>({
           if (aTimeLeft === null && bTimeLeft !== null) return 1
           return byStatusPriority(aMovieId, bMovieId)
         })
-      case Sort.byAddTime:
+      case SortMethod.byAddTime:
       default:
         return idMovieRecordKeys.sort(byNewlyAddedFirst)
     }

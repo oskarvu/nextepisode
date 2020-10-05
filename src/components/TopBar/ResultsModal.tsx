@@ -2,12 +2,12 @@ import React from 'react'
 import tw, { styled } from 'twin.macro'
 import { motion } from 'framer-motion'
 
-import { SearchResult } from '../../api/types'
-
-import SingleResult from './SingleResult'
-import { FetchErrors, Texts } from '../../translations/en-US'
-import capitalize from '../../utils/capitalize'
 import { searchResultsRenderLimit } from '../../api/config'
+import { SearchResult } from '../../api/types'
+import { capitalize } from '../../utils/capitalize'
+import { FetchErrors, SearchBarTexts } from '../../translations/en-US'
+
+import { SingleResult } from './SingleResult'
 
 const Modal = styled(motion.div)(({ maxHeight }: { maxHeight: number }) => [
   tw`
@@ -28,9 +28,10 @@ const TrendingTextContainer = tw.div`
 `
 
 const TrendingText = tw.span`
-  py-2 px-3 mr-1 rounded-full relative z-20
+  relative z-20
+  py-2 px-3 mr-1
   text-base font-medium text-gray-700
-  bg-gray-200
+  rounded-full bg-gray-200
 `
 
 interface ResultsModalProps {
@@ -41,16 +42,12 @@ interface ResultsModalProps {
   isFetchError: boolean
 }
 
-export default function ResultsModal({
-  results,
-  maxHeight,
-  setSearchBarInputText,
-  searchBarInputText,
-  isFetchError,
-}: ResultsModalProps) {
+export function ResultsModal(props: ResultsModalProps) {
+  const { results, maxHeight, setSearchBarInputText, searchBarInputText, isFetchError } = props
+
   let toRender
   if (results.length === 0 && searchBarInputText) {
-    toRender = <NotResultsLi>{`${capitalize(Texts.noResults)}...`}</NotResultsLi>
+    toRender = <NotResultsLi>{`${capitalize(SearchBarTexts.noResults)}...`}</NotResultsLi>
   } else if (isFetchError) {
     toRender = <NotResultsLi>{`${capitalize(FetchErrors.searchResultFetchError)}...`}</NotResultsLi>
   } else {

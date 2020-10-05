@@ -6,7 +6,7 @@ import DefaultBGImage from '../assets/images/tile-default-bg.jpg'
 import ErrorBGImage from '../assets/images/tile-error-bg.jpg'
 import { backdropBaseUrl, backdropMedium } from '../api/config'
 
-export default function useSetBackdropImage(isError: boolean, movie: Movie | undefined) {
+export function useSetBackdropImage(isError: boolean, movie: Movie | undefined) {
   const [backdrop, setBackdrop] = useState<string>(DefaultBGImage)
   const [isBackdropLoading, setIsBackdropLoading] = useState(true)
 

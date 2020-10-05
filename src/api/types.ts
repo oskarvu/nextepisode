@@ -35,8 +35,3 @@ export interface SearchResult {
   firstAirDate: string
   id: string
 }
-
-export enum ApiQueryType {
-  Search = 'search',
-  TV = 'tv',
-}

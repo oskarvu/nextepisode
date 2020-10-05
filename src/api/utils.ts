@@ -1,4 +1,4 @@
-import { keyField, searchURL, tvDataURL, searchFields, tvFields } from './config'
+import { keyField, searchURL, tvDataURL, searchFields, tvFields, trendingURL } from './config'
 import { Movie, SearchResult, Status } from './types'
 
 export async function fetchFromTMDB<T>(apiQuery: string, parser: (data: any) => T): Promise<T> {
@@ -17,10 +17,7 @@ export async function fetchMovieDetails(id: string) {
 
 export async function fetchMovieSearchResults(inputText: string) {
   if (!inputText) {
-    return fetchFromTMDB(
-      'https://api.themoviedb.org/3/trending/tv/week?api_key=33020d6a8aceec0bc5a2c3ab41bc20a8',
-      parseRawSearchResult
-    )
+    return fetchFromTMDB(trendingURL, parseRawSearchResult)
   }
   const apiQuery = `${searchURL}${keyField}${searchFields}&query=${encodeURI(inputText)}`
   return fetchFromTMDB(apiQuery, parseRawSearchResult)

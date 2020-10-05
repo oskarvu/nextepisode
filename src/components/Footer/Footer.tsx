@@ -1,25 +1,31 @@
 import React from 'react'
 import tw, { styled } from 'twin.macro'
-import { ReactComponent as TMDbLogo } from '../assets/images/tmdb-logo.svg'
-import { ExternalLink } from '../assets/icons/ExternalLink'
-import { FooterTexts } from '../translations/en-US'
-import capitalize from '../utils/capitalize'
+
+import { capitalize } from '../../utils/capitalize'
+
+import { ReactComponent as TMDbLogo } from '../../assets/images/tmdb-logo.svg'
+import { ExternalLink } from '../../assets/icons/ExternalLink'
+import { FooterTexts } from '../../translations/en-US'
 
 const FooterContainer = tw.footer`
-  flex justify-center flex-wrap w-full
+  flex justify-center flex-wrap
+  w-full
   pt-2 px-14 lg:px-0 pb-4 lg:pb-0 lg:pt-0
-  bg-gray-100 border-t-8 border-gray-200
   text-center
+  bg-gray-100 border-t-8 border-gray-200
 `
 
 const FooterNote = tw.p`
-  first:border-b-4 first:lg:border-b-0 lg:border-r-4 lg:last:border-none border-gray-400
   py-2 lg:py-1 lg:my-4 px-6
   text-gray-600 font-semibold tracking-wide text-xs sm:text-sm
+  border-gray-400
+  first:border-b-4 first:lg:border-b-0 lg:border-r-4 lg:last:border-none
 `
 
 const ExternalLinkIcon = tw(ExternalLink)`
-  ml-1 w-4 h-4 sm:w-6 sm:h-6 inline
+  inline
+  w-4 h-4 sm:w-6 sm:h-6
+  ml-1
 `
 
 const FooterTMDbLogo = styled(TMDbLogo)`
@@ -31,7 +37,7 @@ const External = tw.a`
   hover:text-gray-800
 `
 
-function Footer() {
+export function Footer() {
   return (
     <FooterContainer>
       <FooterNote>
@@ -51,5 +57,3 @@ function Footer() {
     </FooterContainer>
   )
 }
-
-export default Footer

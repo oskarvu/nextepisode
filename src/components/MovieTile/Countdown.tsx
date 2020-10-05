@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react'
 import tw from 'twin.macro'
 
 import { Episode, Status } from '../../api/types'
-import { StatusText, CounterFollowText, FetchErrors } from '../../translations/en-US'
+import { StatusTexts, CounterFollowTexts, FetchErrors } from '../../translations/en-US'
 import { calculateDaysLeft, calculateMonthsLeft } from '../../utils/time'
 
 import { useSetRecoilState } from 'recoil'
-import { timeLeftToAir } from './movieSharedState'
+import { timeLeftToAir } from './sharedState'
+import { IdTimeLeftHistoric } from '../MovieCollection/sharedState'
+import { LocalStorage } from '../../db/types'
 
 import { Check } from '../../assets/icons/Check'
 import { X } from '../../assets/icons/motionable/X'
 import { Pencil } from '../../assets/icons/Pencil'
 import { Reply } from '../../assets/icons/Reply'
 import { Heart } from '../../assets/icons/Heart'
-import { LocalStorage } from '../../db/types'
-import { IdTimeLeftHistoric } from '../../views/movieCollectionState'
 import { Exclamation } from '../../assets/icons/Exclamation'
 
 const Container = tw.div`
@@ -24,14 +24,14 @@ const Container = tw.div`
 const Counter = tw.div`
   flex justify-center items-center
   w-14 h-14 sm:w-28 sm:h-28
-  bg-gray-800 bg-opacity-85 shadow-md rounded-full
   text-gray-200 font-normal text-4xl sm:text-6xl
+  bg-gray-800 bg-opacity-85 shadow-md rounded-full
 `
 
 const FollowUp = tw.div`
   px-2 ml-2 sm:ml-0 sm:mt-2
-  bg-gray-300 bg-opacity-80 rounded-full shadow-md
   text-gray-800 font-bold text-sm tracking-wider uppercase
+  bg-gray-300 bg-opacity-80 rounded-full shadow-md
 `
 
 const IconBase = `
@@ -50,6 +50,11 @@ const HeartIcon = tw(Heart)`${IconBase}`
 
 const ErrorIcon = tw(Exclamation)`${IconBase}`
 
+interface CountdownData {
+  counter: JSX.Element | string | number
+  follow: string
+}
+
 interface Props {
   movieId: string
   nextEpisode: Episode | null
@@ -57,12 +62,7 @@ interface Props {
   isError: boolean
 }
 
-interface CountdownData {
-  counter: JSX.Element | string | number
-  follow: string
-}
-
-export default function Countdown({ nextEpisode, status, movieId, isError }: Props) {
+export function Countdown({ nextEpisode, status, movieId, isError }: Props) {
   const [daysLeft] = useState(() => initDaysState())
   const [countdownData] = useState<CountdownData>(() => initCountdownData(daysLeft))
   const setTimeLeftToAir = useSetRecoilState(timeLeftToAir(movieId))
@@ -73,6 +73,7 @@ export default function Countdown({ nextEpisode, status, movieId, isError }: Pro
 
   useEffect(() => {
     IdTimeLeftHistoric.set(movieId, daysLeft)
+    // todo refactor
     localStorage.setItem(
       LocalStorage.idTimeLeftMap,
       JSON.stringify(Array.from(IdTimeLeftHistoric.entries()))
@@ -102,33 +103,33 @@ export default function Countdown({ nextEpisode, status, movieId, isError }: Pro
       if (daysLeft === 0) {
         return {
           counter: <HeartIcon iconLabel="heart" />,
-          follow: CounterFollowText.today,
+          follow: CounterFollowTexts.today,
         }
       }
       if (daysLeft <= 60) {
         return {
           counter: daysLeft,
-          follow: daysLeft === 1 ? CounterFollowText.dayLeft : CounterFollowText.daysLeft,
+          follow: daysLeft === 1 ? CounterFollowTexts.dayLeft : CounterFollowTexts.daysLeft,
         }
       }
       const monthsLeft = calculateMonthsLeft(daysLeft)
       return {
         counter: monthsLeft,
-        follow: monthsLeft === 1 ? CounterFollowText.monthLeft : CounterFollowText.monthsLeft,
+        follow: monthsLeft === 1 ? CounterFollowTexts.monthLeft : CounterFollowTexts.monthsLeft,
       }
     }
 
     switch (status) {
       case Status.Ended:
-        return { counter: <CheckIcon iconLabel="checkmark" />, follow: StatusText.Ended }
+        return { counter: <CheckIcon iconLabel="checkmark" />, follow: StatusTexts.Ended }
       case Status.Canceled:
-        return { counter: <XIcon iconLabel="X" />, follow: StatusText.Canceled }
+        return { counter: <XIcon iconLabel="X" />, follow: StatusTexts.Canceled }
       case Status.ReturningSeries:
-        return { counter: <ReplyIcon iconLabel="returning" />, follow: StatusText.ReturningSeries }
+        return { counter: <ReplyIcon iconLabel="returning" />, follow: StatusTexts.ReturningSeries }
       case Status.Planed:
-        return { counter: <PencilIcon iconLabel="pencil" />, follow: StatusText.Planed }
+        return { counter: <PencilIcon iconLabel="pencil" />, follow: StatusTexts.Planed }
       default:
-        return { counter: '?', follow: CounterFollowText.noInfo }
+        return { counter: '?', follow: CounterFollowTexts.noInfo }
     }
   }
 }

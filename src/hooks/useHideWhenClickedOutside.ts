@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-function useHideWhenClickedOutside(
+export function useHideWhenClickedOutside(
   ref: React.RefObject<HTMLDivElement>,
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>
 ) {
@@ -18,5 +18,3 @@ function useHideWhenClickedOutside(
     }
   }, [ref, setVisibility])
 }
-
-export default useHideWhenClickedOutside
