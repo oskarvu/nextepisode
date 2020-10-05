@@ -4,10 +4,10 @@ import tw, { styled } from 'twin.macro'
 import { LocalStorage } from '../../db/types'
 import { FilterModalText } from '../../translations/en-US'
 import { LabeledRadio } from './LabeledRadio'
-import Adjustments from '../../assets/icons/motionable/Adjustments'
+import { Adjustments } from '../../assets/icons/motionable/Adjustments'
 import { AnimatePresence, motion } from 'framer-motion'
 import useHideWhenClickedOutside from '../../hooks/useHideWhenClickedOutside'
-import X from '../../assets/icons/motionable/X'
+import { X } from '../../assets/icons/motionable/X'
 import { isResultsModalVisible } from '../SearchBar/resultsModalSharedState'
 import { idMovieInitDataRecord, IdTimeLeftHistoric } from '../../views/movieCollectionState'
 
@@ -94,7 +94,7 @@ export const FiltersModal: React.FC<any> = () => {
       >
         {isModalExpanded ? (
           <ModalContent initial={{ opacity: 0.3 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <CloseIcon onClick={() => setIsModalExpanded(false)} />
+            <CloseIcon iconLabel="close" onClick={() => setIsModalExpanded(false)} />
             <SectionName>Remove all tv shows:</SectionName>
             {confirmButtonsVisible ? (
               <>
@@ -134,7 +134,7 @@ export const FiltersModal: React.FC<any> = () => {
             </div>
           </ModalContent>
         ) : (
-          <AdjustmentsIcon />
+          <AdjustmentsIcon iconLabel="adjust" />
         )}
       </Modal>
     </AnimatePresence>

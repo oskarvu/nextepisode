@@ -1,7 +1,7 @@
 import React from 'react'
 import tw, { styled } from 'twin.macro'
 import { ReactComponent as TMDbLogo } from '../assets/images/tmdb-logo.svg'
-import External from '../assets/icons/ExternalLink'
+import { ExternalLink } from '../assets/icons/ExternalLink'
 import { FooterTexts } from '../translations/en-US'
 import capitalize from '../utils/capitalize'
 
@@ -18,7 +18,7 @@ const FooterNote = tw.p`
   text-gray-600 font-semibold tracking-wide text-xs sm:text-sm
 `
 
-const ExternalLinkIcon = tw(External)`
+const ExternalLinkIcon = tw(ExternalLink)`
   ml-1 w-4 h-4 sm:w-6 sm:h-6 inline
 `
 
@@ -27,7 +27,7 @@ const FooterTMDbLogo = styled(TMDbLogo)`
   ${tw`h-2 sm:h-3 ml-2 sm:ml-3 inline-block`}
 `
 
-const ExternalLink = tw.a`
+const External = tw.a`
   hover:text-gray-800
 `
 
@@ -35,14 +35,14 @@ function Footer() {
   return (
     <FooterContainer>
       <FooterNote>
-        <ExternalLink
+        <External
           href="https://github.com/oszeleje/nextepisode"
           target="_blank"
           rel="noopener noreferrer"
         >
           {capitalize(FooterTexts.aboutApp)}
-          <ExternalLinkIcon />
-        </ExternalLink>
+          <ExternalLinkIcon iconLabel="external link" />
+        </External>
       </FooterNote>
       <FooterNote>
         {FooterTexts.attribution}

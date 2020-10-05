@@ -5,10 +5,10 @@ import { AnimatePresence } from 'framer-motion'
 import { Texts } from '../../translations/en-US'
 import capitalize from '../../utils/capitalize'
 
-import Search from '../../assets/icons/motionable/Search'
-import X from '../../assets/icons/motionable/X'
-import Spinner from '../../assets/icons/motionable/Spinner'
-import Logo from '../../assets/icons/motionable/Logo'
+import { Search } from '../../assets/icons/motionable/Search'
+import { X } from '../../assets/icons/motionable/X'
+import { Spinner } from '../../assets/icons/motionable/Spinner'
+import { Logo } from '../../assets/icons/motionable/Logo'
 import { fetchDelay, spinDelay } from '../../api/config'
 import { useRecoilState } from 'recoil'
 import { isResultsModalVisible } from './resultsModalSharedState'
@@ -102,17 +102,17 @@ export default function SearchBarInput({
     <InputContainer>
       <AnimatePresence>
         {spin ? (
-          <SpinnerIcon trigger={isLoading} {...spinnerMotionProps} />
+          <SpinnerIcon iconLabel="spinner" {...spinnerMotionProps} />
         ) : (
           <label htmlFor="search-input">
-            <SearchIcon title="search" />
+            <SearchIcon onClick={() => {}} iconLabel="search" />
           </label>
         )}
       </AnimatePresence>
       <AnimatePresence>
         {isModalVisible ? (
           <CloseIcon
-            title="close"
+            iconLabel="close"
             {...opacityMotionProps}
             onClick={() => {
               setIsModalVisible(false)
@@ -120,7 +120,7 @@ export default function SearchBarInput({
             }}
           />
         ) : (
-          <StyledLogo {...opacityMotionProps} />
+          <StyledLogo iconLabel="logo" {...opacityMotionProps} />
         )}
       </AnimatePresence>
       <Input

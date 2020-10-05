@@ -1,7 +1,7 @@
 import React from 'react'
 import { SearchResult } from '../../api/types'
 import tw, { styled } from 'twin.macro'
-import Check from '../../assets/icons/Check'
+import { Check } from '../../assets/icons/Check'
 import { useRecoilCallback, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { movieFocusOn, timeLeftToAir } from '../MovieTile/movieSharedState'
 import { idMovieInitDataRecord } from '../../views/movieCollectionState'
@@ -66,7 +66,7 @@ export default function SingleResult({ result, setSearchBarInputText }: SingleRe
         <PillsContainer>
           {idMovieRecord[result.id] && (
             <InfoPill>
-              <InCollectionIcon />
+              <InCollectionIcon iconLabel="in collection" />
             </InfoPill>
           )}
           {timeLeftToAirValue !== null && timeLeftToAirValue < 60 && (

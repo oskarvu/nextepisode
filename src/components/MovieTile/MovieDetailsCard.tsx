@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import tw, { styled } from 'twin.macro'
 
 import { Movie } from '../../api/types'
-import Trash from '../../assets/icons/Trash'
+import { Trash } from '../../assets/icons/Trash'
 import DetailsCardTable from './DetailsCardTable'
 import { FetchErrors, Texts } from '../../translations/en-US'
 import { useSetRecoilState } from 'recoil'
@@ -16,7 +16,7 @@ const Details = tw.div`
   bg-white shadow-lg
 `
 
-const MovieNameA = styled.a(({ letters }: { letters: number }) => [
+const MovieNameLink = styled.a(({ letters }: { letters: number }) => [
   tw`
     block hover:text-gray-800
     w-92/100
@@ -55,23 +55,23 @@ export default function MovieDetailsCard({ isError, movie }: { isError: boolean;
   return isError ? (
     <Details>
       <div>
-        <MovieNameA letters={FetchErrors.movieDetailsFetchErrorDesc.length}>
+        <MovieNameLink letters={FetchErrors.movieDetailsFetchErrorDesc.length}>
           {FetchErrors.movieDetailsFetchErrorDesc}
-        </MovieNameA>
+        </MovieNameLink>
       </div>
-      <TrashIcon onClick={handleTrashIconClick} />
+      <TrashIcon iconLabel="trash can" onClick={handleTrashIconClick} />
     </Details>
   ) : (
     <Details>
       <div>
-        <MovieNameA
+        <MovieNameLink
           letters={movie.name.length}
           target="_blank"
           rel="noopener noreferrer"
           href={`https://www.google.com/search?q=${encodeURI(movie.name)}`}
         >
           {movie.name}
-        </MovieNameA>
+        </MovieNameLink>
         <InfoBadge>
           {movie.numberOfSeasons === 1
             ? `${movie.numberOfSeasons} ${Texts.season}`
@@ -80,7 +80,7 @@ export default function MovieDetailsCard({ isError, movie }: { isError: boolean;
         {movie.network && <InfoBadge>{movie.network}</InfoBadge>}
       </div>
       <DetailsCardTable movie={movie} />
-      <TrashIcon onClick={handleTrashIconClick} />
+      <TrashIcon iconLabel="trash can" onClick={handleTrashIconClick} />
     </Details>
   )
 

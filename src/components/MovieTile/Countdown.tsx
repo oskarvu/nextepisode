@@ -8,14 +8,14 @@ import { calculateDaysLeft, calculateMonthsLeft } from '../../utils/time'
 import { useSetRecoilState } from 'recoil'
 import { timeLeftToAir } from './movieSharedState'
 
-import Check from '../../assets/icons/Check'
-import X from '../../assets/icons/motionable/X'
-import Pencil from '../../assets/icons/Pencil'
-import Reply from '../../assets/icons/Reply'
-import Heart from '../../assets/icons/Heart'
+import { Check } from '../../assets/icons/Check'
+import { X } from '../../assets/icons/motionable/X'
+import { Pencil } from '../../assets/icons/Pencil'
+import { Reply } from '../../assets/icons/Reply'
+import { Heart } from '../../assets/icons/Heart'
 import { LocalStorage } from '../../db/types'
 import { IdTimeLeftHistoric } from '../../views/movieCollectionState'
-import Exclamation from '../../assets/icons/Exclamation'
+import { Exclamation } from '../../assets/icons/Exclamation'
 
 const Container = tw.div`
   flex flex-row sm:flex-col items-center justify-center
@@ -82,7 +82,7 @@ export default function Countdown({ nextEpisode, status, movieId, isError }: Pro
   return isError ? (
     <Container>
       <Counter>
-        <ErrorIcon />
+        <ErrorIcon iconLabel="error" />
       </Counter>
       <FollowUp>{FetchErrors.movieDetailsFetchError}</FollowUp>
     </Container>
@@ -101,7 +101,7 @@ export default function Countdown({ nextEpisode, status, movieId, isError }: Pro
     if (daysLeft !== null) {
       if (daysLeft === 0) {
         return {
-          counter: <HeartIcon />,
+          counter: <HeartIcon iconLabel="heart" />,
           follow: CounterFollowText.today,
         }
       }
@@ -120,13 +120,13 @@ export default function Countdown({ nextEpisode, status, movieId, isError }: Pro
 
     switch (status) {
       case Status.Ended:
-        return { counter: <CheckIcon />, follow: StatusText.Ended }
+        return { counter: <CheckIcon iconLabel="checkmark" />, follow: StatusText.Ended }
       case Status.Canceled:
-        return { counter: <XIcon />, follow: StatusText.Canceled }
+        return { counter: <XIcon iconLabel="X" />, follow: StatusText.Canceled }
       case Status.ReturningSeries:
-        return { counter: <ReplyIcon />, follow: StatusText.ReturningSeries }
+        return { counter: <ReplyIcon iconLabel="returning" />, follow: StatusText.ReturningSeries }
       case Status.Planed:
-        return { counter: <PencilIcon />, follow: StatusText.Planed }
+        return { counter: <PencilIcon iconLabel="pencil" />, follow: StatusText.Planed }
       default:
         return { counter: '?', follow: CounterFollowText.noInfo }
     }
