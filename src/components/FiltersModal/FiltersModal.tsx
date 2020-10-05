@@ -104,7 +104,7 @@ export const FiltersModal: React.FC<any> = () => {
                 {FilterModalTexts.deleteAll}
               </DeleteSectionButtons>
             )}
-            <SectionName>{FilterModalTexts.deleteAll}:</SectionName>
+            <SectionName>{FilterModalTexts.sortBy}:</SectionName>
             <div>
               <LabeledRadio
                 setSortBy={setSortBy}
