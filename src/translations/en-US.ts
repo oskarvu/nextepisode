@@ -29,8 +29,8 @@ export enum CommonTexts {
 }
 
 export enum SearchBarTexts {
-  searchForTvShow = 'search for a tv show',
-  noResults = 'no results match your query',
+  searchForTvShow = 'Search for a tv show...',
+  noResults = 'No results...',
 }
 
 export enum FooterTexts {
@@ -39,7 +39,7 @@ export enum FooterTexts {
 }
 
 export enum FetchErrors {
-  searchResultFetchError = 'Some problem occurred, please try again.',
+  searchResultFetchError = 'Some problem occurred, please try again...',
   movieDetailsFetchError = 'error',
   movieDetailsFetchErrorDesc = 'Some problem occurred during fetching data. Delete tile and try again later...',
 }

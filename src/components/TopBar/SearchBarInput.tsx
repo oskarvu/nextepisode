@@ -3,7 +3,6 @@ import tw, { styled } from 'twin.macro'
 import { AnimatePresence } from 'framer-motion'
 
 import { SearchBarTexts } from '../../translations/en-US'
-import { capitalize } from '../../utils/capitalize'
 
 import { Search } from '../../assets/icons/motionable/Search'
 import { X } from '../../assets/icons/motionable/X'
@@ -122,7 +121,7 @@ export function SearchBarInput({ setEnableFetch, inputText, setInputText, isLoad
         id="search-input"
         type="text"
         value={inputText}
-        placeholder={capitalize(SearchBarTexts.searchForTvShow) + '...'}
+        placeholder={SearchBarTexts.searchForTvShow}
         onKeyUp={handleOnKeyUp}
         onKeyDown={handleOnKeydown}
         onClick={handleOnClickOrOnFocus}

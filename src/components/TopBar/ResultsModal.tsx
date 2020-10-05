@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 
 import { searchResultsRenderLimit } from '../../api/config'
 import { SearchResult } from '../../api/types'
-import { capitalize } from '../../utils/capitalize'
 import { FetchErrors, SearchBarTexts } from '../../translations/en-US'
 
 import { SingleResult } from './SingleResult'
@@ -47,9 +46,9 @@ export function ResultsModal(props: ResultsModalProps) {
 
   let toRender
   if (results.length === 0 && searchBarInputText) {
-    toRender = <NotResultsLi>{`${capitalize(SearchBarTexts.noResults)}...`}</NotResultsLi>
+    toRender = <NotResultsLi>{SearchBarTexts.noResults}</NotResultsLi>
   } else if (isFetchError) {
-    toRender = <NotResultsLi>{`${capitalize(FetchErrors.searchResultFetchError)}...`}</NotResultsLi>
+    toRender = <NotResultsLi>{FetchErrors.searchResultFetchError}</NotResultsLi>
   } else {
     toRender = results
       .slice(0, searchResultsRenderLimit)
