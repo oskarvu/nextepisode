@@ -1,68 +1,25 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# <a href='https://nextepisode.app'><img src='https://raw.githubusercontent.com/oszeleje/nextepisode/main/src/assets/images/logos/logo-with-type.png?token=AKIRJXCJK4BUJR3WTVEQ6LS7PS2LM' height='90' alt='nextepisde logo' aria-label='nextepisode.app' /></a>
 
-## Available Scripts
+Nextepisode is an app which lets you quickly get an information about your favourite tv show next episode air time.
+Use search bar to find a show, and after adding it to your collection, you will immediately know, how much time you have to wait.
 
-In the project directory, you can run:
+## Cookies
 
-### `yarn start`
+Application does not collect your personal data. Thus, there is no need for a cookie consent.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Source of data
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Nextepisode uses TMDb API as a source of information, but is not endorsed or certified by TMDb.
 
-### `yarn test`
+## Used tools
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+[React](https://github.com/facebook/react), [TypeScript](https://github.com/microsoft/TypeScript),
+[Tailwind CSS](https://github.com/tailwindlabs/tailwindcss), [Twin](https://github.com/ben-rogerson/twin.macro),
+[React Query](https://github.com/tannerlinsley/react-query), [Framer Motion](https://github.com/framer/motion),
+[Recoil](https://github.com/facebookexperimental/Recoil), [styled-components](https://github.com/styled-components/styled-components)
 
-### `yarn build`
+Hosted on [Vercel](https://vercel.com/)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Contact me
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+You can find me on [Twitter](https://twitter.com/oszeleje) or check my personal webpage [oszeleje.io](https://oszeleje.io).
