@@ -1,17 +1,16 @@
 import { atom, selector } from 'recoil'
 import { MovieInitData, movieStatus, timeLeftToAir } from '../MovieTile/sharedState'
-import { LocalStorage } from '../../db/types'
+import { LocalDBKeys } from '../../db/types'
 import { statusOrder } from '../../api/utils'
 import { SortByMethod } from '../FiltersModal/sharedState'
 import { SortMethod } from '../FiltersModal/types'
 
-//todo refactor
-const storedIdLeftTime = localStorage.getItem(LocalStorage.idTimeLeftMap)
+const storedIdLeftTime = localStorage.getItem(LocalDBKeys.idTimeLeftMap)
 const idTimeLeftHistoric: Map<string, number> = storedIdLeftTime
   ? new Map<string, number>(JSON.parse(storedIdLeftTime))
   : new Map<string, number>()
 
-const idMovieRecord = localStorage.getItem(LocalStorage.idMovieInitDataRecord)
+const idMovieRecord = localStorage.getItem(LocalDBKeys.idMovieInitDataRecord)
 export const idMovieInitDataRecord = atom<Record<string, MovieInitData>>({
   key: 'idMovieInitDataMap',
   default: idMovieRecord ? JSON.parse(idMovieRecord) : {},

@@ -5,7 +5,7 @@ import { RecoilRoot } from 'recoil'
 import { TopBar } from './components/TopBar/TopBar'
 import { MovieCollection } from './components/MovieCollection/MovieCollection'
 import { Footer } from './components/Footer/Footer'
-import { MainContainer } from './components/MainContainer'
+import { MainContainer } from './components/MainContainer/MainContainer'
 
 export default function App() {
   return (

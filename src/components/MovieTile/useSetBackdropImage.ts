@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 
-import { Movie } from '../api/types'
+import { Movie } from '../../api/types'
 
-import DefaultBGImage from '../assets/images/tile-default-bg.jpg'
-import ErrorBGImage from '../assets/images/tile-error-bg.jpg'
-import { backdropBaseUrl, backdropMedium } from '../api/config'
+import DefaultBGImage from '../../assets/images/tile-default-bg.jpg'
+import ErrorBGImage from '../../assets/images/tile-error-bg.jpg'
+import { backdropBaseUrl, backdropMedium } from '../../api/config'
 
 export function useSetBackdropImage(isError: boolean, movie: Movie | undefined) {
   const [backdrop, setBackdrop] = useState<string>(DefaultBGImage)

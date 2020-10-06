@@ -1,9 +1,8 @@
 import { atom } from 'recoil'
 import { SortMethod } from './types'
-import { LocalStorage } from '../../db/types'
+import { LocalDBKeys } from '../../db/types'
 
-// todo: refactor like it was real db
-const StoredSortMethod = localStorage.getItem(LocalStorage.sortMethod)
+const StoredSortMethod = localStorage.getItem(LocalDBKeys.sortMethod)
 
 export const SortByMethod = atom<SortMethod>({
   key: 'sortByMethod',

@@ -7,7 +7,7 @@ import { firstRenderSortedIds, idMovieInitDataRecord } from './sharedState'
 import { WelcomeScreenTexts } from '../../translations/en-US'
 
 import { MovieListItem } from '../MovieTile/MovieListItem'
-import { LocalStorage } from '../../db/types'
+import { LocalDBKeys } from '../../db/types'
 import { FiltersModal } from '../FiltersModal/FiltersModal'
 import { ReactComponent as SearchImage } from '../../assets/images/welcome-screen/search.svg'
 import { ReactComponent as CollectImage } from '../../assets/images/welcome-screen/collect.svg'
@@ -72,8 +72,7 @@ export function MovieCollection() {
   const firstRenderIds = useRecoilValue(firstRenderSortedIds)
 
   useEffect(() => {
-    //todo refactor
-    localStorage.setItem(LocalStorage.idMovieInitDataRecord, JSON.stringify(idMovieRecord))
+    localStorage.setItem(LocalDBKeys.idMovieInitDataRecord, JSON.stringify(idMovieRecord))
   }, [idMovieRecord])
 
   return firstRenderIds.length ? (

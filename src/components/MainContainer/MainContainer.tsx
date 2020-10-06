@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import tw from 'twin.macro'
 import { useSetRecoilState } from 'recoil'
 
-import { isFilterModalExpanded } from './FiltersModal/sharedState'
-import { isResultsModalVisible } from './TopBar/sharedState'
+import { isFilterModalExpanded } from '../FiltersModal/sharedState'
+import { isResultsModalVisible } from '../TopBar/sharedState'
 
 const Container = tw.div`
   flex flex-col justify-between items-center

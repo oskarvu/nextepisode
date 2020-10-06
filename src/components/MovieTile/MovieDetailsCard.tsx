@@ -6,7 +6,7 @@ import { FetchErrors, CommonTexts } from '../../translations/en-US'
 import { idMovieInitDataRecord, IdTimeLeftHistoric } from '../MovieCollection/sharedState'
 import { movieNetwork } from './sharedState'
 import { Movie } from '../../api/types'
-import { LocalStorage } from '../../db/types'
+import { LocalDBKeys } from '../../db/types'
 
 import { Trash } from '../../assets/icons/Trash'
 import { DetailsCardTable } from './DetailsCardTable'
@@ -92,8 +92,7 @@ export function MovieDetailsCard({ isError, movie }: { isError: boolean; movie: 
     })
     IdTimeLeftHistoric.delete(movie.id)
     localStorage.setItem(
-      //todo refactor
-      LocalStorage.idTimeLeftMap,
+      LocalDBKeys.idTimeLeftMap,
       JSON.stringify(Array.from(IdTimeLeftHistoric.entries()))
     )
   }

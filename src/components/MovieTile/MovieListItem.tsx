@@ -5,7 +5,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil'
 
 import { fetchMovieDetails } from '../../api/utils'
 
-import { useSetBackdropImage } from '../../hooks/useSetBackdropImage'
+import { useSetBackdropImage } from './useSetBackdropImage'
 
 import { Countdown } from './Countdown'
 import { MovieDetailsCard } from './MovieDetailsCard'
