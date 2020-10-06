@@ -3,8 +3,14 @@ import { SvgIconProps } from './types'
 
 export function PlusCircle({ iconLabel, ...props }: SvgIconProps) {
   return (
-    <svg viewBox="0 0 20 20" fill="currentColor" role="img" aria-labelledby="icon-label" {...props}>
-      <title id="icon-label">{iconLabel}</title>
+    <svg
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      role="img"
+      aria-labelledby="icon-plus-circle"
+      {...props}
+    >
+      <title id="icon-plus-circle">{iconLabel}</title>
       <path
         fillRule="evenodd"
         d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"

@@ -3,8 +3,14 @@ import { SvgIconProps } from './types'
 
 export function PencilAlt({ iconLabel, ...props }: SvgIconProps) {
   return (
-    <svg viewBox="0 0 20 20" fill="currentColor" role="img" aria-labelledby="icon-label" {...props}>
-      <title id="icon-label">{iconLabel}</title>
+    <svg
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      role="img"
+      aria-labelledby="icon-pencil-alt"
+      {...props}
+    >
+      <title id="icon-pencil-alt">{iconLabel}</title>
       <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
       <path
         fillRule="evenodd"
