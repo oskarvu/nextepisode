@@ -17,7 +17,7 @@ const FooterContainer = tw.footer`
 
 const FooterNote = tw.p`
   py-2 lg:py-1 lg:my-4 px-6
-  text-gray-600 font-semibold tracking-wide text-xs sm:text-sm
+  text-gray-700 font-semibold tracking-wide text-xs sm:text-sm
   border-gray-400
   first:border-b-4 first:lg:border-b-0 lg:border-r-4 lg:last:border-none
 `

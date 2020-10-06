@@ -35,13 +35,13 @@ const InfoBadge = tw.div`
   inline-block
   px-2 py-1 mr-1 last:mb-2
   bg-gray-300 rounded-full
-  text-xs uppercase font-bold text-gray-600 tracking-wider
+  text-xs uppercase font-bold text-gray-700 tracking-wider
 `
 
 const TrashIcon = styled(Trash)(() => [
   tw`absolute right-0
   w-8 h-8 p-1
-  cursor-pointer text-gray-500 hover:text-gray-700`,
+  cursor-pointer text-gray-600 hover:text-gray-800`,
   '-webkit-tap-highlight-color: transparent;',
 ])
 

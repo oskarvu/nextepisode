@@ -31,7 +31,7 @@ const Modal = styled(motion.div)(({ isModalOpen, isResultsModalVisible }: ModalP
   isResultsModalVisible && tw`hidden lg:block`,
 ])
 
-const SectionName = tw.h5`
+const SectionName = tw.div`
   mt-1 ml-1 mb-2
   text-gray-600 font-bold text-xs sm:text-sm tracking-wide uppercase
 `

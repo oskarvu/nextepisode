@@ -20,7 +20,7 @@ const Input = tw.input`
   h-12 w-full
   px-12 my-4
   rounded-full outline-none bg-gray-200
-  text-gray-800 placeholder-gray-600
+  text-gray-800 placeholder-gray-700
   leading-6 text-lg font-medium tracking-wide
 `
 
@@ -28,7 +28,7 @@ const SpinnerIcon = tw(Spinner)`
   absolute
   w-8 h-8
   ml-3 mt-6
-  text-gray-400
+  text-gray-500
 `
 
 const spinnerMotionProps = {
@@ -45,7 +45,7 @@ const SearchIcon = tw(Search)`
   absolute
   w-8 h-8
   ml-3 mt-6
-  text-gray-400
+  text-gray-500
 `
 
 const opacityMotionProps = {
@@ -60,7 +60,7 @@ const CloseIcon = tw(X)`
   absolute
   right-0 mr-8 mt-6 w-8 h-8
   text-gray-500 cursor-pointer
-  hover:text-gray-800
+  hover:text-gray-700
 `
 
 const StyledLogo = styled(Logo)`
