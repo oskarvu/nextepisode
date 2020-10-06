@@ -3,7 +3,7 @@ import tw, { styled } from 'twin.macro'
 
 import { capitalize } from '../../utils/capitalize'
 
-import { ReactComponent as TMDbLogo } from '../../assets/images/tmdb-logo.svg'
+import { ReactComponent as TMDbLogo } from '../../assets/images/logos/tmdb-logo.svg'
 import { ExternalLink } from '../../assets/icons/ExternalLink'
 import { FooterTexts } from '../../translations/en-US'
 
