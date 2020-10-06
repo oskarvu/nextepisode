@@ -10,7 +10,7 @@ import { SortMethod } from './types'
 
 import { useHideWhenClickedOutside } from '../../hooks/useHideWhenClickedOutside'
 
-import { LocalStorage } from '../../db/types'
+import { LocalDBKeys } from '../../db/types'
 import { CommonTexts, FilterModalTexts } from '../../translations/en-US'
 import { LabeledRadio } from './LabeledRadio'
 import { Adjustments } from '../../assets/icons/motionable/Adjustments'
@@ -71,8 +71,7 @@ export const FiltersModal: React.FC<any> = () => {
   useHideWhenClickedOutside(modalRef, setIsModalExpanded)
 
   useEffect(() => {
-    //todo: refactor
-    localStorage.setItem(LocalStorage.sortMethod, JSON.stringify(sortBy))
+    localStorage.setItem(LocalDBKeys.sortMethod, JSON.stringify(sortBy))
   }, [sortBy])
 
   return (
@@ -139,6 +138,7 @@ export const FiltersModal: React.FC<any> = () => {
   function handleDeleteAll() {
     setIdMovieRecord({})
     IdTimeLeftHistoric.clear()
-    localStorage.setItem(LocalStorage.idTimeLeftMap, JSON.stringify([]))
+    setIsModalExpanded(false)
+    localStorage.setItem(LocalDBKeys.idTimeLeftMap, JSON.stringify([]))
   }
 }
