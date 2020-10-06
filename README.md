@@ -1,6 +1,6 @@
 # <a href='https://nextepisode.app'><img src='./src/assets/images/logos/logo-with-type.png' height='70' alt='nextepisde logo' aria-label='nextepisode.app' /></a>
 
-Nextepisode is an app which lets you quickly get an information about your favourite tv show next episode air time.
+Nextepisode is an app which lets you quickly get an information about your favourite tv show, in specific, about next episode air time.
 Use search bar to find a show, and after adding it to your collection, you will immediately know, how much time you have to wait.
 
 ## Cookies
