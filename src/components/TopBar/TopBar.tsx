@@ -3,7 +3,7 @@ import tw, { styled } from 'twin.macro'
 
 import { SearchBar } from './SearchBar'
 
-const TopContainer = styled.div(({ isScrolled }: { isScrolled: boolean }) => [
+const TopContainer = styled.header(({ isScrolled }: { isScrolled: boolean }) => [
   tw`sticky top-0 z-10
   flex justify-center
   w-full
