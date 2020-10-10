@@ -45,7 +45,7 @@ export const timeLeftToAir = selectorFamily<number | null, string>({
 })
 
 export const movieStatus = selectorFamily<string | null, string>({
-  key: 'timeLeftToAir',
+  key: 'movieStatus',
   get: (id) => ({ get }) => get(status(`statusOf${id}`)),
   set: (id) => ({ set }, newValue) => set(status(`statusOf${id}`), newValue),
 })
