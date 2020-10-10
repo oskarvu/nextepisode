@@ -48,7 +48,7 @@ export enum FilterModalTexts {
   sortBy = 'sort by',
   alphabetically = 'a-z',
   timeLeft = 'time left',
-  addOrder = 'newly added',
+  addOrder = 'add order',
   removeAll = 'remove all tv shows',
   deleteAll = 'delete all',
 }

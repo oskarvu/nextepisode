@@ -7,7 +7,7 @@ import { calculateDaysLeft, calculateMonthsLeft } from '../../utils/time'
 
 import { useSetRecoilState } from 'recoil'
 import { timeLeftToAir } from './sharedState'
-import { IdTimeLeftHistoric } from '../MovieCollection/sharedState'
+import { idTimeLeftMap } from '../MovieCollection/sharedState'
 import { LocalDBKeys } from '../../db/types'
 
 import { Check } from '../../assets/icons/Check'
@@ -72,10 +72,10 @@ export function Countdown({ nextEpisode, status, movieId, isError }: Props) {
   }, [daysLeft, setTimeLeftToAir])
 
   useEffect(() => {
-    IdTimeLeftHistoric.set(movieId, daysLeft)
+    idTimeLeftMap.set(movieId, daysLeft)
     localStorage.setItem(
       LocalDBKeys.idTimeLeftMap,
-      JSON.stringify(Array.from(IdTimeLeftHistoric.entries()))
+      JSON.stringify(Array.from(idTimeLeftMap.entries()))
     )
   }, [movieId, daysLeft])
 

@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import tw, { styled } from 'twin.macro'
 
 import { isResultsModalVisible } from '../TopBar/sharedState'
-import { idMovieInitDataRecord, IdTimeLeftHistoric } from '../MovieCollection/sharedState'
+import { idMovieInitDataRecord, idTimeLeftMap } from '../MovieCollection/sharedState'
 import { isFilterModalExpanded, SortByMethod } from './sharedState'
 import { SortMethod } from './types'
 
@@ -137,7 +137,7 @@ export const FiltersModal: React.FC<any> = () => {
 
   function handleDeleteAll() {
     setIdMovieRecord({})
-    IdTimeLeftHistoric.clear()
+    idTimeLeftMap.clear()
     setIsModalExpanded(false)
     localStorage.setItem(LocalDBKeys.idTimeLeftMap, JSON.stringify([]))
   }

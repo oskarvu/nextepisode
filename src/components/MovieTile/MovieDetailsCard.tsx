@@ -3,7 +3,7 @@ import tw, { styled } from 'twin.macro'
 import { useSetRecoilState } from 'recoil'
 
 import { FetchErrors, CommonTexts } from '../../translations/en-US'
-import { idMovieInitDataRecord, IdTimeLeftHistoric } from '../MovieCollection/sharedState'
+import { idMovieInitDataRecord, idTimeLeftMap } from '../MovieCollection/sharedState'
 import { movieNetwork } from './sharedState'
 import { Movie } from '../../api/types'
 import { LocalDBKeys } from '../../db/types'
@@ -90,10 +90,10 @@ export function MovieDetailsCard({ isError, movie }: { isError: boolean; movie: 
       const { [movie.id]: drop, ...newState } = prevState
       return newState
     })
-    IdTimeLeftHistoric.delete(movie.id)
+    idTimeLeftMap.delete(movie.id)
     localStorage.setItem(
       LocalDBKeys.idTimeLeftMap,
-      JSON.stringify(Array.from(IdTimeLeftHistoric.entries()))
+      JSON.stringify(Array.from(idTimeLeftMap.entries()))
     )
   }
 }

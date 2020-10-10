@@ -3,7 +3,7 @@ import tw, { styled } from 'twin.macro'
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion'
 import { useRecoilValue } from 'recoil'
 
-import { firstRenderSortedIds, idMovieInitDataRecord } from './sharedState'
+import { sortedMovieIds, idMovieInitDataRecord } from './sharedState'
 import { WelcomeScreenTexts } from '../../translations/en-US'
 
 import { MovieListItem } from '../MovieTile/MovieListItem'
@@ -69,7 +69,7 @@ const listItemVariant = {
 
 export function MovieCollection() {
   const idMovieRecord = useRecoilValue(idMovieInitDataRecord)
-  const firstRenderIds = useRecoilValue(firstRenderSortedIds)
+  const firstRenderIds = useRecoilValue(sortedMovieIds)
 
   useEffect(() => {
     localStorage.setItem(LocalDBKeys.idMovieInitDataRecord, JSON.stringify(idMovieRecord))

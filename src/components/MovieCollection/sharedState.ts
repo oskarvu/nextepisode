@@ -16,9 +16,9 @@ export const idMovieInitDataRecord = atom<Record<string, MovieInitData>>({
   default: idMovieRecord ? JSON.parse(idMovieRecord) : {},
 })
 
-export const IdTimeLeftHistoric = new Map<string, number | null>()
+export const idTimeLeftMap = new Map<string, number | null>()
 
-export const firstRenderSortedIds = selector<string[]>({
+export const sortedMovieIds = selector<string[]>({
   key: 'firstRenderSortedIds',
   get: ({ get }) => {
     const currentSortMethod = get(SortByMethod)
