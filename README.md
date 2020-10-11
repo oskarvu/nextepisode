@@ -22,4 +22,4 @@ Hosted on [Vercel](https://vercel.com/)
 
 ## Contact me
 
-You can find me on [Twitter](https://twitter.com/oszeleje) or check my personal webpage [oszeleje.io](https://oszeleje.io).
+You can find me on [Twitter](https://twitter.com/oszeleje) or check my personal webpage [oszeleje.dev](https://oszeleje.dev).
