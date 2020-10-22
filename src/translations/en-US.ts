@@ -29,7 +29,7 @@ export enum CommonTexts {
 }
 
 export enum SearchBarTexts {
-  searchForTvShow = 'Search for a tv show...',
+  searchForTvShow = 'Search for a TV show...',
   noResults = 'No results...',
 }
 
@@ -54,7 +54,7 @@ export enum FilterModalTexts {
 }
 
 export enum WelcomeScreenTexts {
-  findYourFavShow = 'Use search bar to find your favourite tv show',
-  addToCollection = 'Click on result to add it to your collection',
+  findYourFavShow = 'Use search bar to find your favourite TV show',
+  addToCollection = 'Click on the result to add it to your collection',
   nowYouKnow = 'Now you know when the next episode will be aired',
 }
